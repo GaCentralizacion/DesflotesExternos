@@ -1,0 +1,13 @@
+<div mat-dialog-title>
+    {{direccion}}
+</div>
+<mat-dialog-content class="mat-typography">
+    <agm-map [latitude]="latitud" [longitude]="longitud" [zoom]="16">
+        <agm-marker [latitude]="latitud" [longitude]="longitud">
+            <agm-info-window>Latitud: {{latitud}} <br> Longitud: {{longitud}}</agm-info-window>
+        </agm-marker>
+    </agm-map>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="0">Cerrar Mapa</button>
+</mat-dialog-actions>

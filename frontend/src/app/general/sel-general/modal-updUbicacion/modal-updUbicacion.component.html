@@ -1,0 +1,23 @@
+<div mat-dialog-title>
+</div>
+<mat-dialog-content class="mat-typography">
+    <div style="width: 450px; text-align: center;" [formGroup]="form">
+        <h3>{{titulo}}</h3>
+        <h3>{{elementos}}</h3>
+        <!-- <h3>{{marca}}&nbsp;{{carline}}&nbsp;{{modelo}}</h3> -->
+        <form [formGroup]="form">
+            <mat-form-field style="width: 455px;" appearance="fill" floatLabel="always">
+                <mat-label>Ubicación</mat-label>
+                <input matInput type="text" placeholder="introduzca ubicación"formControlName="ubicacion" class="example-right-align">
+              </mat-form-field>
+              <mat-error *ngIf="form.invalid">
+                El campo es
+                <strong>requerido</strong>
+            </mat-error> 
+          </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="0">Cancelar</button>
+    <button mat-button (click)="precio()" [mat-dialog-close]="retornarValores" [disabled]="!form.valid" cdkFocusInitial>Actualizar</button>
+</mat-dialog-actions>

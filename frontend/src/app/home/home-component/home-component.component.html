@@ -1,0 +1,17 @@
+<div class="page-layout blank p-24">
+    Panel de control
+    <div>
+        <button class="flotanteDerecha warn" mat-raised-button type="button"
+            (click)='ErrorExcepcion()'>Excepción</button>
+    </div>
+    <div *ngIf='objSeguridad.length > 0' class='row'>
+        <div *ngFor="let menu of objSeguridad" routerLink="{{menu.caption.router}}"
+            class="d-flex bordes main-card mb-3 card card-body col-3">
+            <div *ngIf="menu.caption.router" [style.border-bottom-color]="menu.caption.color">
+                <div *ngFor="let datos of menu.caption.datos">
+                    <img class="panel-img" src="{{datos.logoMenu}}">
+                    <p style="font-size: 15px">{{datos.label}}</p>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,67 @@
+// Import Fuse core library
+@import "@fuse/scss/core";
+
+// Import app.theme.scss
+@import "app/app.theme";
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@import "assets/base";
+
+// Estilo general para Spinner de Material
+.spinnerAll {
+  position: fixed !important;
+  top: 50% !important;
+  right: 0 !important;
+  left: 0 !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  z-index: 50 !important;
+}
+
+// Desactiva la funcionalidad de la pantalla mientras se cargan los datos obtenidos de la Base de datos
+.desactivaPantalla {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.inputFullWide {
+  width: 100% !important;
+}
+
+.imagenIconoGris {
+  width: 40px;
+}
+
+.cardMarginBottom {
+  margin-bottom: 20px;
+}
+
+.flotanteDerecha {
+  float: right !important;
+  margin-right: 20px !important;
+}
+
+.titulo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.subTitulo {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.colorBlanco {
+  color: white !important;
+}
+
+.noEventos {
+  pointer-events: none;
+}

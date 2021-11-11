@@ -1,0 +1,58 @@
+<app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
+<div class='containerAll'>
+    <mat-card [ngClass]="{'desactivaPantalla': spinner }">
+        <div class="row" [formGroup]="getReportesForm">
+            <div class="col-sm-12 col-md-3 col-xl-4">
+                <mat-form-field id="blueversion" class="inputFullWide">
+                    <mat-select placeholder="Seleccione compañia" formControlName="idDuenoUnidad">
+                        <mat-option id="bluemat" [value]="0">
+                            TODO
+                        </mat-option>
+                        <mat-option id="bluemat" *ngFor='let company of lstUnidadCompania'
+                            [value]="company.idCompaniaUnidad">
+                            {{company.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        El campo es
+                        <strong>requerido</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-3 col-xl-4">
+                <mat-form-field id="blueversion" class="inputFullWide">
+                    <mat-select placeholder="Seleccione contrato" formControlName="idDesflote">
+                        <mat-option id="bluemat" [value]="0">
+                            TODO
+                        </mat-option>
+                        <mat-option id="bluemat" *ngFor='let bDesflote of lstDesflote' [value]="bDesflote.idDesflote">
+                            {{bDesflote.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        El campo es
+                        <strong>requerido</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            
+            <div class="col-sm-12 col-md-3 col-xl-3" style="padding-top: 10px;">
+                <button class="flotanteDerecha accent colorBlanco" mat-raised-button
+                    type="button" [disabled]="!getReportesForm.valid" (click)='GenerateReport(0)'>
+                    <span>Consultar</span>
+                </button>
+
+            </div>
+
+        </div>
+        <app-grid-component *ngIf="verGrid" [datos]="dataReport"
+            [gridOptions]="gridOptions" [columns]="columns"
+            [exportExcel]="exportExcel" [columnHiding]="columnHiding"
+            [Checkbox]="Checkbox" [Editing]="Editing"
+            [Columnchooser]="Columnchooser" [toolbar]="toolbar"
+            [searchPanel]="searchPanel" [scroll]="scroll"
+            (messageEvent)="receiveMessage($event)" (datosevent)='datosMessage($event)'>
+        </app-grid-component>
+
+    </mat-card>
+</div>

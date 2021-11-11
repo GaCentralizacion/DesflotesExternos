@@ -1,0 +1,89 @@
+<app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
+<div class='containerAll'>
+    <mat-card [ngClass]="{'desactivaPantalla': spinner }">
+        <div class="col-xl-12">
+            <div *ngFor="let objeto of modulo.camposClase" style="display: inline;">
+                <img *ngIf="objeto.nombre=='LogoCard'" class='imagenIconoGris' [src]="objeto.path">
+                <span *ngIf="objeto.nombre=='LogoCard'">&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            <div *ngFor="let objeto of modulo.camposClase" style="display: inline;">
+                <span *ngIf="objeto.nombre=='TituloCard'">{{objeto.label}}</span>
+            </div>
+        </div>
+        <hr>
+        <br>
+        <div class="row" [formGroup]="getInventarioForm">
+            <div class="col-sm-12 col-md-3 col-xl-3">
+                <mat-form-field id="blueversion" class="inputFullWide">
+                    <mat-select placeholder="Seleccione Dueño de Unidad" formControlName="idDuenoUnidad">
+                        <mat-option id="bluemat" *ngFor='let company of lstUnidadCompania'
+                            [value]="company.idCompaniaUnidad">
+                            {{company.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        El campo es
+                        <strong>requerido</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-3 col-xl-3">
+                <mat-form-field id="blueversion" class="inputFullWide">
+                    <mat-select placeholder="Seleccione Desflote" formControlName="idDesflote">
+                        <mat-option id="bluemat" *ngFor='let bDesflote of lstDesflote' [value]="bDesflote.idDesflote">
+                            {{bDesflote.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        El campo es
+                        <strong>requerido</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-3 col-xl-3">
+                <mat-form-field id="blueversion" class="inputFullWide">
+                    <mat-select placeholder="Seleccione Estado" formControlName="idEstado">
+                        <mat-option id="bluemat" *ngFor='let bEstado of lstEstado' [value]="bEstado.idEstadoUnidad">
+                            {{bEstado.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        El campo es
+                        <strong>requerido</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-3 col-xl-3" style="padding-top: 10px;">
+                <button *ngFor="let objeto of modulo.camposClase" class="flotanteDerecha accent" mat-raised-button
+                    type="button" [disabled]="!getInventarioForm.valid" (click)='GenerateReport(0)'>
+                    <span *ngIf="objeto.nombre=='BtnConsultar'">{{objeto.label}}</span>
+                </button>
+
+            </div>
+
+        </div>
+    </mat-card>
+    <br>
+    <mat-card [ngClass]="{'desactivaPantalla': spinner }">
+        <div class="col-xl-12">
+            <div *ngFor="let objeto of modulo.camposClase" style="display: inline;">
+                <img *ngIf="objeto.nombre=='LogoData'" class='imagenIconoGris' [src]="objeto.path">
+                <span *ngIf="objeto.nombre=='LogoData'">&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            <div *ngFor="let objeto of modulo.camposClase" style="display: inline;">
+                <span *ngIf="objeto.nombre=='TituloData'">{{objeto.label}}</span>
+            </div>
+        </div>
+        <hr>
+        <br>
+        <app-grid-component *ngIf="verGrid" [datos]="inventario"
+            [gridOptions]="gridOptions" [columns]="columns"
+            [exportExcel]="exportExcel" [columnHiding]="columnHiding"
+            [Checkbox]="Checkbox" [Editing]="Editing"
+            [Columnchooser]="Columnchooser" [toolbar]="toolbar"
+            [searchPanel]="searchPanel" [scroll]="scroll"
+            (messageEvent)="receiveMessage($event)" (datosevent)='datosMessage($event)'>
+        </app-grid-component>
+
+    </mat-card>
+</div>

@@ -1,0 +1,69 @@
+.marginTop {
+    margin-top: 20px;
+}
+.cardMarginBottom{
+    margin-top: 0!important;
+}
+:host {
+    display: block !important;
+}
+
+::ng-deep #gridContainer {
+    height: 740px;
+}
+
+.dx-button-has-text .dx-button-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 1px 0px 1px;
+}
+
+agm-map {
+  height: 50px;
+  width: 50px;
+}
+
+.example-month-picker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.example-month-picker .mat-calendar-arrow {
+  display: none;
+}
+.mat-form-field-appearance-legacy .mat-form-field-infix{
+  padding-top: 5px!important;
+}
+
+::ng-deep .dx-datagrid .dx-header-filter {
+  position: relative;
+  color: red;
+  font: 14px/1 DXIcons;
+}
+::ng-deep  .dx-datagrid .dx-header-filter-empty {
+  color: rgba(149,149,149,.5)!important;
+}
+
+::ng-deep #gridContainer .dx-header-row .general{
+      background: #007BFF !important; 
+      color: #fff;
+  }
+::ng-deep #gridContainer .dx-header-row .asignacion1{
+    background: #007BFF !important;
+    color: #fff;
+}
+
+::ng-deep #gridContainer .dx-header-row .asignacion2{
+  background: #48A636 !important;
+  color: #fff;
+}
+
+::ng-deep #gridContainer .dx-header-row .cliente{
+  background: #2F2FEB !important;
+  color: #fff;
+}
+
+::ng-deep #gridContainer .dx-header-row .vin{
+  background: #828282 !important;
+  color: #fff;
+}

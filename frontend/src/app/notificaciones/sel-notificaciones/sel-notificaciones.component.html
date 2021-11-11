@@ -1,0 +1,81 @@
+<app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
+<div class='containerAll'>
+    <mat-card [ngClass]="{'desactivaPantalla': spinner }">
+        <div class="col-xl-12">
+            <mat-icon class="logo-icon s-32 mr-16">
+                notifications_active
+            </mat-icon>
+
+            <div *ngFor="let objeto of modulo.camposClase" style="display: inline;">
+                <span class="logo-text h1" *ngIf="objeto.nombre=='TituloCard'">{{objeto.label}}</span>
+            </div>
+        </div>
+        <hr>
+        <br>
+
+        <div class="content-card">
+            
+                <div style="text-align: center;" class="content vacio" fxFlexAlign="row" *ngIf="vacio">
+                    <br><br><br><br><br><br><br>
+                    <span class="app-title mt-48">No hay notificaciones</span><br>
+                    <span fxhide="" fxshow.gt-md="" class="app-message">Por el momento no hay notificaciones pendientes
+                        por revisar</span>
+                </div>
+            
+            <div class="content" fxFlexAlign="row"  *ngIf="!vacio">
+                <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="">
+
+                    <!-- icono Column -->
+                    <ng-container matColumnDef="icono">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                        <td mat-cell *matCellDef="let element" width="100px" (click)="abrirNotificacion( element )">
+                            <!-- <div class="icon-ckl"> -->
+                            <mat-icon class="active-icon s-12" style="background-color: #2083df;"
+                                *ngIf="element.esActivo"></mat-icon>
+                            <mat-icon class="active-icon s-12" style="background-color: #cacaca;"
+                                *ngIf="!element.esActivo"></mat-icon>
+                            &nbsp;
+                            <mat-icon aria-hidden="true" style="font-size: 18px; color: #cacaca;"
+                                *ngIf="element.idTipoNotificacion != 2">notifications_active</mat-icon>
+                            <mat-icon aria-hidden="true" style="font-size: 18px; color: #cacaca;"
+                                *ngIf="element.idTipoNotificacion == 2">
+                                <img [src]="element.icono" width="18" height="18">
+                            </mat-icon>
+                            <!-- <mat-icon *ngIf="element.visto == 0" aria-hidden="false" aria-label="Example home icon" style="font-size: 20px; color:#F1D172">turned_in</mat-icon> -->
+                            <!-- <mat-icon *ngIf="element.visto == 1" aria-hidden="false" aria-label="Example home icon" style="font-size: 20px; color:#797979">turned_in_not</mat-icon> -->
+                            <!-- </div> -->
+                        </td>
+                    </ng-container>
+
+                    <!-- mensaje Column -->
+                    <ng-container matColumnDef="mensaje">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mensaje </th>
+                        <!-- style="font-weight: normal;" -->
+                        <td mat-cell *matCellDef="let element" style="font-size: 12px;"
+                            (click)="abrirNotificacion( element )"
+                            [ngStyle]="element.esActivo == true && { 'font-weight': 'bold' }"> {{element.mensaje}} </td>
+                    </ng-container>
+
+                    <!-- nombreTipo Column -->
+                    <ng-container matColumnDef="nombreTipo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Notificación </th>
+                        <td mat-cell *matCellDef="let element" (click)="abrirNotificacion( element )" class="small"
+                            [ngStyle]="element.esActivo == true && { 'font-weight': 'bold' }"> {{element.nombreTipo}}
+                        </td>
+                    </ng-container>
+
+                    <!-- fechaRegistro Column -->
+                    <ng-container matColumnDef="fecha">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                        <td mat-cell *matCellDef="let element" (click)="abrirNotificacion( element )" class="small"
+                            [ngStyle]="element.esActivo == true && { 'font-weight': 'bold' }"> {{element.fecha}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="cursor: pointer;"></tr>
+                </table>
+            </div>
+        </div>
+
+    </mat-card>
+</div>

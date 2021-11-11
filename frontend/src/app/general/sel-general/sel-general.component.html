@@ -1,0 +1,130 @@
+<app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
+
+<div class='containerAll'>
+    <mat-card [ngClass]="{'desactivaPantalla': spinner }">
+        <div class="row" [formGroup]="getGeneralForm">
+            <div class="col-sm-12 col-md-3 col-xl-4">
+                <mat-form-field id="blueversion" class="inputFullWide">
+                    <mat-select placeholder="Seleccione compañia" formControlName="idDuenoUnidad">
+                        <mat-option id="bluemat" [value]="0">
+                            TODO
+                        </mat-option>
+                        <mat-option id="bluemat" *ngFor='let company of lstUnidadCompania'
+                            [value]="company.idCompaniaUnidad">
+                            {{company.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        El campo es
+                        <strong>requerido</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-3 col-xl-4">
+                <mat-form-field id="blueversion" class="inputFullWide">
+                    <mat-select placeholder="Seleccionar contrato" formControlName="idDesflote">
+                        <mat-option id="bluemat" [value]="0">
+                            TODO
+                        </mat-option>
+                        <mat-option id="bluemat" *ngFor='let bDesflote of lstDesflote' [value]="bDesflote.idDesflote">
+                            {{bDesflote.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        El campo es
+                        <strong>requerido</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <!-- <div class="col-sm-12 col-md-3 col-xl-3">
+                <mat-form-field id="blueversion" class="inputFullWide">
+                    <mat-select placeholder="Seleccione Estado" formControlName="idEstado">
+                        <mat-option id="bluemat" *ngFor='let bEstado of lstEstado' [value]="bEstado.idEstadoUnidad">
+                            {{bEstado.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        El campo es
+                        <strong>requerido</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div> -->
+            <div class="col-sm-12 col-md-3 col-xl-4" style="padding-top: 10px;">
+
+                <button *ngFor="let objeto of modulo.camposClase" class="flotanteDerecha accent colorBlanco"
+                    mat-raised-button type="button" [disabled]="!getGeneralForm.valid" (click)='GenerateReport()'>
+                    <span *ngIf="objeto.nombre=='BtnConsultar'">{{objeto.label}}</span>
+                </button>
+                <!-- <button  class="flotanteDerecha accent colorBlanco"
+                    mat-raised-button type="button" (click)='GenerarCotizacion()'>
+                    <span >Cotización</span>
+                </button> -->
+            </div>
+
+        </div>
+
+        <!-- <div class="col-xl-12">
+            <div *ngFor="let objeto of modulo.camposClase" style="display: inline;">
+                <img *ngIf="objeto.nombre=='LogoData'" class='imagenIconoGris' [src]="objeto.path">
+                <span *ngIf="objeto.nombre=='LogoData'">&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            <div *ngFor="let objeto of modulo.camposClase" style="display: inline;">
+                <span *ngIf="objeto.nombre=='TituloData'">{{objeto.label}}</span>
+            </div>
+        </div>
+        <hr>
+        <br> -->
+        <!-- <mat-tab-group (selectedTabChange)="ChangeTab($event)" *ngIf="activaTab" id="checkGrid">
+            <br>
+            <mat-tab *ngFor="let tipo of lstTipoReporte, let index = index" label="{{tipo.descripcion }}">
+                <br> -->
+        <!-- <p>Botonera</p> -->
+        <mat-tab-group (selectedTabChange)="ChangeTab($event)"  mat-align-tabs="center" animationDuration="500ms" #tabs>
+            <mat-tab label="General">
+                <app-grid-component *ngIf="verGrid" [datos]="reporte" [gridOptions]="gridOptions"
+                    [columns]="columnsGeneral" [exportExcel]="exportExcel" [columnHiding]="columnHiding"
+                    [Checkbox]="Checkbox" [Editing]="Editing" [Columnchooser]="Columnchooser" [toolbar]="toolbarGeneral"
+                    [searchPanel]="searchPanel" [scroll]="scroll" (messageEvent)="receiveMessage($event)"
+                    (datosevent)='datosMessage($event)' (editevent)='datosUpd($event)' (onCellClickEvent)='clickEvent($event)' [tipoReporte] = '1'
+                    [cuentaPrimera] = 'primera' [cuentaSegunda] = 'segunda'>
+                </app-grid-component>
+            </mat-tab>
+            <mat-tab label="Asignadas">
+                <app-grid-component *ngIf="verGrid" [datos]="data" [gridOptions]="gridOptions" [columns]="columnas2"
+                    [exportExcel]="exportExcel" [columnHiding]="columnHiding" [Checkbox]="Checkbox" [Editing]="Editing"
+                    [Columnchooser]="Columnchooser" [toolbar]="toolbar" [searchPanel]="searchPanel" [scroll]="scroll"
+                    (messageEvent)="receiveMessage($event)" (datosevent)='datosMessage($event)' [catalogoModelo]="catalogoModelo"
+                    (documentosModal)='Expediente($event.vin)' (onCellClickEvent)='clickEvent($event)' [tipoReporte] = '2'
+                    [cuentaPrimera] = 'primera' [cuentaSegunda] = 'segunda'>
+                </app-grid-component>
+            </mat-tab>
+        </mat-tab-group>
+                <br>
+                <div class="row" *ngIf="verGrid">
+                    <div class="col-sm-12 col-md-3 col-xl-2">
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-xl-4">
+                        <div style="justify-content: center; display: flex;"><span >PRIMERA ASIGNACIÓN:</span></div>
+                        <span >Factura:</span> &nbsp; &nbsp; &nbsp; 
+                        <progress id="file" max="100" value="{{facturasPendientesPrimera}}"></progress> &nbsp;
+                        <span>{{facturasPendientesPrimera}} Restantes</span> <br> <br>
+                        <span >O.Compra:</span> &nbsp; 
+                        <progress id="file" max="100" value="{{ordenesPendientesPrimera}}"></progress> &nbsp;
+                        <span>{{ordenesPendientesPrimera}} Restantes</span>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-xl-1">
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-xl-4">
+                        <div style="justify-content: center; display: flex;"><span >SEGUNDA ASIGNACIÓN:</span></div> 
+                        <span >Factura:</span> &nbsp; &nbsp; &nbsp; 
+                        <progress id="file" max="100" value="{{facturasPendientesSegunda}}"></progress> &nbsp;
+                        <span>{{facturasPendientesSegunda}} Restantes</span> <br><br>
+                        <span >O.Compra:</span> &nbsp; 
+                        <progress id="file" max="100" value="{{ordenesPendientesSegunda}}"></progress> &nbsp;
+                        <span>{{ordenesPendientesSegunda}} Restantes</span>
+                    </div>
+                </div>
+        <!-- </mat-tab>
+        </mat-tab-group> -->
+    </mat-card>
+</div>

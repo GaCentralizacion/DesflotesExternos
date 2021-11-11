@@ -1,0 +1,40 @@
+<div class="navbar-top" [ngClass]="fuseConfig.layout.navbar.secondaryBackground" style="background-color: #001A5A !important ;">
+
+    <div class="logo">
+        <img class="logo-icon" src="assets/images/iconos-coal/icono_A.png">
+        <span class="logo-text secondary-text">Grupo Andrade</span>
+    </div>
+
+    <div class="buttons">
+
+        <button mat-icon-button class="toggle-sidebar-folded" (click)="toggleSidebarFolded()" fxHide.lt-lg>
+            <mat-icon class="secondary-text">menu</mat-icon>
+        </button>
+
+        <button mat-icon-button class="toggle-sidebar-opened" (click)="toggleSidebarOpened()" fxHide.gt-md>
+            <mat-icon class="secondary-text">arrow_back</mat-icon>
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="navbar-scroll-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground" fusePerfectScrollbar
+    [fusePerfectScrollbarOptions]="{suppressScrollX: true}" >
+
+    <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground" style="background-color: #001A5A !important ;">
+
+        <div class="h3 username colorBlanco">{{datosUsuario?.fullname}}</div>
+        <div class="h5 email hint-text mt-8">{{datosUsuario?.email}}</div>
+        <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground" style="background-color: #001A5A !important ;">
+            <img class="avatar" src="{{datosUsuario?.avatar}}">
+        </div>
+
+    </div>
+
+    <div class="navbar-content" style="background-color: #1C3B7B !important ;">
+        <fuse-navigation *ngIf='objSeguridad.length > 0' [navigation]='objSeguridad' class="material2" layout="vertical"></fuse-navigation>
+    </div>
+
+</div>

@@ -1,0 +1,25 @@
+<div mat-dialog-title>
+</div>
+<mat-dialog-content class="mat-typography">
+    <div style="width: 450px; text-align: center;" [formGroup]="form">
+        <h3>{{titulo}}</h3>
+        <h3>{{elementos}}</h3>
+        <mat-form-field id="blueversion" class="inputFullWide">
+            <mat-select placeholder="Seleccione compañia" formControlName="idDuenoUnidad"
+                (selectionChange)="changeSelect($event.value)">
+                <!-- <mat-option id="bluemat" *ngFor='let company of select' [value]="company.idCompania"> -->
+                <mat-option id="bluemat" *ngFor='let company of select' [value]="company">
+                    {{company.razonSocial}}
+                </mat-option>
+            </mat-select>
+            <mat-error>
+                El campo es
+                <strong>requerido</strong>
+            </mat-error>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="0">Cancelar</button>
+    <button mat-button [mat-dialog-close]="retornarValores" cdkFocusInitial>Asignar</button>
+</mat-dialog-actions>

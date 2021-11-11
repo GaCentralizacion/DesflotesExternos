@@ -1,0 +1,37 @@
+.marginTop {
+    margin-top: 20px;
+}
+.cardMarginBottom{
+    margin-top: 0!important;
+}
+:host {
+    display: block !important;
+}
+
+::ng-deep #gridContainer {
+    height: 740px;
+}
+
+.example-month-picker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.example-month-picker .mat-calendar-arrow {
+  display: none;
+}
+.mat-form-field-appearance-legacy .mat-form-field-infix{
+  padding-top: 5px!important;
+}
+
+::ng-deep .dx-datagrid .dx-header-filter {
+  position: relative;
+  color: red;
+  font: 14px/1 DXIcons;
+}
+::ng-deep  .dx-datagrid .dx-header-filter-empty {
+  color: rgba(149,149,149,.5)!important;
+}
+::ng-deep #gridContainer .dx-header-row .reporte{
+    background: rgb(142,169,219);
+    color: #000;
+}

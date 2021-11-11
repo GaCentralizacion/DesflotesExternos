@@ -1,0 +1,22 @@
+<mat-dialog-content>
+  <div class='row cardMarginBottom'>
+    <div class="col-sm-12 col-md-12 col-xl-12">
+      <img class='imagenIconoGris'
+        src="./assets/images/iconos-coal/consignacion/ins_contrato/datos_vehiculo.png">&nbsp;&nbsp;&nbsp;
+      <span>Las siguientes unidades no se genero su orden de compra correctamente.</span>
+    </div>
+  </div>
+  <hr>
+  <app-grid-component [datos]="data.unidades" [gridOptions]="gridOptions" [columns]="columnsGeneral"
+    [exportExcel]="exportExcel" [columnHiding]="columnHiding" [Checkbox]="Checkbox" [Editing]="Editing"
+    [Columnchooser]="Columnchooser" [toolbar]="toolbarGeneral" [searchPanel]="searchPanel" [scroll]="scroll">
+  </app-grid-component>
+  <div class='row text-center'>
+
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <button (click)='Cancelar()' class="red colorBlanco" mat-raised-button type="button">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</mat-dialog-content>

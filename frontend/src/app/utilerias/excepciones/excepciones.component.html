@@ -1,0 +1,50 @@
+<div class="cardHeader">
+    <div class="container">
+        <span class="float-right">
+            <mat-card-title class='icono punter'>
+                <mat-icon class="s-20" (click)='cerrar()'>close</mat-icon>
+            </mat-card-title>
+        </span>
+        <mat-card-title>La operación no pudo ser procesada.</mat-card-title>
+    </div>
+</div>
+<mat-card-content>
+    <p class="contenido">
+        El sistema no ha funcionado correctamente, hemos recabado la información relacionada con este incidente. Para
+        generar un ticket al equipo de soporte de clic en el botón “Enviar Informe”, daremos seguimiento a su solicitud.
+    </p>
+</mat-card-content>
+<div class="container text-center">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+            <div class=" bordes tipo warn">
+                <span class="tipo">{{tipoMensaje}}</span>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+            <div class=" bordes1 tipo2 fuse-navy-600" (click)='enviar()'>
+                <span>Enviar Informe</span>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+            <div class=" bordes1 tipo2 primary-A400" (click)="cambio(); panel1.toggle()">
+                <span *ngIf='ver == 1'>Ver más
+                    <mat-icon class="s-20">arrow_drop_down</mat-icon>
+                </span>
+                <span *ngIf='ver == 0'>Ver menos
+                    <mat-icon class="s-20">arrow_drop_up</mat-icon>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<mat-accordion>
+    <mat-expansion-panel style="margin-top: 10px;" #panel1 [hideToggle]="true">
+        <ng-template matExpansionPanelContent>
+            <div class="ex1">
+                <pre class='otra'>{{data.stack}}</pre>
+            </div>
+        </ng-template>
+    </mat-expansion-panel>
+</mat-accordion>

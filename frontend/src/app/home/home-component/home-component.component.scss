@@ -1,0 +1,119 @@
+.titulo {
+    font-size: 25px;
+    position: absolute;
+    top: -50px;
+    left: 10px;
+}
+
+.bordes {
+    cursor: pointer;
+    text-align: center;
+    width: 142px;
+    height: 142px;
+    margin-right: 10px;
+    border-style: solid;
+    border-bottom-width: 2px;
+}
+
+.notificacion-red {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+}
+
+.notificacion-yellow {
+    position: absolute;
+    right: 18px;
+    top: 10px;
+}
+
+.panel-img {
+    height: 70px;
+    // padding: 0px 40px;
+}
+
+.grid-titulo {
+    margin-top: 50px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.grid-centrado {
+    margin-top: 60px;
+}
+
+.grid-general {
+    cursor: pointer;
+    border-right: 1px solid #dee7fd;
+    border-bottom: 1px solid #dee7fd;
+    text-align: center;
+}
+
+.align-items-center {
+    text-align: center;
+}
+
+img {
+    height: 80px;
+}
+
+.vertical-center {
+    position: fixed;
+    top: 52%;
+    transform: translateY(-50%);
+    width: 96%;
+    padding: 40px;
+}
+
+.fondo {
+    margin-top: -30px;
+    margin-right: -30px;
+    margin-left: -30px;
+    background: linear-gradient(white 50%, #80808000 50%)
+}
+
+.notificaciones-desc{
+    position: fixed;
+    bottom: 0px;
+    right: 60px;
+}
+
+.notificaciones-dot{
+    position: absolute;
+    left: -10px;
+    top: 7px;
+}
+
+.notificaciones-label{
+    font-size: 12px;
+    margin-right: 20px
+}
+
+.tareas-dot{
+    position: absolute;
+    left: 85px;
+    top: 7px;
+}
+
+.tareas-label{
+    font-size: 12px;
+}
+@media screen and (min-width: 1690px) {
+    .titulo {
+        left: 5%;
+    }
+}
+
+@media screen and (min-width: 1840px) {
+    .titulo {
+        left: 7%;
+    }
+}
+
+:root {
+    --toast-color: green;
+}
+
+.colorToast {
+    background-color: var(--toast-color) !important;
+}

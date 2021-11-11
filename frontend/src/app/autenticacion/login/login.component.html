@@ -1,0 +1,38 @@
+<app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
+<div id="login" class="inner-scroll" fxLayout="row" fxLayoutAlign="start" [ngClass]="{'desactivaPantalla': spinner }">
+
+    <div id="login-intro" fxFlex fxHide fxShow.gt-xs>
+
+        <div class="logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <img src="assets/images/iconos-coal/ga.png">
+        </div>
+
+        <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+            ¡Bienvenido!
+        </div>
+
+        <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+            Ingresa tus datos de acceso para iniciar sesión, si vienes redirigido de otro portal solo espera un momento mientras te ayudamos a ingresar.
+        </div>
+
+    </div>
+
+    <div *ngIf='!usuarioBpro' id="login-form-wrapper" fusePerfectScrollbar [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+
+        <div id="login-form">
+
+            <div class="logo" fxHide.gt-xs>
+                <img src="assets/images/iconos-coal/ga.png">
+            </div>
+
+            <div class="titulo">Tu sesión ha finalizado</div>
+            <br><br>
+            <a href="https://operaciones.grupoandrade.com/">
+            
+                <button mat-raised-button color="accent" class="submit-button" aria-label="LOGIN">
+                    Regresar al panel de aplicaciones
+                </button>
+            </a>
+        </div>
+    </div>
+</div>

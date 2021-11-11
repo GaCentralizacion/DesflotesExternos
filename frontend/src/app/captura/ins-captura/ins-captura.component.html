@@ -1,0 +1,58 @@
+<app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
+<div class='containerAll'>
+    <mat-card [ngClass]="{'desactivaPantalla': spinner }">
+        <div class="col-xl-12">
+            <div *ngFor="let objeto of modulo.camposClase" style="display: inline;">
+                <img *ngIf="objeto.nombre=='LogoCard'" class='imagenIconoGris' [src]="objeto.path">
+                <span *ngIf="objeto.nombre=='LogoCard'">&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            <div *ngFor="let objeto of modulo.camposClase" style="display: inline;">
+                <span *ngIf="objeto.nombre=='TituloCard'">{{objeto.label}}</span>
+            </div>
+        </div>
+        <hr>
+        <br>
+        <div class="row" [formGroup]="getCapturaForm">
+            <div class="col-sm-12 col-md-3 col-xl-3">
+                <mat-form-field id="blueversion" class="inputFullWide">
+                    <mat-select placeholder="Seleccione compañia" formControlName="idDuenoUnidad">
+                        <mat-option id="bluemat" *ngFor='let company of lstUnidadCompania'
+                            [value]="company.idCompaniaUnidad">
+                            {{company.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        El campo es
+                        <strong>requerido</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-12 col-md-2 col-xl-5" style="padding-top: 20px; justify-content: center; display: flex;">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" formControlName="importFile" id="importFile"
+                        (change)="importExcel($event)">
+                    <label style="padding-bottom: 10px;" class="custom-file-label" #labelImport
+                        for="importFile">{{tituloFile}}</label>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-3 col-xl-2" style="padding-top: 10px;">
+                <button *ngFor="let objeto of modulo.camposClase" class="flotanteDerecha accent" mat-raised-button
+                type="button" (click)='DescargarPlantilla()'>
+                <span *ngIf="objeto.nombre=='BtnArchivo'">{{objeto.label}}</span>
+            </button>
+
+            </div>
+
+            <div class="col-sm-12 col-md-3 col-xl-2" style="padding-top: 10px;">
+                <button *ngFor="let objeto of modulo.camposClase" class="flotanteDerecha accent" mat-raised-button
+                    type="button" [disabled]="!getCapturaForm.valid" (click)='GenerateReport(0)'>
+                    <span *ngIf="objeto.nombre=='BtnRegistrar'">{{objeto.label}}</span>
+                </button>
+
+            </div>
+
+        </div>
+    </mat-card>
+</div>

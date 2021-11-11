@@ -1,0 +1,14 @@
+<div class="linebreadcrumb" *ngIf="rutasHijas">
+  <ul class='breadcrumbs'>
+    <li *ngFor="let breadcrumb of rutasHijas">
+      <a [routerLink]="[breadcrumb.url]" class="subHeading">
+        <!-- <span *ngIf="breadcrumb.label ==''" aria-hidden="true">
+          <mat-icon class="length-icon s-20">home</mat-icon>
+        </span> <span>{{breadcrumb.label}}</span> -->
+        <span>{{breadcrumb.label}}</span>
+      </a>
+    </li>
+    <li class="linkActivo"> {{labelActivo}}
+    </li>
+  </ul>
+</div>

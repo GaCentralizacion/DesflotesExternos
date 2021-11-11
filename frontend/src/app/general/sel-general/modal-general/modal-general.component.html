@@ -1,0 +1,151 @@
+<div [formGroup]='generalForm'>
+  <div class='row cardMarginBottom'>
+    <div class="col-sm-12 col-md-12 col-xl-12">
+      <img class='imagenIconoGris'
+        src="./assets/images/iconos-coal/consignacion/ins_contrato/datos_vehiculo.png">&nbsp;&nbsp;&nbsp;
+      <span>Datos generales</span>
+    </div>
+  </div>
+  <hr>
+  <div class='row'>
+    <!-- <div class='col-sm-12 col-md-6 col-xl-6'>
+      <mat-form-field class="inputFullWide">
+        <input matInput placeholder="Número serie de importación" formControlName='serieImportacion'>
+      </mat-form-field>
+    </div>
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <mat-form-field class="inputFullWide">
+        <input matInput placeholder="Calcomania de legalización" formControlName='calcomaniaLegalizacion'>
+      </mat-form-field>
+    </div> -->
+    <div class="col-sm-12 col-md-6 col-xl-6">
+      <mat-form-field id="blueversion" class="inputFullWide">
+        <mat-select placeholder="Acción" formControlName="accion">
+          <mat-option id="bluemat" *ngFor='let accion of acciones' [value]="accion.idAccion">
+            {{accion.descripcion}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          El campo es
+          <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <section class="example-section ">
+        <mat-checkbox class="example-margin">
+          <span>Notificación</span>
+        </mat-checkbox>
+      </section>
+      <section class="example-section ">
+        <mat-checkbox class="example-margin">
+          <span>Alerta</span>
+        </mat-checkbox>
+      </section>
+      <section class="example-section ">
+        <mat-checkbox class="example-margin">
+          <span>Correo</span>
+        </mat-checkbox>
+      </section>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-xl-6">
+      <mat-form-field id="blueversion" class="inputFullWide">
+        <mat-select placeholder="Condiciones" formControlName="condiciones">
+          <mat-option id="bluemat" *ngFor='let condicion of condiciones' [value]="condicion.idCondicion">
+            {{condicion.descripcion}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          El campo es
+          <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- <div class="col-sm-12 col-md-6 col-xl-6">
+      <mat-form-field id="blueversion" class="inputFullWide">
+        <mat-select placeholder="Entidad emplacamiento" formControlName="entidadEmplacamiento">
+          <mat-option id="bluemat" *ngFor='let estado of estados' [value]="estado.idEstado">
+            {{estado.nombre}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          El campo es
+          <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <mat-card-content>
+        <section class="example-section">
+          <mat-slide-toggle color='primary' class="example-margin"
+            (change)="generalForm.controls.unidadEntregadaTexcoco.setValue($event.checked)">
+            ¿La unidad ya fue entregada en Texcoco?
+          </mat-slide-toggle>
+        </section>
+      </mat-card-content>
+    </div>
+
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <mat-form-field class="inputFullWide">
+        <textarea matInput placeholder="Columna 1" formControlName='columna1'></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <mat-form-field class="inputFullWide">
+        <textarea matInput placeholder="Expedientes" formControlName='expedientes'></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <mat-card-content>
+        <section class="example-section">
+          <mat-slide-toggle color='primary' class="example-margin"
+            (change)="generalForm.controls.bajaPlacas.setValue($event.checked)">
+            ¿La unidad ya tiene baja de placas?
+          </mat-slide-toggle>
+        </section>
+      </mat-card-content>
+    </div>
+
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <mat-card-content>
+        <section class="example-section">
+          <mat-slide-toggle color='primary' class="example-margin"
+            (change)="generalForm.controls.entregadaAgencia.setValue($event.checked)">
+            ¿La unidad ya fue entregada a la agencia?
+          </mat-slide-toggle>
+        </section>
+      </mat-card-content>
+    </div>
+
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <mat-form-field class="inputFullWide">
+        <input matInput placeholder="¿Quién recibió?" formControlName='nombreRecibio'>
+      </mat-form-field>
+    </div>
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <mat-form-field class="inputFullWide">
+        <mat-label>Fecha de entrega</mat-label>
+        <input matInput [matDatepicker]="dpCliente" disabled formControlName='fechaEntrega'>
+        <mat-datepicker-toggle matSuffix [for]="dpCliente"></mat-datepicker-toggle>
+        <mat-datepicker #dpCliente disabled="false"></mat-datepicker>
+      </mat-form-field>
+    </div> -->
+  </div>
+  <div class='row text-center'>
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <button class="accent-300 colorBlanco" mat-raised-button type="button">
+        Guardar
+      </button>
+    </div>
+
+    <div class='col-sm-12 col-md-6 col-xl-6'>
+      <button (click)='Cancelar()' class="red colorBlanco" mat-raised-button type="button">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
