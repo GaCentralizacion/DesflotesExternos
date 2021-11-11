@@ -34,7 +34,7 @@ export class DesfloteReporteRepository {
                     if (res.recordsets[0]?.length > 0) {
                         resolve(
                             this.procesaInsertIntelimotor(res.recordsets[0])
-                            );
+                        );
                     } else {
                         // console.log('no crea nada')
                     }
@@ -700,7 +700,6 @@ export class DesfloteReporteRepository {
                     precioVenta = (arr[e].precioVentaIva + (arr[e].precioVentaIva * arr[e].porcentajeAplica))
 
                 }
-				
                 // tslint:disable-next-line:max-line-length
                 // const marca = catalogoMarcas.filter((x: any) => x.Marca == arr[e].marca.toUpperCase() && x.idCompania == arr[e].idCompaniaOrden && x.idSucursal == arr[e].idSucursalOrden)
                 const marca = catalogoMarcas.filter((x: any) => x.Marca == arr[e].marca.toUpperCase() && x.idCompania == arr[e].idCompaniaOrden)
@@ -1156,7 +1155,7 @@ export class DesfloteReporteRepository {
 
     PostCopiaDocumentosPdf(body: any, tipo: string): any {
         return new Promise((resolve, reject) => {
-            let arregloRutas
+            let arregloRutas:any = []
             if (tipo === 'PRIMERA') {
                 arregloRutas = [
                     {
@@ -1200,11 +1199,20 @@ export class DesfloteReporteRepository {
                     let factura = body[e].facturacion;
                     if (tipo === 'PRIMERA') {
                         const https = require("http");
-                        let file = fs.createWriteStream(`E:\\Aplicaciones\\Portal_Proveedores_Produccion\\portal-proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`);
+                        let file = fs.createWriteStream(`C:\\APLICACIONES\\Proveedores\\GIT\\proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`);
                         https.get(`${rutaCompleta}${factura}${arregloRutas[x].extension}`, (response: any) => {
                             var stream = response.pipe(file);
                             stream.on("finish", () => {
                                 console.log('done')
+                                if (arregloRutas[x].extension === '.pdf') {
+                                    if (response.statusCode === 200) {
+                                        body[e].existeFactura = true;
+                                    }
+                                    else {
+                                        body[e].existeFactura = false;
+                                    }
+                                }
+
                                 let arr: any = [];
                                 if (x + 1 === arregloRutas.length) {
                                     const validacion = arr.filter((y: any) => y === 2)
@@ -1214,6 +1222,7 @@ export class DesfloteReporteRepository {
                                         body[e].validacion = true
                                     }
                                     if (x + 1 === arregloRutas.length && e + 1 === body.length) {
+                                        this.PostExisteFactura(body, tipo)
                                         resolve(body);
                                     }
                                 }
@@ -1257,11 +1266,19 @@ export class DesfloteReporteRepository {
                     else {
                         //aqui vamos a acceder al servicio web de las facturas
                         const https = require("http");
-                        let file = fs.createWriteStream(`E:\\Aplicaciones\\Portal_Proveedores_Produccion\\portal-proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`);
+                        let file = fs.createWriteStream(`C:\\APLICACIONES\\Proveedores\\GIT\\proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`);
                         https.get(`${rutaCompleta}${factura}${arregloRutas[x].extension}`, (response: any) => {
                             var stream = response.pipe(file);
                             stream.on("finish", () => {
                                 console.log('done')
+                                if (arregloRutas[x].extension === '.pdf') {
+                                    if (response.statusCode === 200) {
+                                        body[e].existeFactura = true;
+                                    }
+                                    else {
+                                        body[e].existeFactura = false;
+                                    }
+                                }
                                 let arr: any = [];
                                 if (x + 1 === arregloRutas.length) {
                                     const validacion = arr.filter((y: any) => y === 2)
@@ -1271,6 +1288,7 @@ export class DesfloteReporteRepository {
                                         body[e].validacion = true
                                     }
                                     if (x + 1 === arregloRutas.length && e + 1 === body.length) {
+                                        this.PostExisteFactura(body, tipo)
                                         resolve(body);
                                     }
                                 }
@@ -1280,7 +1298,7 @@ export class DesfloteReporteRepository {
                     }
 
                 }
-            }
+            }            
         })
     }
 
@@ -1413,7 +1431,7 @@ export class DesfloteReporteRepository {
         let auxSerie = 'inicial';
         ArregloDocumentos = body;
         const https = require("https");
-        let contador = 1;
+        let contador = 0;
         return new Promise((resolve, reject) => {
             ArregloDocumentos.forEach((x: any) => {
                 if (!fs.existsSync(`${x.rutaExpediente}`)) {
@@ -1426,32 +1444,59 @@ export class DesfloteReporteRepository {
                         let ruta = x.ruta.replace('\\', '/');
                         x.ruta = ruta;
                     }
-                    https.get(x.ruta, (response: any) => {
+                    const request = https.get(x.ruta, (response: any) => {
                         var stream = response.pipe(file);
                         stream.on("finish", () => {
                             console.log("done");
                             contador++;
-                            if (contador = ArregloDocumentos.length) {
+                            if (contador === ArregloDocumentos.length) {
+                                resolve("Se estan sincronizando los documentos");
+                            }
+                        }).on('error', function (err: any) { // Handle errors
+                            console.log("error");
+                            contador++;
+                            if (contador === ArregloDocumentos.length) {
                                 resolve("Se estan sincronizando los documentos");
                             }
                         });
                     })
+                    request.on('error', (err: any) => {
+                        contador++;
+                        if (contador === ArregloDocumentos.length) {
+                            resolve("Se estan sincronizando los documentos");
+                        }
+                        console.log(err.message);
+                    });
                 } else {
                     let file = fs.createWriteStream(`${x.rutaExpediente}${x.nombreExpediente}`);
                     if (x.ruta != null) {
                         let ruta = x.ruta.replace('\\', '/');
                         x.ruta = ruta;
                     }
-                    https.get(x.ruta, (response: any) => {
+                    const request = https.get(x.ruta, (response: any) => {
                         var stream = response.pipe(file);
                         stream.on("finish", () => {
                             console.log("done");
                             contador++;
-                            if (contador = ArregloDocumentos.length) {
+                            if (contador === ArregloDocumentos.length) {
+                                resolve("Se estan sincronizando los documentos");
+                            }
+                        }).on('error', function (err: any) { // Handle errors
+                            console.log("error");
+                            contador++;
+                            if (contador === ArregloDocumentos.length) {
                                 resolve("Se estan sincronizando los documentos");
                             }
                         });
                     })
+
+                    request.on('error', (err: any) => {
+                        contador++;
+                        if (contador === ArregloDocumentos.length) {
+                            resolve("Se estan sincronizando los documentos");
+                        }
+                        console.log(err.message);
+                    });
 
                 }
             })
@@ -1542,6 +1587,26 @@ export class DesfloteReporteRepository {
         });
     }
 
+    PostExisteFactura(query: any, tipo:any): PromiseLike<{}> {
+        let propiedades: any = [];
+        query.forEach((prop: any) => {
+            propiedades.push({
+                propiedad: {
+                    idUnidad: prop.idUnidad,
+                    asignacion:tipo,
+                    factura: prop.facturacion,
+                    existeFactura: prop.existeFactura
+                }
+            })
+        });
+        var xml = jsonxml({ propiedades: propiedades });
+        return new Promise((resolve, reject) => {
+            const data = {
+                xmlVIN: xml,
+            }
+            resolve(this.query.spExecuteParam(data, "[Reporte].[UPD_EXISTEFACTURA_SP]"));
+        });
+    }
 
     PostUpdFactura(query: any): PromiseLike<{}> {
         return this.query.spExecute(query, "[Reporte].[UPD_FACTURA_SP]")

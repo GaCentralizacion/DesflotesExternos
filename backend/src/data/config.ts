@@ -9,10 +9,10 @@ export default {
         "requestTimeout": 180000
     },
     "qa": {
-        "database": ""
+       "database": ""
     },
     "production": {
-        "database": ""
+		"database": ""
     },
     "training": {
         "database": ""

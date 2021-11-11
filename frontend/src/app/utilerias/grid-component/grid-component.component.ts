@@ -338,17 +338,17 @@ export class GridComponentComponent implements OnInit, AfterViewInit {
       location: 'before',
       template: 'Totalderegistros'
     },
-      {
-        location: 'before',
-        template: 'ContarFiltrados',
-      },
+    {
+      location: 'before',
+      template: 'ContarFiltrados',
+    },
       {
         location: 'before',
         template: 'Contarseleccionados',
         visible: false,
         name: 'simple'
       },
-
+      
       {
         location: 'before',
         template: 'ContarPrecio',
@@ -619,8 +619,8 @@ export class GridComponentComponent implements OnInit, AfterViewInit {
 
   TransformaBase641(base64) {
     // tslint:disable-next-line:variable-name
-    let binary_string
-    binary_string = window.atob(base64);
+    let binary_string    
+     binary_string = window.atob(base64);
     const len = binary_string.length;
     const bytes = new Uint8Array(len);
     for (let i = 0; i < len; i++) {
