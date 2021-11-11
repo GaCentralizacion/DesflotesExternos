@@ -35,7 +35,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalGeneralComponent } from './modal-general/modal-general.component';
 import { ModalIntellimotorsComponent } from './modal-intellimotors/modal-intellimotors.component';
 import { DialogUpdUbicacion } from './modal-updUbicacion/modal-updUbicacion.component';
-import {DialogSituacionUnidad} from './modal-situacionUnidad/modal-situacionUnidad.component';
+import { DialogSituacionUnidad } from './modal-situacionUnidad/modal-situacionUnidad.component';
 
 import { DialogModeloVersion } from './asignarModeloVersion/modelo-version.component';
 import { ModalExpedienteComponent } from './modal-expediente/modal-expediente.component';
@@ -1453,17 +1453,17 @@ export class SelGeneralComponent implements OnInit {
         this.actualizarUbicacion();
       } else if ($event === 'updBaja') {
         this.updBaja();
-      }else if ($event === 'actualizarSituacion') {
+      } else if ($event === 'actualizarSituacion') {
         this.actualizarSituacion();
       }
 
-      
+
     } catch (error) {
       this.Excepciones(error, 1);
     }
   }
 
-  actualizarSituacion(){
+  actualizarSituacion() {
     const verificaAsignacion = this.datosevent.filter(e => e.llaveEstado !== 'SIA' || e.estado === 'PENDIENTE');
     if (verificaAsignacion.length > 0) {
       return this.snackBar.open('No se puede completar la siguiente operación ya que algunas de las unidades ya cuentan con la primer Asignación', 'Ok', { duration: 20000 });
@@ -1888,7 +1888,7 @@ export class SelGeneralComponent implements OnInit {
           return this.snackBar.open('Unidades con información incompleta', 'Ok', { duration: 20000 });
         }
 
-        if(e.situacion !== null && e.situacion !== ''){
+        if (e.situacion !== null && e.situacion !== '') {
           return this.snackBar.open('Algunas unidades cuentan con alguna situación, estas no se pueden asignar, favor de revisar.', 'Ok', { duration: 20000 });
         }
       }
@@ -2042,7 +2042,7 @@ export class SelGeneralComponent implements OnInit {
       idSucursal = vin.key.idSucursal2;
     }
 
-    var url = 'http://192.168.20.89:4080';
+    var url = 'http://192.168.20.123:4080';
     var titulo = 'Login by User Id';
     var form = document.createElement("form");
     form.setAttribute("method", "post");

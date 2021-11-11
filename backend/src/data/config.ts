@@ -1,6 +1,6 @@
 export default {
     "development": {
-        "server": "192.168.20.29",
+        "server": "192.168.20.123",
         "user": "sa",
         "password": "S0p0rt3",
         "port": 1433,
@@ -9,10 +9,10 @@ export default {
         "requestTimeout": 180000
     },
     "qa": {
-       "database": ""
+        "database": ""
     },
     "production": {
-		"database": ""
+        "database": ""
     },
     "training": {
         "database": ""

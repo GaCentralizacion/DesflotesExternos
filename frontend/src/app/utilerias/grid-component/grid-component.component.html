@@ -67,7 +67,7 @@
     </dxi-column>
     <div *dxTemplate="let data of 'cellTemplate'">
       <!-- <img [src]="data.value"/> -->
-      <a *ngIf='data.value !== "PENDIENTE"' href="http://192.168.20.89:3200/?id={{data.value}}&employee=71&proceso=1"
+      <a *ngIf='data.value !== "PENDIENTE"' href="http://192.168.20.123:3200/?id={{data.value}}&employee=71&proceso=1"
         target="_blank">{{data.value}}</a>
       <span *ngIf='data.value === "PENDIENTE"'>{{data.value}}</span>
     </div>
@@ -76,10 +76,10 @@
       <!-- <img [src]="data.value"/> -->
      
       <a *ngIf='data.value === "Iniciar un traslado"'
-        [href]="ordenCompra2 ? 'http://192.168.20.89:3671/login?usuarioBpro='+usuarioBpro+'&idEmpresa='+data.data.idCompania2+'&idSucursal='+data.data.idSucursal2+'&vinTraslado='+data.data.numeroSerie+'' : 'http://192.168.20.89:3671/login?usuarioBpro='+usuarioBpro+'&idEmpresa='+data.data.idCompania1+'&idSucursal='+data.data.idSucursal1+'&vinTraslado='+data.data.numeroSerie+''"
+        [href]="ordenCompra2 ? 'http://localhost:5051/login?usuarioBpro='+usuarioBpro+'&idEmpresa='+data.data.idCompania2+'&idSucursal='+data.data.idSucursal2+'&vinTraslado='+data.data.numeroSerie+'' : 'http://localhost:5051/login?usuarioBpro='+usuarioBpro+'&idEmpresa='+data.data.idCompania1+'&idSucursal='+data.data.idSucursal1+'&vinTraslado='+data.data.numeroSerie+''"
         target="_blank">{{data.value}}</a>
       <a *ngIf='data.value !== "Iniciar un traslado"'
-        href="http://192.168.20.89:3671/login?usuarioBpro={{usuarioBpro}}&vin={{data.data.numeroSerie}}"
+        href="http://localhost:5051/login?usuarioBpro={{usuarioBpro}}&vin={{data.data.numeroSerie}}"
         target="_blank">{{data.value}}</a>
     </div>
 

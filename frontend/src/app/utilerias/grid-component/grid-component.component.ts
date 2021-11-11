@@ -338,17 +338,17 @@ export class GridComponentComponent implements OnInit, AfterViewInit {
       location: 'before',
       template: 'Totalderegistros'
     },
-    {
-      location: 'before',
-      template: 'ContarFiltrados',
-    },
+      {
+        location: 'before',
+        template: 'ContarFiltrados',
+      },
       {
         location: 'before',
         template: 'Contarseleccionados',
         visible: false,
         name: 'simple'
       },
-      
+
       {
         location: 'before',
         template: 'ContarPrecio',
@@ -524,7 +524,7 @@ export class GridComponentComponent implements OnInit, AfterViewInit {
   }
 
   GetFacturaPdf(factura) {
-    let ruta = 'http://192.168.20.105:8081/INTEGRA/CFD/PDF/';
+    let ruta = 'http://192.168.20.123:8081/INTEGRA/CFD/PDF/';
     // this.arregloDocumento.length = 0;    
     const body = {
       url: `${ruta}${factura}.pdf`
@@ -619,8 +619,8 @@ export class GridComponentComponent implements OnInit, AfterViewInit {
 
   TransformaBase641(base64) {
     // tslint:disable-next-line:variable-name
-    let binary_string    
-     binary_string = window.atob(base64);
+    let binary_string
+    binary_string = window.atob(base64);
     const len = binary_string.length;
     const bytes = new Uint8Array(len);
     for (let i = 0; i < len; i++) {
