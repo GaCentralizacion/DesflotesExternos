@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  serviceUrl: 'http://192.168.20.123:4070/',
-  // serviceUrl: 'http://localhost:4070/',
+  //serviceUrl: 'http://192.168.20.123:4070/',
+  serviceUrl: 'http://localhost:4070/',
   seguridadUrl: 'http://192.168.20.137:4000/',
   aplicacionesId: 14,
   nombreAplicacion: 'ControlDesflote',
@@ -13,13 +13,13 @@ export const environment = {
   fileServerUrl: 'http://192.168.20.137:4002/',
   googleAPIkey: 'AIzaSyBOV5YhUsM0c3dKkiXTFVNN0JZhZ4qB7v0',
   firebase: {
-      apiKey: 'AIzaSyDajrY7AZrgmno4EiqlWG_dd5xts6xNeHI',
-      authDomain: 'coal-dc26f.firebaseapp.com',
-      databaseURL: 'https://coal-dc26f.firebaseio.com',
-      projectId: 'coal-dc26f',
-      storageBucket: 'coal-dc26f.appspot.com'
-    },
-    envName: 'develop',
+    apiKey: 'AIzaSyDajrY7AZrgmno4EiqlWG_dd5xts6xNeHI',
+    authDomain: 'coal-dc26f.firebaseapp.com',
+    databaseURL: 'https://coal-dc26f.firebaseio.com',
+    projectId: 'coal-dc26f',
+    storageBucket: 'coal-dc26f.appspot.com'
+  },
+  envName: 'develop',
 };
 
 /*

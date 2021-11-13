@@ -35,7 +35,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalGeneralComponent } from './modal-general/modal-general.component';
 import { ModalIntellimotorsComponent } from './modal-intellimotors/modal-intellimotors.component';
 import { DialogUpdUbicacion } from './modal-updUbicacion/modal-updUbicacion.component';
-import {DialogSituacionUnidad} from './modal-situacionUnidad/modal-situacionUnidad.component';
+import { DialogSituacionUnidad } from './modal-situacionUnidad/modal-situacionUnidad.component';
+import { DialogClient } from './modal-client/modal-client.component';
 
 import { DialogModeloVersion } from './asignarModeloVersion/modelo-version.component';
 import { ModalExpedienteComponent } from './modal-expediente/modal-expediente.component';
@@ -424,18 +425,12 @@ export class SelGeneralComponent implements OnInit {
             e.fechaFin = this.FechaDiaCorrecto(e.fechaFin)
             e.fechaInicio = this.FechaDiaCorrecto(e.fechaInicio)
           }
-          // this.contarUnidadesProcesadas();
           this.reporte = res.recordsets[0];
-          // this.data = this.reporte.filter(x => x.llaveEstado !== 'SIA')
           const datos = [];
           this.reporte.forEach(val => datos.push(Object.assign({}, val)));
+          console.log('datos', datos)
           this.data = datos.filter(x => x.llaveEstado !== 'SIA')
           const arregloDoc = ['./assets/images/iconos-coal/doc/comprobantes.pdf', './assets/images/iconos-coal/doc/comprobante2.pdf', './assets/images/iconos-coal/doc/comprobante3df.pdf']
-          // for (const e of this.data) {
-          //   e.estatusFactura1 = arregloDoc[Math.floor(Math.random() * arregloDoc.length)]
-          //   e.estatusFactura2 = arregloDoc[Math.floor(Math.random() * arregloDoc.length)]
-          // }
-
 
           this.data.forEach(x => {
             if (x.datosIntelimotors === 0) {
@@ -455,13 +450,6 @@ export class SelGeneralComponent implements OnInit {
                 e.ordenCompra2 = 'PENDIENTE'
               }
             }
-
-            // if (e.estatusOrden === 'PEN2') {
-            //   e.estado = 'PENDIENTE 2'
-            //   e.backgroundcolor = '#ffea4d'
-            //   e.factura2 = 'PENDIENTE'
-            //   e.ordenCompra2 = 'PENDIENTE'
-            // }
           }
 
           for (const e of this.data) {
@@ -1116,111 +1104,19 @@ export class SelGeneralComponent implements OnInit {
     this.DataColumnsGrid();
   };
 
-  // BotonesToolbar() {
-  //   this.toolbarGeneral = [];
-
-  //   this.toolbarGeneral = [
-  //     {
-  //       location: 'after',
-  //       widget: 'dxButton',
-  //       locateInMenu: 'auto',
-  //       options: {
-  //         width: 120,
-  //         text: 'Administrar',
-  //         onClick: this.receiveMessage.bind(this, 'administrar')
-  //       },
-  //       visible: false,
-  //       name: 'simple',
-  //       name2: 'multiple'
-  //     }
-  //   ]
-  //   const estado = this.lstEstado.find(x => x.idEstadoUnidad === this.getGeneralForm.value.idEstado);
-  //   if (estado.llave === 'SIA') {
-  //     this.toolbarGeneral.push(
-  //       {
-  //         location: 'after',
-  //         widget: 'dxButton',
-  //         locateInMenu: 'auto',
-  //         options: {
-  //           width: 120,
-  //           text: 'Asignar',
-  //           onClick: this.receiveMessage.bind(this, 'asignar1')
-  //         },
-  //         visible: false,
-  //         name: 'simple'
-  //       }
-  //     )
-  //   } else if ('AS1') {
-  //     this.toolbarGeneral.push(
-  //       {
-  //         location: 'after',
-  //         widget: 'dxButton',
-  //         locateInMenu: 'auto',
-  //         options: {
-  //           width: 120,
-  //           text: 'Asignar',
-  //           onClick: this.receiveMessage.bind(this, 'asignar2')
-  //         },
-  //         visible: false,
-  //         name: 'simple'
-  //       }
-  //     )
-  //   }
-  // }
-
-  // DataColumnsGrid() {
-  //   this.coalService.getService(`common/GetObjetoColumnsBase?idTipoReporte=${2}`).subscribe(
-  //     (res: any) => {
-  //       if (res.err) {
-  //         this.Excepciones(res.err, 4);
-  //       } else if (res.excepcion) {
-  //         this.Excepciones(res.excepcion, 3);
-  //       } else {
-  //         const objetosColumns = res.recordsets[0];
-  //         const columnsMulti = [];
-
-  //         for (let index = 0; index < objetosColumns.length; index++) {
-
-  //           if (!objetosColumns[index].allowupdate) {
-  //             columnsMulti.push({
-  //               caption: objetosColumns[index].titulo,
-  //               dataField: objetosColumns[index].parametro,
-  //               allowEditing: false,
-  //               fixed: objetosColumns[index].fixed,
-  //               dataType: objetosColumns[index].tipoCampo,
-  //             });
-  //           }
-  //         }
-
-  //         this.lstDataReport.push({
-  //           idTipoReporte: 1,
-  //           columnas: columnsMulti,
-  //           dataReport: this.dataReport,
-  //         });
-
-  //         this.FillGrid();
-  //       }
-
-
-  //     }, (error: any) => {
-  //       this.Excepciones(error, 2);
-  //       this.spinner = false
-  //     }
-  //   );
-  // }
-
   BotonesToolbar() {
     this.toolbarGeneral = [];
     this.toolbar = [];
-    if (this.mostrarLectura === true) {
+    this.mostrarLectura = true;
+    if (this.mostrarLectura) {
       this.toolbarGeneral = [
         {
           location: 'after',
           widget: 'dxButton',
           locateInMenu: 'auto',
           options: {
-            text: 'Situación',
-            onClick: this.receiveMessage.bind(this, 'actualizarSituacion')
+            text: 'Precio',
+            onClick: this.receiveMessage.bind(this, 'openModalPrecio')
           },
           visible: false,
           name: 'simple',
@@ -1230,59 +1126,23 @@ export class SelGeneralComponent implements OnInit {
           widget: 'dxButton',
           locateInMenu: 'auto',
           options: {
-            text: 'Precio',
+            text: 'Venta',
+            onClick: this.receiveMessage.bind(this, 'openModalVenta')
+          },
+          visible: false,
+          name: 'simple',
+        },
+        {
+          location: 'after',
+          widget: 'dxButton',
+          locateInMenu: 'auto',
+          options: {
+            text: 'actualizar',
             onClick: this.receiveMessage.bind(this, 'actualizarPrecio')
           },
           visible: false,
           name: 'simple',
-        },
-
-        {
-          location: 'after',
-          widget: 'dxButton',
-          locateInMenu: 'auto',
-          options: {
-            text: 'Ubicación',
-            onClick: this.receiveMessage.bind(this, 'actualizarUbicacion')
-          },
-          visible: false,
-          name: 'simple',
-        },
-        {
-          location: 'after',
-          widget: 'dxButton',
-          locateInMenu: 'auto',
-          options: {
-            text: 'Asignar',
-            onClick: this.receiveMessage.bind(this, 'asignar1')
-          },
-          visible: false,
-          name: 'simple'
-        },
-      ]
-      this.toolbar = [
-        {
-          location: 'after',
-          widget: 'dxButton',
-          locateInMenu: 'auto',
-          options: {
-            text: 'Segunda asignación',
-            onClick: this.receiveMessage.bind(this, 'asignacion2')
-          },
-          visible: false,
-          name: 'simple'
-        },
-        {
-          location: 'after',
-          widget: 'dxButton',
-          locateInMenu: 'auto',
-          options: {
-            text: 'Baja',
-            onClick: this.receiveMessage.bind(this, 'updBaja')
-          },
-          visible: false,
-          name: 'simple'
-        },
+        }
       ]
     }
 
@@ -1303,12 +1163,12 @@ export class SelGeneralComponent implements OnInit {
         allowEditing: false,
         cssClass: 'general'
       },
-      {
-        caption: 'Contrato',
-        dataField: 'contrato',
-        allowEditing: false,
-        cssClass: 'general'
-      },
+      // {
+      //   caption: 'Contrato',
+      //   dataField: 'contrato',
+      //   allowEditing: false,
+      //   cssClass: 'general'
+      // },
       {
         caption: 'Marca',
         dataField: 'marca',
@@ -1327,12 +1187,12 @@ export class SelGeneralComponent implements OnInit {
         allowEditing: false,
         cssClass: 'general'
       },
-      {
-        caption: 'Paso de la unidad',
-        dataField: 'estado',
-        allowEditing: false,
-        cssClass: 'general'
-      },
+      // {
+      //   caption: 'Paso de la unidad',
+      //   dataField: 'estado',
+      //   allowEditing: false,
+      //   cssClass: 'general'
+      // },
       // {
       //   caption: 'Accion',
       //   dataField: 'accion',
@@ -1353,24 +1213,18 @@ export class SelGeneralComponent implements OnInit {
       //   allowEditing: true,
       //   cssClass: 'general'
       // },
-      {
-        caption: 'Ubicación',
-        dataField: 'ubicacionUnidad',
-        allowEditing: false,
-        cssClass: 'general',
-      },
-      {
-        caption: 'Situación',
-        dataField: 'situacion',
-        allowEditing: false,
-        cssClass: 'general',
-      },
-      {
-        caption: 'Condiciones',
-        dataField: 'condicion',
-        allowEditing: false,
-        cssClass: 'general',
-      },
+      // {
+      //   caption: 'Ubicación',
+      //   dataField: 'ubicacionUnidad',
+      //   allowEditing: false,
+      //   cssClass: 'general',
+      // },
+      // {
+      //   caption: 'Condiciones',
+      //   dataField: 'condicion',
+      //   allowEditing: false,
+      //   cssClass: 'general',
+      // },
       {
         caption: 'Precio Venta',
         dataField: 'precioVentaIva',
@@ -1380,34 +1234,40 @@ export class SelGeneralComponent implements OnInit {
         cssClass: 'general'
       },
       {
-        caption: 'Estatus proceso',
-        dataField: 'estatusProceso',
+        caption: 'Situación',
+        dataField: 'situacion',
         allowEditing: false,
-        // cellTemplate: 'estatusProceso',
-        cssClass: 'general'
-      },
-      {
-        caption: 'Fecha inicio contrato',
-        dataField: 'fechaInicio',
-        dataType: TiposdeDato.datetime,
-        format: TiposdeFormato.dmy,
-        allowEditing: false,
-        cssClass: 'general'
-      },
-      {
-        caption: 'Fecha termino contrato',
-        dataField: 'fechaFin',
-        dataType: TiposdeDato.datetime,
-        format: TiposdeFormato.dmy,
-        allowEditing: false,
-        cssClass: 'general'
-      },
-      {
-        caption: 'Estatus unidad en sisco',
-        dataField: 'estatus',
-        allowEditing: false,
-        cssClass: 'general'
+        cssClass: 'general',
       }
+      // {
+      //   caption: 'Estatus proceso',
+      //   dataField: 'estatusProceso',
+      //   allowEditing: false,
+      //   // cellTemplate: 'estatusProceso',
+      //   cssClass: 'general'
+      // }
+      // {
+      //   caption: 'Fecha inicio contrato',
+      //   dataField: 'fechaInicio',
+      //   dataType: TiposdeDato.datetime,
+      //   format: TiposdeFormato.dmy,
+      //   allowEditing: false,
+      //   cssClass: 'general'
+      // },
+      // {
+      //   caption: 'Fecha termino contrato',
+      //   dataField: 'fechaFin',
+      //   dataType: TiposdeDato.datetime,
+      //   format: TiposdeFormato.dmy,
+      //   allowEditing: false,
+      //   cssClass: 'general'
+      // },
+      // {
+      //   caption: 'Estatus unidad en sisco',
+      //   dataField: 'estatus',
+      //   allowEditing: false,
+      //   cssClass: 'general'
+      // }
     ];
   }
 
@@ -1453,17 +1313,20 @@ export class SelGeneralComponent implements OnInit {
         this.actualizarUbicacion();
       } else if ($event === 'updBaja') {
         this.updBaja();
-      }else if ($event === 'actualizarSituacion') {
+      } else if ($event === 'actualizarSituacion') {
         this.actualizarSituacion();
-      }
+      } else if ($event === 'openModalPrecio') {
+        console.log('Entramos aqui al de precio')
+      } else if ($event === 'openModalVenta') {
+        this.getClientBuy();
+      };
 
-      
     } catch (error) {
       this.Excepciones(error, 1);
     }
   }
 
-  actualizarSituacion(){
+  actualizarSituacion() {
     const verificaAsignacion = this.datosevent.filter(e => e.llaveEstado !== 'SIA' || e.estado === 'PENDIENTE');
     if (verificaAsignacion.length > 0) {
       return this.snackBar.open('No se puede completar la siguiente operación ya que algunas de las unidades ya cuentan con la primer Asignación', 'Ok', { duration: 20000 });
@@ -1563,21 +1426,6 @@ export class SelGeneralComponent implements OnInit {
         );
       }
     })
-    // this.coalService.postService(`reporte/PostUpdBaja`, body).subscribe(
-    //   (res: any) => {
-    //     if (res.err) {
-    //       this.Excepciones(res.err, 4);
-    //     } else if (res.excepcion) {
-    //       this.Excepciones(res.excepcion, 3);
-    //     } else {
-    //       this.GenerateReport();
-    //       this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 5000 });
-    //     }
-    //   }, (error: any) => {
-    //     this.Excepciones(error, 2);
-    //     this.spinner = false
-    //   }
-    // );
   }
 
   actualizarUbicacion() {
@@ -1636,14 +1484,14 @@ export class SelGeneralComponent implements OnInit {
 
   actualizarPrecio() {
 
-    const verificaAsignacion = this.datosevent.filter(e => e.llaveEstado !== 'SIA' || e.estado === 'PENDIENTE');
-    if (verificaAsignacion.length > 0) {
-      return this.snackBar.open('No se puede completar la siguiente operacion ya que algunas de las unidades ya cuentan con la primer Asignación', 'Ok', { duration: 20000 });
-    }
-    const verificaPrecio = this.datosevent.filter(x => x.precioVentaIva === null || x.precioVentaIva === undefined);
-    if (verificaPrecio.length > 0) {
-      return this.snackBar.open('Unidades con información incompleta', 'Ok', { duration: 1000 });
-    }
+    // const verificaAsignacion = this.datosevent.filter(e => e.llaveEstado !== 'SIA' || e.estado === 'PENDIENTE');
+    // if (verificaAsignacion.length > 0) {
+    //   return this.snackBar.open('No se puede completar la siguiente operacion ya que algunas de las unidades ya cuentan con la primer Asignación', 'Ok', { duration: 20000 });
+    // }
+    // const verificaPrecio = this.datosevent.filter(x => x.precioVentaIva === null || x.precioVentaIva === undefined);
+    // if (verificaPrecio.length > 0) {
+    //   return this.snackBar.open('Unidades con información incompleta', 'Ok', { duration: 1000 });
+    // }
 
     this.spinner = true;
     let idUnidad = [];
@@ -1661,100 +1509,71 @@ export class SelGeneralComponent implements OnInit {
         this.snackBar.open('Actualización cancelada', 'Ok', { duration: 10000 });
         this.spinner = false;
       } else {
+        console.log('this.datosevent', this.datosevent)
         this.datosevent.forEach(x => {
           idUnidad.push({
             idUnidad: x.unidadId
           })
         });
+        console.log('result', result);
         let body = {
           xmlVIN: idUnidad,
           precioVentaIva: result[0].valorSelect
         }
-        this.coalService.postService(`reporte/PostUpdPrecioVentaIva`, body).subscribe(
-          (res: any) => {
-            if (res.err) {
-              this.Excepciones(res.err, 4);
-            } else if (res.excepcion) {
-              this.Excepciones(res.excepcion, 3);
-            } else {
-              this.GenerateReport();
-              this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 5000 });
-            }
-          }, (error: any) => {
-            this.Excepciones(error, 2);
-            this.spinner = false
-          }
-        );
+        console.log('body', body)
+        // this.coalService.postService(`reporte/PostUpdPrecioVentaIva`, body).subscribe(
+        //   (res: any) => {
+        //     if (res.err) {
+        //       this.Excepciones(res.err, 4);
+        //     } else if (res.excepcion) {
+        //       this.Excepciones(res.excepcion, 3);
+        //     } else {
+        //       this.GenerateReport();
+        //       this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 5000 });
+        //     }
+        //   }, (error: any) => {
+        //     this.Excepciones(error, 2);
+        //     this.spinner = false
+        //   });
       }
     })
   }
-  // versionModelo() {
-  //   console.log(this.datosevent)
-  //   const verificaAsignacion = this.datosevent.filter(x => x.idCompania2 !== null && x.idSucursal2 !== null);
-  //   if (verificaAsignacion.length > 0) {
-  //     this.snackBar.open('Unidades en segunda asignación', 'Ok', { duration: 5000 });
-  //   } else {
-  //     const marca = this.datosevent[0].marca;
-  //     const diferenciaMarca = this.datosevent.filter(x => x.marca !== marca);
-  //     if (diferenciaMarca.length > 0) {
-  //       this.snackBar.open('Favor de seleccionar unidades de la misma marca', 'Ok', { duration: 5000 });
-  //     } else {
-  //       this.catalogoModelo.length = 0;
-  //       this.coalService.getService(`reporte/getModeloIntelimotors?marca=${marca}`).subscribe(
-  //         (res: any) => {
-  //           if (res.err) {
-  //             this.Excepciones(res.err, 4);
-  //           } else if (res.excepcion) {
-  //             this.Excepciones(res.excepcion, 3);
-  //           } else {
-  //             this.catalogoModelo = res.recordsets[0];
-  //             console.log(this.catalogoModelo)
-  //             const dialogRef = this.dialog.open(DialogModeloVersion, {
-  //               disableClose: true,
-  //               data: {
-  //                 select: this.catalogoModelo,
-  //                 marca: marca
-  //               }
-  //             });
-  //             dialogRef.afterClosed().subscribe(result => {
-  //               if (!result) {
-  //                 this.snackBar.open('cancelado', 'Ok', { duration: 10000 });
-  //               } else {
-  //                 console.log(result)
-  //                 // if (result[0].valorSelect !== '') {
-  //                 let contador = 0;
-  //                 for (let j = 0; j < this.datosevent.length; j++) {
-  //                   for (let i = 0; i < this.data.length; i++) {
-  //                     if (this.datosevent[j].idUnidad === this.data[i].idUnidad && this.datosevent[j].numeroSerie === this.data[i].numeroSerie) {
-  //                       this.data[i].modeloIntelimotors = result[0].valorSelect;
-  //                       this.datosevent[j].modeloIntelimotors = result[0].valorSelect;
-  //                       this.data[i].versionIntelimotors = result[0].valorVersion;
-  //                       this.datosevent[j].versionIntelimotors = result[0].valorVersion;
-  //                       contador++;
-  //                     }
-  //                     if (this.datosevent.length === contador) {
-  //                       break;
-  //                     }
-  //                   }
-  //                   if (this.datosevent.length === contador) {
-  //                     break;
-  //                   }
-  //                 }
-  //               }
-  //             });
-  //           }
-  //         }, (error: any) => {
-  //           this.Excepciones(error, 2);
-  //         }
-  //       );
-  //     }
-  //   }
-  // }
+
+  public getClientBuy = () => {
+
+    this.spinner = true;
+    let idUnidad = [];
+    console.log('this.sucAceptanSeminuevos', this.sucAceptanSeminuevos)
+    const dialogRef = this.dialog.open(DialogClient, {
+      width: '50%',
+      disableClose: true,
+      data: {
+        title: 'Selecciona Cliente',
+        select: this.sucAceptanSeminuevos,//this.companias,
+        elementos: 'Cantidad de unidades a actualizar: ' + this.datosevent.length,
+        unidades: this.datosevent
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        this.snackBar.open('Actualización cancelada', 'Ok', { duration: 10000 });
+        this.spinner = false;
+      } else {
+        this.datosevent.forEach(x => {
+          idUnidad.push({
+            idUnidad: x.unidadId
+          })
+        });
+        console.log('result', result);
+        this.spinner = false;
+      }
+    })
+  };
 
   datosMessage($event) {
     try {
       this.datosevent = $event.data;
-      // console.log(this.datosevent)
+      // console.log('DATOS EVENTE=============', this.datosevent)
     } catch (error) {
       this.Excepciones(error, 1);
     }
@@ -1824,27 +1643,6 @@ export class SelGeneralComponent implements OnInit {
         } else if (res.excepcion) {
           this.Excepciones(res.excepcion, 3);
         } else {
-          // this.lstMapeoDocumentos = res.recordsets[0];
-          // console.log(this.lstMapeoDocumentos);
-          // let body = {
-          //   ArregloDocumentos: this.lstMapeoDocumentos
-          // }
-          //   this.coalService.postService(`reporte/PostSubirFactura`, body).subscribe(
-          //     (res: any) => {
-          //       if (res.err) {
-          //         this.Excepciones(res.err, 4);
-          //       } else if (res.excepcion) {
-          //         this.Excepciones(res.excepcion, 3);
-          //       } else {
-          //         this.snackBar.open('Sincronizando Documentación', 'Ok', { duration: 5000 });
-          //         this.spinner = false
-          //       }
-          //       this.spinner = false
-          //     }, (error: any) => {
-          //       this.Excepciones(error, 2);
-          //       this.spinner = false
-          //     }
-          //   )
           this.spinner = false;
           this.snackBar.open('Sincronizando Documentación', 'Ok', { duration: 5000 });
         }
@@ -1888,7 +1686,7 @@ export class SelGeneralComponent implements OnInit {
           return this.snackBar.open('Unidades con información incompleta', 'Ok', { duration: 20000 });
         }
 
-        if(e.situacion !== null && e.situacion !== ''){
+        if (e.situacion !== null && e.situacion !== '') {
           return this.snackBar.open('Algunas unidades cuentan con alguna situación, estas no se pueden asignar, favor de revisar.', 'Ok', { duration: 20000 });
         }
       }
@@ -2017,19 +1815,6 @@ export class SelGeneralComponent implements OnInit {
   }
 
   Expediente(vin) {
-    // window.open(`http://192.168.20.89:3671/?id=${vin}&employee=71&proceso=1`);
-    // const dialogRef = this.dialog.open(ModalExpedienteComponent, {
-    //   disableClose: true,
-    //   width: '100%',
-    //   // height: '90%',
-    //   data: {
-    //     idModulo: this.modulo.id,
-    //     idUsuario: this.idUsuario,
-    //     vin,
-    //   }
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    // })
     let idCompania;
     let idSucursal;
     let numeroSerie = vin.key.numeroSerie;
@@ -2119,15 +1904,6 @@ export class SelGeneralComponent implements OnInit {
           );
           dialogRef.afterClosed().subscribe(resultado => {
             if (resultado) {
-              // for (const e of this.datosevent) {
-              //   if (e.idCompania1 === result[0].valorSelect.idCompania && e.idSucursal1 === result[0].valorSelect.idSucursal) {
-              //     return this.snackBar.open('No se puede completar la operación ya que algunas unidades estan asiganadas a esa compañia', 'Ok', { duration: 10000 });
-              //   }
-              // }
-              // idCompania: result.valorSelect.idCompania,
-              // idSucursal: result.valorSelect.idSucursal,
-              // rfcCompania: result.valorSelect.rfcCompania,
-
               const mismaCompania = this.datosevent.filter(x => x.idCompania1 === result[0].valorSelect.idCompania && x.idSucursal1 !== result[0].valorSelect.idSucursal)
 
               const mismaAgencia = this.datosevent.filter(x => x.idCompania1 === result[0].valorSelect.idCompania && x.idSucursal1 === result[0].valorSelect.idSucursal)

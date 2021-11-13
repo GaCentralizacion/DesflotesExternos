@@ -29,10 +29,10 @@ export class CommonController {
      * Url: http://{server}:{port}/common/getMapeoDocumentos
      * Wiki: 
      */
-     @Get('/getMapeoDocumentos')
-     getMapeoDocumentos(@Req() req: Request) {
-         return this.repository.getMapeoDocumentos(req.query);
-     }
+    @Get('/getMapeoDocumentos')
+    getMapeoDocumentos(@Req() req: Request) {
+        return this.repository.getMapeoDocumentos(req.query);
+    }
 
     /**
      * @description Obtiene el Catalogo de estados de la republica mexicana
@@ -41,10 +41,10 @@ export class CommonController {
      * Url: http://{server}:{port}/common/getEstados
      * Wiki: 
      */
-     @Get('/getEstados')
-     getEstados(@Req() req: Request) {
-         return this.repository.getEstados(req.query);
-     }
+    @Get('/getEstados')
+    getEstados(@Req() req: Request) {
+        return this.repository.getEstados(req.query);
+    }
 
     /**
      * @description Obtiene el listado de Acciones
@@ -65,10 +65,10 @@ export class CommonController {
      * Url: http://{server}:{port}/common/getCondicion
      * Wiki: 
      */
-     @Get('/getCondicion')
-     getCondicion(@Req() req: Request) {
-         return this.repository.getCondicion(req.query);
-     }
+    @Get('/getCondicion')
+    getCondicion(@Req() req: Request) {
+        return this.repository.getCondicion(req.query);
+    }
 
     /**
    * @description Obtiene el listado de columnas configuradas
@@ -137,10 +137,15 @@ export class CommonController {
     * Url: http://{server}:{port}/common/getusuarioCentralizacion
     * Wiki: 
     */
-     @Get('/getusuarioCentralizacion')
-     getusuarioCentralizacion(@Req() req: Request) {
-         return this.repository.getusuarioCentralizacion(req.query);
-     }
+    @Get('/getusuarioCentralizacion')
+    getusuarioCentralizacion(@Req() req: Request) {
+        return this.repository.getusuarioCentralizacion(req.query);
+    }
+
+    @Get('/getClientes')
+    getClientes(@Req() req: Request) {
+        return this.repository.getClientes(req.query);
+    }
 
     // ************ END Servicios GET ************
 

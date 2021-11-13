@@ -28,87 +28,87 @@ export class DesfloteReporteRepository {
         // if (process.env.RUN_TASKS === "true" || process.env.RUN_TASKS === "1") {
         // console.log("cron")
 
-        cron.schedule('*/2 * * * *', () => {
-            this.getUnidadesSubirIntelimotor({})
-                .then((res: any) => {
-                    if (res.recordsets[0]?.length > 0) {
-                        resolve(
-                            this.procesaInsertIntelimotor(res.recordsets[0])
-                        );
-                    } else {
-                        // console.log('no crea nada')
-                    }
-                })
-        })
+        // cron.schedule('*/2 * * * *', () => {
+        //     this.getUnidadesSubirIntelimotor({})
+        //         .then((res: any) => {
+        //             if (res.recordsets[0]?.length > 0) {
+        //                 resolve(
+        //                     this.procesaInsertIntelimotor(res.recordsets[0])
+        //                 );
+        //             } else {
+        //                 // console.log('no crea nada')
+        //             }
+        //         })
+        // })
 
-        cron.schedule('*/2 * * * *', () => {
-            this.GetUnidadesOrdenCompra({ tipo: 'PRIMERA' })
-                .then((res: any) => {
-                    // this.GeneraDatosOrden(1, 'PRIMERA')
-                    if (res.recordsets[0].length > 0) {
-                        this.GeneraDatosOrden(res.recordsets[0], 'PRIMERA')
-                    } else {
-                        // console.log('no crea nada')
-                    }
-                })
+        // cron.schedule('*/2 * * * *', () => {
+        //     this.GetUnidadesOrdenCompra({ tipo: 'PRIMERA' })
+        //         .then((res: any) => {
+        //             // this.GeneraDatosOrden(1, 'PRIMERA')
+        //             if (res.recordsets[0].length > 0) {
+        //                 this.GeneraDatosOrden(res.recordsets[0], 'PRIMERA')
+        //             } else {
+        //                 // console.log('no crea nada')
+        //             }
+        //         })
 
 
-            this.GetUnidadesOrdenCompra({ tipo: 'SEGUNDA' })
-                .then((res: any) => {
-                    // this.GeneraDatosOrden(1, 'PRIMERA')
-                    if (res.recordsets[0].length > 0) {
-                        this.GeneraDatosOrden(res.recordsets[0], 'SEGUNDA')
-                    } else {
-                        // console.log('no crea nada')
-                    }
-                })
-        })
+        //     this.GetUnidadesOrdenCompra({ tipo: 'SEGUNDA' })
+        //         .then((res: any) => {
+        //             // this.GeneraDatosOrden(1, 'PRIMERA')
+        //             if (res.recordsets[0].length > 0) {
+        //                 this.GeneraDatosOrden(res.recordsets[0], 'SEGUNDA')
+        //             } else {
+        //                 // console.log('no crea nada')
+        //             }
+        //         })
+        // })
 
-        cron.schedule('*/3 * * * *', () => {
-            this.GetFacturasSubir({ tipo: 'PRIMERA' })
-                .then((res: any) => {
-                    const resultado = res.recordsets[0]
-                    this.PostSubeDocumentosFactura(resultado)
-                        .then((result: any) => {
-                            console.log('resultadooooooo =================     ', result)
-                            const unidadesCorrectas = result.filter((x: any) => x.validacion === true);
-                            if (unidadesCorrectas.length > 0) {
-                                let xmlUnidades = `<unidades>`;
-                                for (const e of unidadesCorrectas) {
-                                    xmlUnidades += `<unidad><idUnidad>${e.idUnidad}</idUnidad></unidad>`
-                                }
-                                xmlUnidades += `</unidades>`
-                                const datos = {
-                                    xmlUnidades,
-                                    tipo: 'PRIMERA'
-                                }
-                                this.PostActualizaBanderaFactura(datos);
-                            }
-                        });
-                })
+        // cron.schedule('*/3 * * * *', () => {
+        //     this.GetFacturasSubir({ tipo: 'PRIMERA' })
+        //         .then((res: any) => {
+        //             const resultado = res.recordsets[0]
+        //             this.PostSubeDocumentosFactura(resultado)
+        //                 .then((result: any) => {
+        //                     console.log('resultadooooooo =================     ', result)
+        //                     const unidadesCorrectas = result.filter((x: any) => x.validacion === true);
+        //                     if (unidadesCorrectas.length > 0) {
+        //                         let xmlUnidades = `<unidades>`;
+        //                         for (const e of unidadesCorrectas) {
+        //                             xmlUnidades += `<unidad><idUnidad>${e.idUnidad}</idUnidad></unidad>`
+        //                         }
+        //                         xmlUnidades += `</unidades>`
+        //                         const datos = {
+        //                             xmlUnidades,
+        //                             tipo: 'PRIMERA'
+        //                         }
+        //                         this.PostActualizaBanderaFactura(datos);
+        //                     }
+        //                 });
+        //         })
 
-            this.GetFacturasSubir({ tipo: 'SEGUNDA' })
-                .then((res: any) => {
-                    const resultado = res.recordsets[0]
-                    this.PostSubeDocumentosFactura(resultado)
-                        .then((result: any) => {
-                            console.log('resultadooooooo =================     ', result)
-                            const unidadesCorrectas = result.filter((x: any) => x.validacion === true);
-                            if (unidadesCorrectas.length > 0) {
-                                let xmlUnidades = `<unidades>`;
-                                for (const e of unidadesCorrectas) {
-                                    xmlUnidades += `<unidad><idUnidad>${e.idUnidad}</idUnidad></unidad>`
-                                }
-                                xmlUnidades += `</unidades>`
-                                const datos = {
-                                    xmlUnidades,
-                                    tipo: 'SEGUNDA'
-                                }
-                                this.PostActualizaBanderaFactura(datos);
-                            }
-                        });
-                })
-        })
+        //     this.GetFacturasSubir({ tipo: 'SEGUNDA' })
+        //         .then((res: any) => {
+        //             const resultado = res.recordsets[0]
+        //             this.PostSubeDocumentosFactura(resultado)
+        //                 .then((result: any) => {
+        //                     console.log('resultadooooooo =================     ', result)
+        //                     const unidadesCorrectas = result.filter((x: any) => x.validacion === true);
+        //                     if (unidadesCorrectas.length > 0) {
+        //                         let xmlUnidades = `<unidades>`;
+        //                         for (const e of unidadesCorrectas) {
+        //                             xmlUnidades += `<unidad><idUnidad>${e.idUnidad}</idUnidad></unidad>`
+        //                         }
+        //                         xmlUnidades += `</unidades>`
+        //                         const datos = {
+        //                             xmlUnidades,
+        //                             tipo: 'SEGUNDA'
+        //                         }
+        //                         this.PostActualizaBanderaFactura(datos);
+        //                     }
+        //                 });
+        //         })
+        // })
         // }
     }
 
@@ -1155,7 +1155,7 @@ export class DesfloteReporteRepository {
 
     PostCopiaDocumentosPdf(body: any, tipo: string): any {
         return new Promise((resolve, reject) => {
-            let arregloRutas:any = []
+            let arregloRutas: any = []
             if (tipo === 'PRIMERA') {
                 arregloRutas = [
                     {
@@ -1298,7 +1298,7 @@ export class DesfloteReporteRepository {
                     }
 
                 }
-            }            
+            }
         })
     }
 
@@ -1587,13 +1587,13 @@ export class DesfloteReporteRepository {
         });
     }
 
-    PostExisteFactura(query: any, tipo:any): PromiseLike<{}> {
+    PostExisteFactura(query: any, tipo: any): PromiseLike<{}> {
         let propiedades: any = [];
         query.forEach((prop: any) => {
             propiedades.push({
                 propiedad: {
                     idUnidad: prop.idUnidad,
-                    asignacion:tipo,
+                    asignacion: tipo,
                     factura: prop.facturacion,
                     existeFactura: prop.existeFactura
                 }
