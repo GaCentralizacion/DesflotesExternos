@@ -50,8 +50,7 @@
 					[columns]="columnsGeneral" [exportExcel]="exportExcel" [columnHiding]="columnHiding"
 					[Checkbox]="Checkbox" [Editing]="Editing" [Columnchooser]="Columnchooser" [toolbar]="toolbarGeneral"
 					[searchPanel]="searchPanel" [scroll]="scroll" (messageEvent)="receiveMessage($event)"
-					(datosevent)='datosMessage($event)' (editevent)='datosUpd($event)'
-					(onCellClickEvent)='clickEvent($event)' [tipoReporte]='1' [cuentaPrimera]='primera'
+					(datosevent)='datosMessage($event)' (editevent)='datosUpd($event)' [tipoReporte]='1' [cuentaPrimera]='primera'
 					[cuentaSegunda]='segunda'>
 				</app-grid-component>
 			</mat-tab>
@@ -60,8 +59,7 @@
 					[exportExcel]="exportExcel" [columnHiding]="columnHiding" [Checkbox]="Checkbox" [Editing]="Editing"
 					[Columnchooser]="Columnchooser" [toolbar]="toolbar" [searchPanel]="searchPanel" [scroll]="scroll"
 					(messageEvent)="receiveMessage($event)" (datosevent)='datosMessage($event)'
-					[catalogoModelo]="catalogoModelo" (documentosModal)='Expediente($event.vin)'
-					(onCellClickEvent)='clickEvent($event)' [tipoReporte]='2' [cuentaPrimera]='primera'
+					[catalogoModelo]="catalogoModelo" (documentosModal)='Expediente($event.vin)' [tipoReporte]='2' [cuentaPrimera]='primera'
 					[cuentaSegunda]='segunda'>
 				</app-grid-component>
 			</mat-tab>

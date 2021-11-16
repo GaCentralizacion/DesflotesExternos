@@ -1,0 +1,28 @@
+<app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
+<div mat-dialog-title>
+    <div class="row text-center">
+        <div class="col-md-12">
+            <label> {{titulo}} </label>
+        </div>
+    </div>
+</div>
+<mat-dialog-content class="mat-typography">
+    <div class="row text-center">
+        <div class="col-md-12">
+            <label> {{subTitle}} </label>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <label> {{elementos}} </label>
+        </div>
+        <div class="col-md-6">
+            Vines: {{vines}}
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="0">Cancelar</button>
+    <button mat-button [mat-dialog-close]="1" cdkFocusInitial>Liberar</button>
+</mat-dialog-actions>

@@ -44,17 +44,7 @@ import { NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { ConfigActions } from './ThemeOptions/store/config.actions';
 
 // ***** DEVEXTREME *****
-import {
-    DevExtremeModule,
-    DxDataGridModule,
-    DxFileUploaderModule,
-    DxCheckBoxModule,
-    DxSelectBoxModule,
-    DxButtonModule,
-    DxDropDownBoxModule,
-    DxAutocompleteModule,
-    DxTemplateModule
-} from 'devextreme-angular';
+import { DevExtremeModule, DxDataGridModule, DxFileUploaderModule, DxCheckBoxModule, DxSelectBoxModule, DxButtonModule, DxDropDownBoxModule, DxAutocompleteModule, DxTemplateModule } from 'devextreme-angular';
 
 // ***** COMPONENTES *****
 // HOME
@@ -131,6 +121,8 @@ import { SelReportesComponent } from './reportes/sel-reportes/sel-reportes.compo
 
 /**Modales */
 import { DialogMapa } from './utilerias/grid-component/alert-mapa/alert-mapa.component';
+import { DialogClient } from './general/sel-general/modal-client/modal-client.component';
+import { DialogLiberar } from './general/sel-general/modal-liberar/modal-liberar.component';
 
 export function sessionInitializerProviderFactory(
     provider: SessionInitializer
@@ -163,13 +155,17 @@ export function sessionInitializerProviderFactory(
         InsCapturaComponent,
         SelReportesComponent,
         AlertDialogComponent,
-        DialogMapa
+        DialogMapa,
+        DialogClient,
+        DialogLiberar
     ],
     entryComponents: [
         ExcepcionesComponent,
         DeleteAlertComponent,
         AlertDialogComponent,
-        DialogMapa
+        DialogMapa,
+        DialogClient,
+        DialogLiberar
     ],
     imports: [
         BrowserModule,

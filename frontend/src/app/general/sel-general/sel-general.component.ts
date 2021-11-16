@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { DialogClient } from './modal-client/modal-client.component';
+import { DialogLiberar } from './modal-liberar/modal-liberar.component';
 
 @Component({
 	selector: 'app-sel-general',
@@ -833,7 +834,7 @@ export class SelGeneralComponent implements OnInit {
 			} else if ($event === 'openModalVenta') {
 				this.getClientBuy();
 			} else if ($event === 'openModalLiberaUnidad') {
-				console.log('Modal de liberar Unidad')
+				this.liberarUnidad();
 			};
 		} catch (error) {
 			this.Excepciones(error, 1);
@@ -841,7 +842,6 @@ export class SelGeneralComponent implements OnInit {
 	};
 
 	public getClientBuy = () => {
-
 		this.spinner = true;
 		let idUnidad = [];
 		const dialogRef = this.dialog.open(DialogClient, {
@@ -850,7 +850,7 @@ export class SelGeneralComponent implements OnInit {
 			data: {
 				title: 'Seleccion clientes',
 				//select: this.sucAceptanSeminuevos,//this.companias,
-				elementos: 'Cantidad de unidades a actualizar: ' + this.datosevent.length,
+				elementos: 'Cantidad de unidades a vender: ' + this.datosevent.length,
 				unidades: this.datosevent
 			}
 		});
@@ -867,7 +867,36 @@ export class SelGeneralComponent implements OnInit {
 				console.log('idUnidad', idUnidad);
 				this.spinner = false;
 			}
-		})
+		});
+	};
+
+	public liberarUnidad = () => {
+		this.spinner = true;
+		let idUnidad = [];
+		const dialogRef = this.dialog.open(DialogLiberar, {
+			width: '50%',
+			disableClose: true,
+			data: {
+				title: 'Liberar Unidades',
+				subTitle: '¿Estas seguro de liberar las unidades?',
+				elementos: 'Cantidad de unidades a liberar: ' + this.datosevent.length,
+				unidades: this.datosevent
+			}
+		});
+		dialogRef.afterClosed().subscribe(result => {
+			if (!result) {
+				this.snackBar.open('Liberacion de unidades cancelada', 'Ok', { duration: 10000 });
+				this.spinner = false;
+			} else {
+				this.datosevent.forEach(value => {
+					idUnidad.push({ idUnidad: value.unidadId })
+				});
+
+				console.log('result', result);
+				console.log('idUnidad', idUnidad);
+				this.spinner = false;
+			};
+		});
 	};
 
 	datosMessage($event) {
