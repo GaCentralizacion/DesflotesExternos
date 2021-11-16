@@ -37,9 +37,6 @@ import { AuthGuardService } from './services/auth-guard.service';
 // ***** UTILERIAS *****
 import { GridComponentComponent } from './utilerias/grid-component/grid-component.component';
 import { AlertDialogComponent } from './utilerias/alert-dialog/alert-dialog.component';
-import { DialogAsignar } from './general/sel-general/asignar1/asignar-dialog.component';
-import { DialogUpdPrecio } from './general/sel-general/modal-updPrecio/modal-updPrecio.component';
-import { DialogBajaUnidad } from './general/sel-general/modal-bajaUnidad/modal-bajaUnidad.component';
 /********************REDUX *********************/
 import { rootReducer, ArchitectUIState } from './themeOptions/store';
 import { NgReduxModule } from '@angular-redux/store';
@@ -132,15 +129,9 @@ import { SelGeneralComponent } from './general/sel-general/sel-general.component
 import { InsCapturaComponent } from './captura/ins-captura/ins-captura.component';
 import { SelReportesComponent } from './reportes/sel-reportes/sel-reportes.component';
 
-
-import { ModalGeneralComponent } from './general/sel-general/modal-general/modal-general.component';
-import { DialogModeloVersion } from './general/sel-general/asignarModeloVersion/modelo-version.component';
-import { ModalIntellimotorsComponent } from './general/sel-general/modal-intellimotors/modal-intellimotors.component';
-import { ModalExpedienteComponent } from './general/sel-general/modal-expediente/modal-expediente.component';
-import { DialogUpdUbicacion } from './general/sel-general/modal-updUbicacion/modal-updUbicacion.component';
+/**Modales */
 import { DialogMapa } from './utilerias/grid-component/alert-mapa/alert-mapa.component';
-import { DialogSituacionUnidad } from './general/sel-general/modal-situacionUnidad/modal-situacionUnidad.component'
-import { DialogClient } from './general/sel-general/modal-client/modal-client.component';
+
 export function sessionInitializerProviderFactory(
     provider: SessionInitializer
 ) {
@@ -172,33 +163,13 @@ export function sessionInitializerProviderFactory(
         InsCapturaComponent,
         SelReportesComponent,
         AlertDialogComponent,
-        DialogMapa,
-        DialogSituacionUnidad,
-        DialogClient,
-        DialogAsignar,
-        DialogUpdPrecio,
-        DialogBajaUnidad,
-        ModalGeneralComponent,
-        ModalIntellimotorsComponent,
-        ModalExpedienteComponent,
-        DialogModeloVersion,
-        DialogUpdUbicacion
+        DialogMapa
     ],
     entryComponents: [
         ExcepcionesComponent,
         DeleteAlertComponent,
         AlertDialogComponent,
-        DialogAsignar,
-        DialogUpdPrecio,
-        DialogBajaUnidad,
-        DialogMapa,
-        DialogSituacionUnidad,
-        DialogClient,
-        ModalGeneralComponent,
-        ModalIntellimotorsComponent,
-        ModalExpedienteComponent,
-        DialogModeloVersion,
-        DialogUpdUbicacion
+        DialogMapa
     ],
     imports: [
         BrowserModule,

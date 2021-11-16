@@ -1,66 +1,66 @@
 <app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
 <div mat-dialog-title>
-    <div class="row text-center">
-        <div class="col-md-12">
-            <label> {{titulo}} </label>
-        </div>
-    </div>
+	<div class="row text-center">
+		<div class="col-md-12">
+			<label> {{titulo}} </label>
+		</div>
+	</div>
 </div>
 <mat-dialog-content class="mat-typography">
-    <div class="row">
-        <div class="col-md-6">
-            <label> {{elementos}} </label>
-        </div>
-        <div class="col-md-6">
-            Vines: {{vines}}
-        </div>
-    </div>
-    <div classs='row'>
-        <div class='col-md-12'>
-            <div class='row'>
-                <div class='col-md-12'>
-                    <form [formGroup]="formSearchClient">
-                        <mat-form-field appearance="fill" floatLabel="always">
-                            <mat-label>Escribe el id del cliente o el nombre con el que se deba buscar</mat-label>
-                            <input style="width:100%" matInput type="text" formControlName="cliente"
-                                class="example-right-align" placeholder="cliente">
-                        </mat-form-field>
-                        <mat-error *ngIf="formSearchClient.invalid">
-                            <label>El campo es <strong>requerido</strong></label>
-                        </mat-error>
-                    </form>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <button class="btnSerchUser btn btn-info" (click)="getClientes()"
-                        [disabled]="!formSearchClient.valid">
-                        <label *ngIf="options.length === 0">Buscar</label>
-                        <label *ngIf="options.length > 0">Buscar Nuevamente</label>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br /><br />
-    <div class="row" *ngIf="options.length > 0">
-        <div class="col-md-12">
-            <form [formGroup]="FformSelectClient" class="example-form">
-                <mat-form-field class="example-full-width" appearance="fill">
-                    <mat-label>Selecciona un cleinte</mat-label>
-                    <input type="text" matInput [formControl]="formSelectClient" [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                            {{option.PER_IDPERSONA}} - {{option.PER_NOMRAZON}}
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field>
-            </form>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-md-6">
+			<label> {{elementos}} </label>
+		</div>
+		<div class="col-md-6">
+			Vines: {{vines}}
+		</div>
+	</div>
+	<div classs='row'>
+		<div class='col-md-12'>
+			<div class='row'>
+				<div class='col-md-12'>
+					<form [formGroup]="formSearchClient">
+						<mat-form-field appearance="fill" floatLabel="always">
+							<mat-label>Escribe el id del cliente o el nombre con el que se deba buscar</mat-label>
+							<input style="width:100%" matInput type="text" formControlName="cliente"
+								class="example-right-align" placeholder="cliente">
+						</mat-form-field>
+						<mat-error *ngIf="formSearchClient.invalid">
+							<label>El campo es <strong>requerido</strong></label>
+						</mat-error>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<button class="btnSerchUser btn btn-info" (click)="getClientes()"
+						[disabled]="!formSearchClient.valid">
+						<label *ngIf="options.length === 0">Buscar</label>
+						<label *ngIf="options.length > 0">Buscar Nuevamente</label>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br /><br />
+	<div class="row" *ngIf="options.length > 0">
+		<div class="col-md-12">
+			<form [formGroup]="FformSelectClient" class="example-form">
+				<mat-form-field class="example-full-width" appearance="fill">
+					<mat-label>Selecciona un cleinte</mat-label>
+					<input type="text" matInput [formControl]="formSelectClient" [matAutocomplete]="auto">
+					<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+						<mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+							{{option.PER_IDPERSONA}} - {{option.PER_NOMRAZON}}
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
+			</form>
+		</div>
+	</div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button [mat-dialog-close]="0">Cancelar</button>
-    <button mat-button (click)="saveData()" [mat-dialog-close]="retornarValores" [disabled]="!FformSelectClient.valid"
-        cdkFocusInitial>Actualizar</button>
+	<button mat-button [mat-dialog-close]="0">Cancelar</button>
+	<button mat-button (click)="saveData()" [mat-dialog-close]="retornarValores" [disabled]="!FformSelectClient.valid"
+		cdkFocusInitial>Actualizar</button>
 </mat-dialog-actions>
