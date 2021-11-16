@@ -1543,28 +1543,27 @@ export class SelGeneralComponent implements OnInit {
 
     this.spinner = true;
     let idUnidad = [];
-    console.log('this.sucAceptanSeminuevos', this.sucAceptanSeminuevos)
     const dialogRef = this.dialog.open(DialogClient, {
       width: '50%',
       disableClose: true,
       data: {
-        title: 'Selecciona Cliente',
-        select: this.sucAceptanSeminuevos,//this.companias,
+        title: 'Seleccion clientes',
+        //select: this.sucAceptanSeminuevos,//this.companias,
         elementos: 'Cantidad de unidades a actualizar: ' + this.datosevent.length,
         unidades: this.datosevent
       }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (!result) {
-        this.snackBar.open('Actualización cancelada', 'Ok', { duration: 10000 });
+        this.snackBar.open('Venta cancelada', 'Ok', { duration: 10000 });
         this.spinner = false;
       } else {
-        this.datosevent.forEach(x => {
-          idUnidad.push({
-            idUnidad: x.unidadId
-          })
+        this.datosevent.forEach(value => {
+          idUnidad.push({ idUnidad: value.unidadId })
         });
+
         console.log('result', result);
+        console.log('idUnidad', idUnidad);
         this.spinner = false;
       }
     })

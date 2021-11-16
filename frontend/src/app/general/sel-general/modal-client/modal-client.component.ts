@@ -6,10 +6,11 @@ import { ExcepcionesComponent } from '../../../utilerias/excepciones/excepciones
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface SendData {
     unidades: any;
-    select: string;
+    //select: string;
     title: string;
     elementos: string;
 };
@@ -27,9 +28,10 @@ export interface Cliente {
 })
 export class DialogClient implements OnInit {
     spinner = false;
-    select: string;
+    //select: string;
     titulo: string;
     elementos: string;
+    vines: string = '';
 
     formSearchClient = new FormGroup({ cliente: new FormControl('', [Validators.required]) });
     retornarValores = [{ confirm: 1, valorSelect: [] }]
@@ -45,12 +47,21 @@ export class DialogClient implements OnInit {
         public dialogRef: MatDialogRef<DialogClient>,
         @Inject(MAT_DIALOG_DATA) public data: SendData,
         private coalService: CoalService,
-        public dialog: MatDialog,) {
+        public dialog: MatDialog,
+        private snackBar: MatSnackBar) {
 
-        this.select = data.select;
+        //this.select = data.select;
         this.titulo = data.title;
         this.elementos = data.elementos;
-    }
+
+        data.unidades.forEach((value, index) => {
+            if (data.unidades.length === index + 1) {
+                this.vines += `${value.numeroSerie}`;
+            } else {
+                this.vines += `${value.numeroSerie}, `;
+            };
+        });
+    };
 
     ngOnInit() {
         this.filteredOptions = this.formSelectClient.valueChanges.pipe(
@@ -61,8 +72,6 @@ export class DialogClient implements OnInit {
     };
 
     saveData() {
-        console.log('FformSelectClient', this.FformSelectClient)
-        console.log('formSelectClient', this.formSelectClient.value)
         this.retornarValores[0].valorSelect = this.formSelectClient.value;
     };
 
@@ -70,6 +79,8 @@ export class DialogClient implements OnInit {
         this.spinner = true;
         let tipoBusqueda;
         let datosBusqueda = this.formSearchClient.value.cliente;
+        this.formSelectClient.setValue([]);
+        this.options = [];
 
         if (isNaN(Number(datosBusqueda))) {
             tipoBusqueda = 2;
@@ -85,7 +96,11 @@ export class DialogClient implements OnInit {
                 this.Excepciones(res.excepcion, 3);
             } else {
                 this.spinner = false;
-                this.options = res.recordsets[0]
+                if (res.recordsets[0].length > 0) {
+                    this.options = res.recordsets[0];
+                } else {
+                    this.snackBar.open('Sin conincidencias por mostrar', 'Ok', { duration: 10000 });
+                };
             };
         }, (error: any) => {
             this.Excepciones(error, 2);
