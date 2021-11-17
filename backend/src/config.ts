@@ -11,7 +11,7 @@ export default {
             },
             "protocolo": "http"
         },
-        "aplicacionId": 14,
+        "aplicacionId": 21,
         "bpro": {
             "dealerId": 1001,
             "apiKey": "08a0faf0-ae65-4034-b693-ffd1ef39eff6",
@@ -35,7 +35,7 @@ export default {
         "proveedorComprobante": {
             "host": 'http://192.168.20.123/ApiCentralCXC/api/documentoapi',
         },
-        "intelimotor":{
+        "intelimotor": {
             "host": 'https://app.intelimotor.com/api',
             "apiKey": 'XBT3XfffHM',
             "apiSecret": 'F46DBB5693BFCCFCEF43638D2125861A348F8BBDD97D5EE6EB9BACBF7A'

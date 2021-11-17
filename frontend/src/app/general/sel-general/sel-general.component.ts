@@ -19,6 +19,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { DialogClient } from './modal-client/modal-client.component';
 import { DialogLiberar } from './modal-liberar/modal-liberar.component';
+import { DialogPrecio } from './modal-precio/modal-precio.component';
 
 @Component({
 	selector: 'app-sel-general',
@@ -819,7 +820,7 @@ export class SelGeneralComponent implements OnInit {
 		console.clear();
 		this.verGrid = true;
 		this.spinner = false;
-	}
+	};
 
 	receiveMessage($event) {
 		try {
@@ -830,7 +831,7 @@ export class SelGeneralComponent implements OnInit {
 			} else if ($event === 'documentos') {
 				this.sincronizarDocumentos();
 			} else if ($event === 'openModalPrecio') {
-				console.log('Entramos aqui al de precio')
+				this.precioUnidad();
 			} else if ($event === 'openModalVenta') {
 				this.getClientBuy();
 			} else if ($event === 'openModalLiberaUnidad') {
@@ -894,6 +895,36 @@ export class SelGeneralComponent implements OnInit {
 
 				console.log('result', result);
 				console.log('idUnidad', idUnidad);
+				this.spinner = false;
+			};
+		});
+	};
+
+	public precioUnidad = () => {
+		this.spinner = true;
+		let idUnidad = [];
+		const dialogRef = this.dialog.open(DialogPrecio, {
+			width: '50%',
+			disableClose: true,
+			data: {
+				title: 'Actualización de precio',
+				elementos: 'Cantidad de unidades a actualizar: ' + this.datosevent.length,
+				unidades: this.datosevent
+			}
+		});
+		dialogRef.afterClosed().subscribe(result => {
+			if (!result) {
+				this.snackBar.open('Actualización cancelada', 'Ok', { duration: 10000 });
+				this.spinner = false;
+			} else {
+				this.datosevent.forEach(value => {
+					idUnidad.push({
+						idUnidad: value.unidadId
+					})
+				});
+
+				console.log('idUnidad', idUnidad);
+				console.log('result', result);
 				this.spinner = false;
 			};
 		});

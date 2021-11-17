@@ -123,6 +123,7 @@ import { SelReportesComponent } from './reportes/sel-reportes/sel-reportes.compo
 import { DialogMapa } from './utilerias/grid-component/alert-mapa/alert-mapa.component';
 import { DialogClient } from './general/sel-general/modal-client/modal-client.component';
 import { DialogLiberar } from './general/sel-general/modal-liberar/modal-liberar.component';
+import { DialogPrecio } from './general/sel-general/modal-precio/modal-precio.component';
 
 export function sessionInitializerProviderFactory(
     provider: SessionInitializer
@@ -157,7 +158,8 @@ export function sessionInitializerProviderFactory(
         AlertDialogComponent,
         DialogMapa,
         DialogClient,
-        DialogLiberar
+        DialogLiberar,
+        DialogPrecio
     ],
     entryComponents: [
         ExcepcionesComponent,
@@ -165,7 +167,8 @@ export function sessionInitializerProviderFactory(
         AlertDialogComponent,
         DialogMapa,
         DialogClient,
-        DialogLiberar
+        DialogLiberar,
+        DialogPrecio
     ],
     imports: [
         BrowserModule,

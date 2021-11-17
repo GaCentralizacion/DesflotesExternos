@@ -1,0 +1,32 @@
+<div mat-dialog-title>
+    <div class="row text-center">
+        <div class="col-md-12">
+            <label> {{titulo}} </label>
+        </div>
+    </div>
+</div>
+<mat-dialog-content class="mat-typography">
+    <div class="row text-center">
+        <div class="col-md-12">
+            <h3>{{elementos}}</h3>
+
+            <form [formGroup]="form">
+                <mat-form-field appearance="fill" floatLabel="always">
+                    <mat-label>Precio</mat-label>
+                    <input matInput type="number" formControlName="precio" class="example-right-align" placeholder="0">
+                    <span matPrefix>$&nbsp;</span>
+                    <span matSuffix>.00</span>
+                </mat-form-field>
+                <mat-error *ngIf="form.invalid">
+                    El campo es
+                    <strong>requerido</strong>
+                </mat-error>
+            </form>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="0">Cancelar</button>
+    <button mat-button (click)="precio()" [mat-dialog-close]="retornarValores" [disabled]="!form.valid"
+        cdkFocusInitial>Actualizar</button>
+</mat-dialog-actions>
