@@ -114,9 +114,10 @@ export class DesfloteReporteRepository {
 
     // ************ SERVICIOS GET ************
     GetDataReport(query: any): PromiseLike<{}> {
-        let sp = "[Reporte].[SEL_GENERAL_SP]";
+        let sp = "[desfloteExterno].[SEL_DATA_DESFLOTES_SP]";
         return this.query.spExecute(query, sp);
     }
+
 
     porcentajeAvances(query: any): PromiseLike<{}> {
         let sp = "[Reporte].[SEL_PORCENTAJE_AVANCE_SP]";
@@ -1672,9 +1673,16 @@ export class DesfloteReporteRepository {
         })
     }
 
+    sellUnit(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[INS_VENTA_UNIT_SP]")
+    };
+
     // ************* TERMINA POST *************
 
     // ************ SERVICIOS PUT ************
+    updatePrice(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[UPD_PRICE_UNIT_SP]")
+    };
     // ************* TERMINA PUT *************
 
     // ************ SERVICIOS DELETE ************

@@ -34,7 +34,7 @@ export class DialogClient implements OnInit {
 	vines: string = '';
 
 	formSearchClient = new FormGroup({ cliente: new FormControl('', [Validators.required]) });
-	retornarValores = [{ confirm: 1, valorSelect: [] }]
+	retornarValores = { valorSelect: [] };
 	dataSelect: any = [];
 
 	formSelectClient = new FormControl([], [Validators.required]);
@@ -72,7 +72,7 @@ export class DialogClient implements OnInit {
 	};
 
 	saveData() {
-		this.retornarValores[0].valorSelect = this.formSelectClient.value;
+		this.retornarValores.valorSelect = this.formSelectClient.value;
 	};
 
 	public getClientes = () => {

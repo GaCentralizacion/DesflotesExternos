@@ -21,7 +21,7 @@ export class DialogPrecio implements OnInit {
     unidades: any;
     formPrecio = new FormControl('', [Validators.required])
     form = new FormGroup({ precio: this.formPrecio });
-    retornarValores = [{ confirm: 1, valorSelect: '' }];
+    retornarValores = { valorSelect: '' };
 
     constructor(private fb: FormBuilder,
         public dialogRef: MatDialogRef<DialogPrecio>,
@@ -38,7 +38,7 @@ export class DialogPrecio implements OnInit {
         this.spinner = true;
     }
     precio() {
-        this.retornarValores[0].valorSelect = this.form.value.precio;
+        this.retornarValores.valorSelect = this.form.value.precio;
     }
 
 }

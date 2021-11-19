@@ -125,7 +125,7 @@ export class SelGeneralComponent implements OnInit {
 		},
 		{
 			caption: 'Factura Cliente',
-			dataField: 'facturaCliente',
+			dataField: 'facturaVenta',
 			allowEditing: false,
 			cssClass: 'cliente',
 			cellTemplate: 'pdfFacturaCliente'
@@ -138,6 +138,7 @@ export class SelGeneralComponent implements OnInit {
 	catalogoMarcas: any;
 	pdf: any;
 	mostrarLectura: any = false;
+	tipoBusqueda: number = 0;
 
 	constructor(
 		public dialog: MatDialog,
@@ -225,6 +226,19 @@ export class SelGeneralComponent implements OnInit {
 		});
 	};
 
+	ChangeTab($event) {
+		this.tipoBusqueda = $event.index;
+		this.toolbarGeneral = [];
+		this.toolbar = [];
+		this.BotonesToolbar();
+		if (this.getGeneralForm.controls.idDuenoUnidad.value !== '') {
+			if (this.getGeneralForm.controls.idDesflote.value !== '') {
+				this.GenerateReport();
+			};
+		};
+		this.verGrid = false;
+	};
+
 	GenerateReport() {
 		this.verGrid = false;
 		this.spinner = true;
@@ -232,8 +246,10 @@ export class SelGeneralComponent implements OnInit {
 		this.dataReport = [];
 		this.idCompania = this.getGeneralForm.controls.idDuenoUnidad.value;
 		this.idDesflote = this.getGeneralForm.controls.idDesflote.value;
-		this.porcentajeAvances()
-		this.coalService.getService(`reporte/GetDataReport?idCompania=${this.idCompania}&idDesflote=${this.idDesflote}`).subscribe((res: any) => {
+		this.reporte = [];
+		this.data = [];
+		//this.porcentajeAvances()
+		this.coalService.getService(`reporte/GetDataReport?tipoBusqueda=${this.tipoBusqueda}&idCompania=${this.idCompania}&idDesflote=${this.idDesflote}`).subscribe((res: any) => {
 			if (res.err) {
 				this.Excepciones(res.err, 4);
 			} else if (res.excepcion) {
@@ -242,40 +258,44 @@ export class SelGeneralComponent implements OnInit {
 				for (const e of res.recordsets[0]) {
 					e.fechaFin = this.FechaDiaCorrecto(e.fechaFin)
 					e.fechaInicio = this.FechaDiaCorrecto(e.fechaInicio)
-				}
-				this.reporte = res.recordsets[0];
-				const datos = [];
-				this.reporte.forEach(val => datos.push(Object.assign({}, val)));
-				this.data = datos.filter(x => x.llaveEstado !== 'SIA')
-				const arregloDoc = ['./assets/images/iconos-coal/doc/comprobantes.pdf', './assets/images/iconos-coal/doc/comprobante2.pdf', './assets/images/iconos-coal/doc/comprobante3df.pdf']
+				};
 
-				this.data.forEach(x => {
-					if (x.datosIntelimotors === 0) {
-						x.opacity = 0.2
-					}
-				})
-				for (const e of this.reporte) {
-					if (e.llaveEstado !== 'SIA') {
-						e.backgroundcolor = '#a4b3f5'
-					} else {
-						if (e.estatusOrden === 'PEN1') {
-							e.backgroundcolor = '#ffea4d'
-							e.estado = 'PENDIENTE'
-						} else if (e.estatusOrden === 'PEN2') {
-							e.backgroundcolor = '#ffea4d'
-							e.factura2 = 'PENDIENTE'
-							e.ordenCompra2 = 'PENDIENTE'
-						}
-					}
-				}
+				if (this.tipoBusqueda === 0)
+					this.reporte = res.recordsets[0];
+				else
+					this.data = res.recordsets[0];
+				// const datos = [];
+				// this.reporte.forEach(val => datos.push(Object.assign({}, val)));
+				// this.data = datos.filter(x => x.llaveEstado !== 'SIA')
+				// const arregloDoc = ['./assets/images/iconos-coal/doc/comprobantes.pdf', './assets/images/iconos-coal/doc/comprobante2.pdf', './assets/images/iconos-coal/doc/comprobante3df.pdf']
 
-				for (const e of this.data) {
-					if (e.estatusOrden === 'PEN2') {
-						e.backgroundcolor = '#ffea4d'
-						e.factura2 = 'PENDIENTE'
-						e.ordenCompra2 = 'PENDIENTE'
-					}
-				}
+				// this.data.forEach(x => {
+				// 	if (x.datosIntelimotors === 0) {
+				// 		x.opacity = 0.2
+				// 	}
+				// })
+				// for (const e of this.reporte) {
+				// 	if (e.llaveEstado !== 'SIA') {
+				// 		e.backgroundcolor = '#a4b3f5'
+				// 	} else {
+				// 		if (e.estatusOrden === 'PEN1') {
+				// 			e.backgroundcolor = '#ffea4d'
+				// 			e.estado = 'PENDIENTE'
+				// 		} else if (e.estatusOrden === 'PEN2') {
+				// 			e.backgroundcolor = '#ffea4d'
+				// 			e.factura2 = 'PENDIENTE'
+				// 			e.ordenCompra2 = 'PENDIENTE'
+				// 		}
+				// 	}
+				// }
+
+				// for (const e of this.data) {
+				// 	if (e.estatusOrden === 'PEN2') {
+				// 		e.backgroundcolor = '#ffea4d'
+				// 		e.factura2 = 'PENDIENTE'
+				// 		e.ordenCompra2 = 'PENDIENTE'
+				// 	}
+				// }
 				this.verGrid = true;
 			}
 			this.spinner = false;
@@ -379,14 +399,6 @@ export class SelGeneralComponent implements OnInit {
 		}, (error: any) => {
 			this.Excepciones(error, 2);
 		});
-	};
-
-	ChangeTab($event) {
-		this.toolbarGeneral = [];
-		this.toolbar = [];
-		this.BotonesToolbar();
-		this.verGrid = false;
-		setTimeout(() => this.verGrid = true, 800);
 	};
 
 	AsignacionMismaEmpresa(unidades) {
@@ -804,13 +816,13 @@ export class SelGeneralComponent implements OnInit {
 				format: TiposdeFormato.moneda,
 				allowEditing: false,
 				cssClass: 'general'
-			},
-			{
-				caption: 'Situación',
-				dataField: 'situacion',
-				allowEditing: false,
-				cssClass: 'general',
 			}
+			// {
+			// 	caption: 'Situación',
+			// 	dataField: 'situacion',
+			// 	allowEditing: false,
+			// 	cssClass: 'general',
+			// }
 		];
 	}
 
@@ -842,9 +854,60 @@ export class SelGeneralComponent implements OnInit {
 		};
 	};
 
+	public precioUnidad = () => {
+		this.spinner = true;
+		let xml = `<unidades>$data</unidades>`;
+		let dataXml = '';
+		const dialogRef = this.dialog.open(DialogPrecio, {
+			width: '50%',
+			disableClose: true,
+			data: {
+				title: 'Actualización de precio',
+				elementos: 'Cantidad de unidades a actualizar: ' + this.datosevent.length,
+				unidades: this.datosevent
+			}
+		});
+		dialogRef.afterClosed().subscribe(result => {
+			if (!result) {
+				this.snackBar.open('Actualización cancelada', 'Ok', { duration: 10000 });
+				this.spinner = false;
+			} else {
+				this.spinner = true;
+				this.datosevent.forEach(value => {
+					dataXml += `<unidad><idUnidad>${value.idUnidad}</idUnidad><newPrice>${result.valorSelect}</newPrice></unidad>`;
+				});
+				const data = {
+					xmlUnits: xml.replace('$data', dataXml)
+				};
+
+				this.coalService.putService(`reporte/updatePrice`, data).subscribe((res: any) => {
+					console.log('res', res);
+					if (res.err) {
+						this.Excepciones(res.err, 4);
+					} else if (res.excepcion) {
+						this.Excepciones(res.excepcion, 3);
+					} else {
+						if (res.recordsets[0][0].success === 1) {
+							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+						} else {
+							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+						};
+						this.GenerateReport();
+					};
+					this.spinner = false
+				}, (error: any) => {
+					this.Excepciones(error, 2);
+					this.spinner = false
+				});
+				this.spinner = false;
+			};
+		});
+	};
+
 	public getClientBuy = () => {
 		this.spinner = true;
-		let idUnidad = [];
+		let xml = `<ventas>$data</ventas>`;
+		let dataXml = '';
 		const dialogRef = this.dialog.open(DialogClient, {
 			width: '50%',
 			disableClose: true,
@@ -860,12 +923,32 @@ export class SelGeneralComponent implements OnInit {
 				this.snackBar.open('Venta cancelada', 'Ok', { duration: 10000 });
 				this.spinner = false;
 			} else {
+				this.spinner = true;
 				this.datosevent.forEach(value => {
-					idUnidad.push({ idUnidad: value.unidadId })
+					dataXml += `<venta><idUnidad>${value.idUnidad}</idUnidad><client>${result.valorSelect.PER_IDPERSONA}</client><userId>${this.lstbPro[0].usu_idusuario}</userId><sellPrice>${value.precioVentaIva}</sellPrice><buyPrice>${value.precioCompraIva}</buyPrice></venta>`;
 				});
+				const data = {
+					xmlVenta: xml.replace('$data', dataXml)
+				};
 
-				console.log('result', result);
-				console.log('idUnidad', idUnidad);
+				this.coalService.postService(`reporte/sellUnit`, data).subscribe((res: any) => {
+					if (res.err) {
+						this.Excepciones(res.err, 4);
+					} else if (res.excepcion) {
+						this.Excepciones(res.excepcion, 3);
+					} else {
+						if (res.recordsets[0][0].success === 1) {
+							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+						} else {
+							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+						};
+						this.GenerateReport();
+					};
+					this.spinner = false
+				}, (error: any) => {
+					this.Excepciones(error, 2);
+					this.spinner = false
+				});
 				this.spinner = false;
 			}
 		});
@@ -895,36 +978,6 @@ export class SelGeneralComponent implements OnInit {
 
 				console.log('result', result);
 				console.log('idUnidad', idUnidad);
-				this.spinner = false;
-			};
-		});
-	};
-
-	public precioUnidad = () => {
-		this.spinner = true;
-		let idUnidad = [];
-		const dialogRef = this.dialog.open(DialogPrecio, {
-			width: '50%',
-			disableClose: true,
-			data: {
-				title: 'Actualización de precio',
-				elementos: 'Cantidad de unidades a actualizar: ' + this.datosevent.length,
-				unidades: this.datosevent
-			}
-		});
-		dialogRef.afterClosed().subscribe(result => {
-			if (!result) {
-				this.snackBar.open('Actualización cancelada', 'Ok', { duration: 10000 });
-				this.spinner = false;
-			} else {
-				this.datosevent.forEach(value => {
-					idUnidad.push({
-						idUnidad: value.unidadId
-					})
-				});
-
-				console.log('idUnidad', idUnidad);
-				console.log('result', result);
 				this.spinner = false;
 			};
 		});
