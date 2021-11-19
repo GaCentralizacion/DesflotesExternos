@@ -1677,6 +1677,10 @@ export class DesfloteReporteRepository {
         return this.query.spExecute(body, "[desfloteExterno].[INS_VENTA_UNIT_SP]")
     };
 
+    deleteVenta(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[DEL_VENTA_UNIT_SP]")
+    };
+
     // ************* TERMINA POST *************
 
     // ************ SERVICIOS PUT ************

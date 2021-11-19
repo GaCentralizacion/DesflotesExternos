@@ -460,6 +460,11 @@ export class DesfloteReporteController {
 		return this.repository.sellUnit(body);
 	};
 
+	@Post('/deleteVenta')
+	deleteVenta(@Body() body: Request) {
+		return this.repository.deleteVenta(body);
+	};
+
 	// ************ END Servicios POST ************
 
 	// ************ Servicios PUT ************

@@ -899,7 +899,6 @@ export class SelGeneralComponent implements OnInit {
 					this.Excepciones(error, 2);
 					this.spinner = false
 				});
-				this.spinner = false;
 			};
 		});
 	};
@@ -949,14 +948,14 @@ export class SelGeneralComponent implements OnInit {
 					this.Excepciones(error, 2);
 					this.spinner = false
 				});
-				this.spinner = false;
-			}
+			};
 		});
 	};
 
 	public liberarUnidad = () => {
 		this.spinner = true;
-		let idUnidad = [];
+		let xml = `<liberaciones>$data</liberaciones>`;
+		let dataXml = '';
 		const dialogRef = this.dialog.open(DialogLiberar, {
 			width: '50%',
 			disableClose: true,
@@ -972,13 +971,33 @@ export class SelGeneralComponent implements OnInit {
 				this.snackBar.open('Liberacion de unidades cancelada', 'Ok', { duration: 10000 });
 				this.spinner = false;
 			} else {
+				this.spinner = true;
 				this.datosevent.forEach(value => {
-					idUnidad.push({ idUnidad: value.unidadId })
+					dataXml += `<liberacion><idUnidad>${value.idUnidad}</idUnidad></liberacion>`;
 				});
 
-				console.log('result', result);
-				console.log('idUnidad', idUnidad);
-				this.spinner = false;
+				const data = {
+					xmlLiberacion: xml.replace('$data', dataXml),
+					idUsuarioReversa: this.lstbPro[0].usu_idusuario
+				};
+
+				this.coalService.postService(`reporte/deleteVenta`, data).subscribe((res: any) => {
+					if (res.err) {
+						this.Excepciones(res.err, 4);
+					} else if (res.excepcion) {
+						this.Excepciones(res.excepcion, 3);
+					} else {
+						if (res.recordsets[0][0].success === 1) {
+							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+						} else {
+							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+						};
+						this.GenerateReport();
+					};
+				}, (error: any) => {
+					this.Excepciones(error, 2);
+					this.spinner = false
+				});
 			};
 		});
 	};
@@ -989,7 +1008,7 @@ export class SelGeneralComponent implements OnInit {
 			// console.log('DATOS EVENTE=============', this.datosevent)
 		} catch (error) {
 			this.Excepciones(error, 1);
-		}
+		};
 	};
 
 	subeFactura() {
