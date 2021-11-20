@@ -892,6 +892,9 @@ export class SelGeneralComponent implements OnInit {
 						} else {
 							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
 						};
+						this.toolbarGeneral = [];
+						this.toolbar = [];
+						this.BotonesToolbar();
 						this.GenerateReport();
 					};
 					this.spinner = false
@@ -923,8 +926,9 @@ export class SelGeneralComponent implements OnInit {
 				this.spinner = false;
 			} else {
 				this.spinner = true;
+				console.log('result', result);
 				this.datosevent.forEach(value => {
-					dataXml += `<venta><idUnidad>${value.idUnidad}</idUnidad><client>${result.valorSelect.PER_IDPERSONA}</client><userId>${this.lstbPro[0].usu_idusuario}</userId><sellPrice>${value.precioVentaIva}</sellPrice><buyPrice>${value.precioCompraIva}</buyPrice></venta>`;
+					dataXml += `<venta><idUnidad>${value.idUnidad}</idUnidad><client>${result.valorSelect[1].PER_IDPERSONA}</client><userId>${this.lstbPro[0].usu_idusuario}</userId><sellPrice>${value.precioVentaIva}</sellPrice><buyPrice>${value.precioCompraIva}</buyPrice></venta>`;
 				});
 				const data = {
 					xmlVenta: xml.replace('$data', dataXml)
@@ -941,6 +945,9 @@ export class SelGeneralComponent implements OnInit {
 						} else {
 							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
 						};
+						this.toolbarGeneral = [];
+						this.toolbar = [];
+						this.BotonesToolbar();
 						this.GenerateReport();
 					};
 					this.spinner = false
@@ -992,6 +999,9 @@ export class SelGeneralComponent implements OnInit {
 						} else {
 							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
 						};
+						this.toolbarGeneral = [];
+						this.toolbar = [];
+						this.BotonesToolbar();
 						this.GenerateReport();
 					};
 				}, (error: any) => {

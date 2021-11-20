@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ThemePalette } from '@angular/material/core';
 
 export interface SendData {
 	unidades: any;
@@ -42,6 +43,26 @@ export class DialogClient implements OnInit {
 	options: Cliente[] = [];
 	filteredOptions: Observable<Cliente[]>;
 
+	color: ThemePalette = 'accent';
+	public checked = false;
+
+	descriptionAditional = new FormControl('');
+	factura = new FormControl('');
+	cfdi = new FormControl({});
+	dataCfdi: any = [
+		{
+			idCfdi: 1, desCfdi: 'Comercio'
+		},
+		{
+			idCfdi: 2, desCfdi: 'Gobierno'
+		},
+		{
+			idCfdi: 3, desCfdi: 'Publico'
+		}
+	]
+
+	formInoviceAdiotional = new FormGroup({ descriptionAditional: this.descriptionAditional, factura: this.factura, cfdi: this.cfdi })
+
 	constructor(
 		private fb: FormBuilder,
 		public dialogRef: MatDialogRef<DialogClient>,
@@ -72,7 +93,13 @@ export class DialogClient implements OnInit {
 	};
 
 	saveData() {
-		this.retornarValores.valorSelect = this.formSelectClient.value;
+		this.retornarValores.valorSelect.push(this.formInoviceAdiotional.value);
+		this.retornarValores.valorSelect.push(this.formSelectClient.value);
+	};
+
+	slideChange = e => {
+		this.descriptionAditional.setValue('');
+		this.factura.setValue('');
 	};
 
 	public getClientes = () => {
