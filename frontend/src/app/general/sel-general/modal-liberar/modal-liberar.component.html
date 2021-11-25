@@ -5,22 +5,20 @@
             <label> {{titulo}} </label>
         </div>
     </div>
-</div>
-<mat-dialog-content class="mat-typography">
     <div class="row text-center">
         <div class="col-md-12">
-            <label> {{subTitle}} </label>
+            <h4> {{elementos}} </h4>
         </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-md-6">
-            <label> {{elementos}} </label>
+</div>
+<mat-dialog-content class="mat-typography">
+    <mat-card>
+        <div class="row text-center">
+            <div class="col-md-12">
+                <label  class="textLabel"> {{subTitle}} </label>
+            </div>
         </div>
-        <div class="col-md-6">
-            Vines: {{vines}}
-        </div>
-    </div>
+    </mat-card>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button [mat-dialog-close]="0">Cancelar</button>

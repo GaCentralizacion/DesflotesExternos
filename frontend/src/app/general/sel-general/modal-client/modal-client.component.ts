@@ -32,9 +32,9 @@ export class DialogClient implements OnInit {
 	//select: string;
 	titulo: string;
 	elementos: string;
-	vines: string = '';
 
-	formSearchClient = new FormGroup({ cliente: new FormControl('', [Validators.required]) });
+	cliente = new FormControl('', [Validators.required])
+	formSearchClient = new FormGroup({ cliente: this.cliente });
 	retornarValores = { valorSelect: [] };
 	dataSelect: any = [];
 
@@ -44,11 +44,14 @@ export class DialogClient implements OnInit {
 	filteredOptions: Observable<Cliente[]>;
 
 	color: ThemePalette = 'accent';
-	public checked = false;
+	public checked: boolean = false;
+	public maxLengthTextArea: number = 5000;
+	public tipoBusqueda: number = 0;
+	public textBusqueda: string = '';
 
 	descriptionAditional = new FormControl('');
-	factura = new FormControl('');
 	cfdi = new FormControl({});
+	datosExtras = new FormControl();
 	dataCfdi: any = [
 		{
 			idCfdi: 1, desCfdi: 'Comercio'
@@ -61,7 +64,7 @@ export class DialogClient implements OnInit {
 		}
 	]
 
-	formInoviceAdiotional = new FormGroup({ descriptionAditional: this.descriptionAditional, factura: this.factura, cfdi: this.cfdi })
+	formInoviceAdiotional = new FormGroup({ datosExtras: this.datosExtras, cfdi: this.cfdi, descriptionAditional: this.descriptionAditional })
 
 	constructor(
 		private fb: FormBuilder,
@@ -74,14 +77,6 @@ export class DialogClient implements OnInit {
 		//this.select = data.select;
 		this.titulo = data.title;
 		this.elementos = data.elementos;
-
-		data.unidades.forEach((value, index) => {
-			if (data.unidades.length === index + 1) {
-				this.vines += `${value.numeroSerie}`;
-			} else {
-				this.vines += `${value.numeroSerie}, `;
-			};
-		});
 	};
 
 	ngOnInit() {
@@ -98,24 +93,42 @@ export class DialogClient implements OnInit {
 	};
 
 	slideChange = e => {
+		this.datosExtras.setValue(e.checked);
 		this.descriptionAditional.setValue('');
-		this.factura.setValue('');
+		this.cfdi.setValue({});
+	};
+
+	radioChange = e => {
+		this.textBusqueda = parseInt(e.value) === 1 ? 'Escribe el ID del cliente que desea buscar' : 'Escribe el nombre con el que se desea buscar';
+		this.tipoBusqueda = parseInt(e.value);
+		this.cliente.setValue('');
+		this.options = [];
+		this.eraseCfdi();
+		this.descriptionAditional.setValue('');
+		this.checked = false;
 	};
 
 	public getClientes = () => {
 		this.spinner = true;
-		let tipoBusqueda;
 		let datosBusqueda = this.formSearchClient.value.cliente;
 		this.formSelectClient.setValue([]);
 		this.options = [];
 
-		if (isNaN(Number(datosBusqueda))) {
-			tipoBusqueda = 2;
-		} else {
-			tipoBusqueda = 1;
+
+		if (this.tipoBusqueda !== 1) {
+			if (this.tipoBusqueda !== 2) {
+				this.spinner = false;
+				return this.snackBar.open('Selecciona el tipo de busqueda del cliente', 'Ok', { duration: 5000 });
+			};
 		};
 
-		const url = `common/getClientes?tipoBusqueda=${tipoBusqueda}&datosBusqueda=${datosBusqueda}`;
+		if (this.tipoBusqueda === 1 && isNaN(Number(datosBusqueda))) {
+			this.spinner = false;
+			return this.snackBar.open('Si busca por ID cliente la busqueda es solo numerica', 'Ok', { duration: 5000 });
+		};
+
+		const url = `common/getClientes?tipoBusqueda=${this.tipoBusqueda}&datosBusqueda=${datosBusqueda}`;
+
 		this.coalService.getService(url).subscribe((res: any) => {
 			if (res.err) {
 				this.Excepciones(res.err, 4);
@@ -132,6 +145,10 @@ export class DialogClient implements OnInit {
 		}, (error: any) => {
 			this.Excepciones(error, 2);
 		});
+	};
+
+	public eraseCfdi = () => {
+		this.cfdi.setValue({});
 	};
 
 	Excepciones(stack, tipoExcepcion: number) {

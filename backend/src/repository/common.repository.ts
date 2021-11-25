@@ -58,7 +58,7 @@ export class CommonRepository {
     }
 
     getClientes(query: any): PromiseLike<{}> {
-        return this.query.spExecute(query, "[Reporte].[SEL_ALL_CLIENTES_SP]")
+        return this.query.spExecute(query, "[desfloteExterno].[SEL_ALL_CLIENTES_SP]")
     }
     // ************* TERMINA GET *************
 

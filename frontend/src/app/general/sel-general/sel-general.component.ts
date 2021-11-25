@@ -176,20 +176,20 @@ export class SelGeneralComponent implements OnInit {
 	}
 
 
-	contarUnidadesProcesadas() {
-		this.coalService.getService(`reporte/getUnidadesProcesadas`).subscribe((res: any) => {
-			if (res.err) {
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				this.primera = res.recordsets[0][0].contadorPrimera;
-				this.segunda = res.recordsets[1][0].contadorSegunda;
-			}
-		}, (error: any) => {
-			this.Excepciones(error, 2);
-		});
-	};
+	// contarUnidadesProcesadas() {
+	// 	this.coalService.getService(`reporte/getUnidadesProcesadas`).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			this.primera = res.recordsets[0][0].contadorPrimera;
+	// 			this.segunda = res.recordsets[1][0].contadorSegunda;
+	// 		}
+	// 	}, (error: any) => {
+	// 		this.Excepciones(error, 2);
+	// 	});
+	// };
 
 
 	usuarioCentralizacion(usuarioBpro) {
@@ -207,24 +207,24 @@ export class SelGeneralComponent implements OnInit {
 		});
 	};
 
-	porcentajeAvances() {
-		this.coalService.getService(`reporte/porcentajeAvances?idCompaniaUnidad=${this.idCompania}&idDesflote=${this.idDesflote}`).subscribe((res: any) => {
-			if (res.err) {
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				this.porcentajePrimera = res.recordsets[0][0].porcentajePrimera;
-				this.porcentajeSegunda = res.recordsets[1][0].porcentajeSegunda;
-				this.facturasPendientesPrimera = res.recordsets[2][0].facturasPendientesPrimera;
-				this.ordenesPendientesPrimera = res.recordsets[3][0].ordenesPendientesPrimera;
-				this.facturasPendientesSegunda = res.recordsets[4][0].facturasPendientesSegunda;
-				this.ordenesPendientesSegunda = res.recordsets[5][0].ordenesPendientesSegunda;
-			}
-		}, (error: any) => {
-			this.Excepciones(error, 2);
-		});
-	};
+	// porcentajeAvances() {
+	// 	this.coalService.getService(`reporte/porcentajeAvances?idCompaniaUnidad=${this.idCompania}&idDesflote=${this.idDesflote}`).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			this.porcentajePrimera = res.recordsets[0][0].porcentajePrimera;
+	// 			this.porcentajeSegunda = res.recordsets[1][0].porcentajeSegunda;
+	// 			this.facturasPendientesPrimera = res.recordsets[2][0].facturasPendientesPrimera;
+	// 			this.ordenesPendientesPrimera = res.recordsets[3][0].ordenesPendientesPrimera;
+	// 			this.facturasPendientesSegunda = res.recordsets[4][0].facturasPendientesSegunda;
+	// 			this.ordenesPendientesSegunda = res.recordsets[5][0].ordenesPendientesSegunda;
+	// 		}
+	// 	}, (error: any) => {
+	// 		this.Excepciones(error, 2);
+	// 	});
+	// };
 
 	ChangeTab($event) {
 		this.tipoBusqueda = $event.index;
@@ -255,10 +255,10 @@ export class SelGeneralComponent implements OnInit {
 			} else if (res.excepcion) {
 				this.Excepciones(res.excepcion, 3);
 			} else {
-				for (const e of res.recordsets[0]) {
-					e.fechaFin = this.FechaDiaCorrecto(e.fechaFin)
-					e.fechaInicio = this.FechaDiaCorrecto(e.fechaInicio)
-				};
+				// for (const e of res.recordsets[0]) {
+				// 	e.fechaFin = this.FechaDiaCorrecto(e.fechaFin)
+				// 	e.fechaInicio = this.FechaDiaCorrecto(e.fechaInicio)
+				// };
 
 				if (this.tipoBusqueda === 0)
 					this.reporte = res.recordsets[0];
@@ -305,43 +305,43 @@ export class SelGeneralComponent implements OnInit {
 		});
 	};
 
-	FechaDiaCorrecto(fecha) {
-		return new Date(new Date(fecha).getTime() + new Date(fecha).getTimezoneOffset() * 60000)
-	};
+	// FechaDiaCorrecto(fecha) {
+	// 	return new Date(new Date(fecha).getTime() + new Date(fecha).getTimezoneOffset() * 60000)
+	// };
 
-	sincronizarDocumentos() {
-		const dialogRef = this.dialog.open(AlertDialogComponent,
-			{
-				width: '350px',
-				data: '¿Desea Sincronizar documentos?'
-			}
-		);
-		dialogRef.afterClosed().subscribe(resultado => {
-			if (resultado) {
-				this.spinner = true;
-				this.lstMapeoDocumentos = [];
-				let unidadesSeleccionadas = {
-					unidadesSeleccionadas: this.datosevent
-				};
-				this.coalService.postService(`reporte/InsDocumentosExpediente`, unidadesSeleccionadas).subscribe((res: any) => {
-					if (res.err) {
-						this.Excepciones(res.err, 4);
-					} else if (res.excepcion) {
-						this.Excepciones(res.excepcion, 3);
-					} else {
-						console.log(res.recordsets[0]);
-						this.spinner = false;
-					};
-					this.spinner = false
-				}, (error: any) => {
-					this.Excepciones(error, 2);
-					this.spinner = false
-				});
-			} else {
-				this.snackBar.open('Sincronización cancelada', 'Ok', { duration: 5000 });
-			};
-		});
-	};
+	// sincronizarDocumentos() {
+	// 	const dialogRef = this.dialog.open(AlertDialogComponent,
+	// 		{
+	// 			width: '350px',
+	// 			data: '¿Desea Sincronizar documentos?'
+	// 		}
+	// 	);
+	// 	dialogRef.afterClosed().subscribe(resultado => {
+	// 		if (resultado) {
+	// 			this.spinner = true;
+	// 			this.lstMapeoDocumentos = [];
+	// 			let unidadesSeleccionadas = {
+	// 				unidadesSeleccionadas: this.datosevent
+	// 			};
+	// 			this.coalService.postService(`reporte/InsDocumentosExpediente`, unidadesSeleccionadas).subscribe((res: any) => {
+	// 				if (res.err) {
+	// 					this.Excepciones(res.err, 4);
+	// 				} else if (res.excepcion) {
+	// 					this.Excepciones(res.excepcion, 3);
+	// 				} else {
+	// 					console.log(res.recordsets[0]);
+	// 					this.spinner = false;
+	// 				};
+	// 				this.spinner = false
+	// 			}, (error: any) => {
+	// 				this.Excepciones(error, 2);
+	// 				this.spinner = false
+	// 			});
+	// 		} else {
+	// 			this.snackBar.open('Sincronización cancelada', 'Ok', { duration: 5000 });
+	// 		};
+	// 	});
+	// };
 
 	getCompaniaUnidad() {
 		this.coalService.getService(`common/getCompaniaUnidad`).subscribe((res: any) => {
@@ -401,273 +401,273 @@ export class SelGeneralComponent implements OnInit {
 		});
 	};
 
-	AsignacionMismaEmpresa(unidades) {
-		this.spinner = true;
-		let xmlUnidadesAsignar = `<unidades>`
-		for (const e of unidades) {
-			xmlUnidadesAsignar += `<unidad><idUnidad>${e.idUnidad}</idUnidad><idCompania>${e.idCompania1}</idCompania><idSucursal>${e.idSucursal1}</idSucursal><ordenCompra>${e.ordenCompra1}</ordenCompra><numeroSerie>${e.numeroSerie}</numeroSerie></unidad>`
-		}
-		xmlUnidadesAsignar += `</unidades>`
-		const data = {
-			xmlUnidadesAsignar
-		}
-		this.coalService.postService(`reporte/PostAsignacionMismaEmpresa`, data).subscribe((res: any) => {
-			if (res.err) {
-				this.spinner = false
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.spinner = false
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 5000 });
+	// AsignacionMismaEmpresa(unidades) {
+	// 	this.spinner = true;
+	// 	let xmlUnidadesAsignar = `<unidades>`
+	// 	for (const e of unidades) {
+	// 		xmlUnidadesAsignar += `<unidad><idUnidad>${e.idUnidad}</idUnidad><idCompania>${e.idCompania1}</idCompania><idSucursal>${e.idSucursal1}</idSucursal><ordenCompra>${e.ordenCompra1}</ordenCompra><numeroSerie>${e.numeroSerie}</numeroSerie></unidad>`
+	// 	}
+	// 	xmlUnidadesAsignar += `</unidades>`
+	// 	const data = {
+	// 		xmlUnidadesAsignar
+	// 	}
+	// 	this.coalService.postService(`reporte/PostAsignacionMismaEmpresa`, data).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.spinner = false
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.spinner = false
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 5000 });
 
-				this.GenerateReport();
-			}
-		}, (error: any) => {
-			this.Excepciones(error, 2);
-			this.spinner = false
-		});
-	};
+	// 			this.GenerateReport();
+	// 		}
+	// 	}, (error: any) => {
+	// 		this.Excepciones(error, 2);
+	// 		this.spinner = false
+	// 	});
+	// };
 
-	GenerarCotizacion(unidades, result) {
-		const body = {
-			idUsuarioBpro: this.lstbPro[0].idUsuarioBpro,
-			idCompania: result.valorSelect.idCompania,
-			idSucursal: result.valorSelect.idSucursal,
-			rfcCompania: result.valorSelect.rfcCompania,
-			unidadesSeleccionadas: unidades
-		};
-		this.spinner = true;
-		this.coalService.postService(`reporte/PostGenerarCotizacion`, body).subscribe((res: any) => {
-			if (res.err) {
-				this.spinner = false
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.spinner = false
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 5000 });
-				this.GenerateReport();
-			};
-		}, (error: any) => {
-			this.Excepciones(error, 2);
-			this.spinner = false
-		});
-	};
+	// GenerarCotizacion(unidades, result) {
+	// 	const body = {
+	// 		idUsuarioBpro: this.lstbPro[0].idUsuarioBpro,
+	// 		idCompania: result.valorSelect.idCompania,
+	// 		idSucursal: result.valorSelect.idSucursal,
+	// 		rfcCompania: result.valorSelect.rfcCompania,
+	// 		unidadesSeleccionadas: unidades
+	// 	};
+	// 	this.spinner = true;
+	// 	this.coalService.postService(`reporte/PostGenerarCotizacion`, body).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.spinner = false
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.spinner = false
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 5000 });
+	// 			this.GenerateReport();
+	// 		};
+	// 	}, (error: any) => {
+	// 		this.Excepciones(error, 2);
+	// 		this.spinner = false
+	// 	});
+	// };
 
-	asignacion(datos, tipo) {
-		const data = []
-		for (const e of this.datosevent) {
-			this.spinner = true
-			let fechaFactura
-			let factura
-			let precioCompra;
-			let precioVenta;
-			if (tipo === 'PRIMERA') {
-				factura = e.factura1
-				fechaFactura = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaFactura1))
-				precioCompra = e.precioVenta1
-				precioVenta = (precioCompra + ((precioCompra / 100) * 10))
-			} else {
-				fechaFactura = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaFactura2))
-				factura = e.factura2
-				// precioCompra = e.precioCompra2
-				// precioVenta = e.precioVenta2
-				precioCompra = e.precioVenta1
-				precioVenta = (precioCompra + ((precioCompra / 100) * 10))
-			}
-			// tslint:disable-next-line:max-line-length
-			const marca = this.catalogoMarcas.filter(x => x.Marca === e.marca.toUpperCase() && x.idCompania === datos.valorSelect.idCompania && x.idSucursal === datos.valorSelect.idSucursal)
-			const fecha = new Date();
-			const fechaFormato = this.FormatoFecha(new Date(fecha.setDate(fecha.getDate() + 2)));
-			const fechaPedimento = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaPedimento))
-			const fechaPromesa = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaPromesa))
-			const fechaAnticipo = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaAnticipo))
-			const tiempoPromesa = this.FormatoTiempo();
-			let rfcCompania = ''
-			let idProveedor = 0
-			if (tipo === 'PRIMERA') {
-				rfcCompania = e.rfcCompania
-				idProveedor = e.idProveedorCompania
-			} else if (tipo === 'SEGUNDA') {
-				rfcCompania = e.rfcCompania1
-				idProveedor = e.idProveedorCompania1
-			}
-			data.push({
-				idUnidad: e.unidadId,
-				asignacion: tipo,
-				IdEmpresa: datos.valorSelect.idCompania,
-				IdSucursal: datos.valorSelect.idSucursal,
-				RfcCompaniaAsignacion: datos.valorSelect.rfcCompania,
-				rfcCompania,
-				NumeroSerie: e.numeroSerie,
-				Marca: marca[0].idMarca,
-				Modelo: e.submarca,
-				AnioModelo: parseInt(e.modelo),
-				ClaveVehicular: e.claveVehicular,
-				Kilometraje: e.kilometraje,
-				Placas: e.placas,
-				ColorInterior: e.colorInterior,
-				ColorExterior: e.colorExterior,
-				Combustible: e.idCombustible,
-				Transmision: e.idTransmision,
-				TipoUnidad: e.idTipoUnidad,
-				Ubicacion: e.idUbicacion,
-				TipoAdquisicion: datos.valorSelect.tipoAdquisicion,
-				OrigenUnidad: e.idOrigenUnidad,
-				OrigenMotor: e.idOrigenMotor,
-				CompraToma: datos.valorSelect.tomaCompra,
-				FacturaCompra: factura,
-				FechaFactura: fechaFactura,
-				Moneda: e.idMoneda,
-				Aduana: datos.valorSelect.idAduana,
-				NoPedimento: e.noPedimento,
-				FechaPedimento: fechaPedimento,
-				SerieImportacion: e.serieImportacion,
-				Proveedor: idProveedor,
-				// Proveedor: 21654,
-				PrecioCompraIva: precioCompra,
-				PrecioVentaIva: precioVenta,
-				FechaPromesa: fechaFormato,
-				HoraPromesa: tiempoPromesa,
-				Vendedor: e.idVendedor,
-				// Vendedor: 57001,
-				NoMotor: e.noMotor,
-				Cilindros: e.cilindros,
-				Capacidad: e.capacidad,
-				Puertas: e.puertas,
-				EstadoPlacas: e.idEstadoPlacas,
-				CalcomaniaLegalizacion: e.calcomaniaLegalizacion,
-				Comentarios: e.comentarios,
-				Anticipo: 0,
-				CantidadAnticipo: 0,
-				PorcentajeAnticipo: 0,
-				FechaAnticipo: fechaAnticipo,
-				idUsuarioBpro: this.lstbPro[0].idUsuarioBpro,
-			});
-		};
-		this.spinner = true
-	}
+	// asignacion(datos, tipo) {
+	// 	const data = []
+	// 	for (const e of this.datosevent) {
+	// 		this.spinner = true
+	// 		let fechaFactura
+	// 		let factura
+	// 		let precioCompra;
+	// 		let precioVenta;
+	// 		if (tipo === 'PRIMERA') {
+	// 			factura = e.factura1
+	// 			fechaFactura = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaFactura1))
+	// 			precioCompra = e.precioVenta1
+	// 			precioVenta = (precioCompra + ((precioCompra / 100) * 10))
+	// 		} else {
+	// 			fechaFactura = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaFactura2))
+	// 			factura = e.factura2
+	// 			// precioCompra = e.precioCompra2
+	// 			// precioVenta = e.precioVenta2
+	// 			precioCompra = e.precioVenta1
+	// 			precioVenta = (precioCompra + ((precioCompra / 100) * 10))
+	// 		}
+	// 		// tslint:disable-next-line:max-line-length
+	// 		const marca = this.catalogoMarcas.filter(x => x.Marca === e.marca.toUpperCase() && x.idCompania === datos.valorSelect.idCompania && x.idSucursal === datos.valorSelect.idSucursal)
+	// 		const fecha = new Date();
+	// 		const fechaFormato = this.FormatoFecha(new Date(fecha.setDate(fecha.getDate() + 2)));
+	// 		const fechaPedimento = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaPedimento))
+	// 		const fechaPromesa = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaPromesa))
+	// 		const fechaAnticipo = this.FormatoFecha(this.FechaDiaCorrecto(e.fechaAnticipo))
+	// 		const tiempoPromesa = this.FormatoTiempo();
+	// 		let rfcCompania = ''
+	// 		let idProveedor = 0
+	// 		if (tipo === 'PRIMERA') {
+	// 			rfcCompania = e.rfcCompania
+	// 			idProveedor = e.idProveedorCompania
+	// 		} else if (tipo === 'SEGUNDA') {
+	// 			rfcCompania = e.rfcCompania1
+	// 			idProveedor = e.idProveedorCompania1
+	// 		}
+	// 		data.push({
+	// 			idUnidad: e.unidadId,
+	// 			asignacion: tipo,
+	// 			IdEmpresa: datos.valorSelect.idCompania,
+	// 			IdSucursal: datos.valorSelect.idSucursal,
+	// 			RfcCompaniaAsignacion: datos.valorSelect.rfcCompania,
+	// 			rfcCompania,
+	// 			NumeroSerie: e.numeroSerie,
+	// 			Marca: marca[0].idMarca,
+	// 			Modelo: e.submarca,
+	// 			AnioModelo: parseInt(e.modelo),
+	// 			ClaveVehicular: e.claveVehicular,
+	// 			Kilometraje: e.kilometraje,
+	// 			Placas: e.placas,
+	// 			ColorInterior: e.colorInterior,
+	// 			ColorExterior: e.colorExterior,
+	// 			Combustible: e.idCombustible,
+	// 			Transmision: e.idTransmision,
+	// 			TipoUnidad: e.idTipoUnidad,
+	// 			Ubicacion: e.idUbicacion,
+	// 			TipoAdquisicion: datos.valorSelect.tipoAdquisicion,
+	// 			OrigenUnidad: e.idOrigenUnidad,
+	// 			OrigenMotor: e.idOrigenMotor,
+	// 			CompraToma: datos.valorSelect.tomaCompra,
+	// 			FacturaCompra: factura,
+	// 			FechaFactura: fechaFactura,
+	// 			Moneda: e.idMoneda,
+	// 			Aduana: datos.valorSelect.idAduana,
+	// 			NoPedimento: e.noPedimento,
+	// 			FechaPedimento: fechaPedimento,
+	// 			SerieImportacion: e.serieImportacion,
+	// 			Proveedor: idProveedor,
+	// 			// Proveedor: 21654,
+	// 			PrecioCompraIva: precioCompra,
+	// 			PrecioVentaIva: precioVenta,
+	// 			FechaPromesa: fechaFormato,
+	// 			HoraPromesa: tiempoPromesa,
+	// 			Vendedor: e.idVendedor,
+	// 			// Vendedor: 57001,
+	// 			NoMotor: e.noMotor,
+	// 			Cilindros: e.cilindros,
+	// 			Capacidad: e.capacidad,
+	// 			Puertas: e.puertas,
+	// 			EstadoPlacas: e.idEstadoPlacas,
+	// 			CalcomaniaLegalizacion: e.calcomaniaLegalizacion,
+	// 			Comentarios: e.comentarios,
+	// 			Anticipo: 0,
+	// 			CantidadAnticipo: 0,
+	// 			PorcentajeAnticipo: 0,
+	// 			FechaAnticipo: fechaAnticipo,
+	// 			idUsuarioBpro: this.lstbPro[0].idUsuarioBpro,
+	// 		});
+	// 	};
+	// 	this.spinner = true
+	// }
 
-	FormatoTiempo() {
-		const fecha = new Date()
-		const h = fecha.getHours();
-		const m = fecha.getMinutes();
-		const s = fecha.getSeconds();
-		const ms = fecha.getMilliseconds();
-		return h + ':' + m + ':' + s + '.000';
-	};
+	// FormatoTiempo() {
+	// 	const fecha = new Date()
+	// 	const h = fecha.getHours();
+	// 	const m = fecha.getMinutes();
+	// 	const s = fecha.getSeconds();
+	// 	const ms = fecha.getMilliseconds();
+	// 	return h + ':' + m + ':' + s + '.000';
+	// };
 
-	FormatoFecha(inputFormat) {
-		function pad(s) { return (s < 10) ? '0' + s : s; }
-		const d = new Date(inputFormat)
-		return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-')
-	};
+	// FormatoFecha(inputFormat) {
+	// 	function pad(s) { return (s < 10) ? '0' + s : s; }
+	// 	const d = new Date(inputFormat)
+	// 	return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-')
+	// };
 
-	ValidaExpediente(arr) {
-		this.spinner = true
-		let xmlOrdenCompra = `<ordenes>`
-		for (const e of arr) {
-			xmlOrdenCompra += `<orden><ordenCompra>${e.ordenComora}</ordenCompra></orden>`
-		}
-		xmlOrdenCompra += `</ordenes>`
-		const datos = {
-			xmlOrdenCompra
-		}
-		this.coalService.postService(`reporte/PostValidaExpediente`, datos).subscribe((res: any) => {
-			this.spinner = true
-			if (res.err) {
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				this.PostCopiaDocumentosPdf(arr);
-			};
-		}, (error: any) => {
-			this.spinner = true
-			this.Excepciones(error, 2);
-		});
-	};
+	// ValidaExpediente(arr) {
+	// 	this.spinner = true
+	// 	let xmlOrdenCompra = `<ordenes>`
+	// 	for (const e of arr) {
+	// 		xmlOrdenCompra += `<orden><ordenCompra>${e.ordenComora}</ordenCompra></orden>`
+	// 	}
+	// 	xmlOrdenCompra += `</ordenes>`
+	// 	const datos = {
+	// 		xmlOrdenCompra
+	// 	}
+	// 	this.coalService.postService(`reporte/PostValidaExpediente`, datos).subscribe((res: any) => {
+	// 		this.spinner = true
+	// 		if (res.err) {
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			this.PostCopiaDocumentosPdf(arr);
+	// 		};
+	// 	}, (error: any) => {
+	// 		this.spinner = true
+	// 		this.Excepciones(error, 2);
+	// 	});
+	// };
 
-	PostCopiaDocumentosPdf(arr) {
-		this.spinner = true
-		this.coalService.postService(`reporte/PostCopiaDocumentosPdf`, arr).subscribe((res: any) => {
-			if (res.err) {
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				const datos = res.filter(x => x.validacion === true);
-				if (datos.length > 0) {
-					setTimeout(() => {
-						this.PostSubeDocumentosFactura(arr);
-					}, 1000);
-				};
-			};
-			this.spinner = false
-		}, (error: any) => {
-			this.spinner = false
-			this.Excepciones(error, 2)
-		});
-	};
+	// PostCopiaDocumentosPdf(arr) {
+	// 	this.spinner = true
+	// 	this.coalService.postService(`reporte/PostCopiaDocumentosPdf`, arr).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			const datos = res.filter(x => x.validacion === true);
+	// 			if (datos.length > 0) {
+	// 				setTimeout(() => {
+	// 					this.PostSubeDocumentosFactura(arr);
+	// 				}, 1000);
+	// 			};
+	// 		};
+	// 		this.spinner = false
+	// 	}, (error: any) => {
+	// 		this.spinner = false
+	// 		this.Excepciones(error, 2)
+	// 	});
+	// };
 
-	PostSubeDocumentosFactura(arr) {
-		this.spinner = true
-		this.coalService.postService(`reporte/PostSubeDocumentosFactura`, arr).subscribe((res: any) => {
-			if (res.err) {
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				const datos = res.filter(x => x.validacion === true);
-				if (datos.length > 0) {
-					this.PostSubeDocumentoComprobante(datos);
-				};
-			};
-			this.spinner = false
-		}, (error: any) => {
-			this.spinner = false
-			this.Excepciones(error, 2)
-		});
-	}
+	// PostSubeDocumentosFactura(arr) {
+	// 	this.spinner = true
+	// 	this.coalService.postService(`reporte/PostSubeDocumentosFactura`, arr).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			const datos = res.filter(x => x.validacion === true);
+	// 			if (datos.length > 0) {
+	// 				this.PostSubeDocumentoComprobante(datos);
+	// 			};
+	// 		};
+	// 		this.spinner = false
+	// 	}, (error: any) => {
+	// 		this.spinner = false
+	// 		this.Excepciones(error, 2)
+	// 	});
+	// }
 
-	PostSubeDocumentoComprobante(arr) {
-		this.spinner = true
-		this.coalService.postService(`reporte/PostSubeDocumentoComprobante`, arr).subscribe((res: any) => {
-			if (res.err) {
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				const datos = res.filter(x => x.validacion === true);
-				if (datos.length > 0) {
-					this.PostFacturaEntrega(datos);
-				};
-			};
-			this.spinner = false
-		}, (error: any) => {
-			this.spinner = false
-			this.Excepciones(error, 2)
-		});
-	};
+	// PostSubeDocumentoComprobante(arr) {
+	// 	this.spinner = true
+	// 	this.coalService.postService(`reporte/PostSubeDocumentoComprobante`, arr).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			const datos = res.filter(x => x.validacion === true);
+	// 			if (datos.length > 0) {
+	// 				this.PostFacturaEntrega(datos);
+	// 			};
+	// 		};
+	// 		this.spinner = false
+	// 	}, (error: any) => {
+	// 		this.spinner = false
+	// 		this.Excepciones(error, 2)
+	// 	});
+	// };
 
-	PostFacturaEntrega(datos) {
-		this.spinner = true
-		this.coalService.postService(`reporte/PostFacturaEntrega`, datos).subscribe((res: any) => {
-			if (res.err) {
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				console.log(res);
-				this.sincronizarDocumentos()
-			};
-			this.spinner = false
-		}, (error: any) => {
-			this.spinner = false
-			this.Excepciones(error, 2)
-		});
-	};
+	// PostFacturaEntrega(datos) {
+	// 	this.spinner = true
+	// 	this.coalService.postService(`reporte/PostFacturaEntrega`, datos).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			console.log(res);
+	// 			this.sincronizarDocumentos()
+	// 		};
+	// 		this.spinner = false
+	// 	}, (error: any) => {
+	// 		this.spinner = false
+	// 		this.Excepciones(error, 2)
+	// 	});
+	// };
 
 	Alerta() {
 		this.AlertDialog('Por favor de verificar');
@@ -826,23 +826,17 @@ export class SelGeneralComponent implements OnInit {
 		];
 	}
 
-	FillGrid() {
-		this.columnsGeneral = this.lstDataReport.find(x => x.idTipoReporte === 1).columnas;
-		this.reporte = this.lstDataReport.find(x => x.idTipoReporte === 1).dataReport;
-		console.clear();
-		this.verGrid = true;
-		this.spinner = false;
-	};
+	// FillGrid() {
+	// 	this.columnsGeneral = this.lstDataReport.find(x => x.idTipoReporte === 1).columnas;
+	// 	this.reporte = this.lstDataReport.find(x => x.idTipoReporte === 1).dataReport;
+	// 	console.clear();
+	// 	this.verGrid = true;
+	// 	this.spinner = false;
+	// };
 
 	receiveMessage($event) {
 		try {
-			if ($event === 'administrar') {
-				this.PostCopiaDocumentosPdf(1)
-			} else if ($event === 'enviarIntellimotors') {
-				this.EnviarIntellimotors();
-			} else if ($event === 'documentos') {
-				this.sincronizarDocumentos();
-			} else if ($event === 'openModalPrecio') {
+			if ($event === 'openModalPrecio') {
 				this.precioUnidad();
 			} else if ($event === 'openModalVenta') {
 				this.getClientBuy();
@@ -877,11 +871,11 @@ export class SelGeneralComponent implements OnInit {
 					dataXml += `<unidad><idUnidad>${value.idUnidad}</idUnidad><newPrice>${result.valorSelect}</newPrice></unidad>`;
 				});
 				const data = {
-					xmlUnits: xml.replace('$data', dataXml)
+					xmlUnits: xml.replace('$data', dataXml),
+					idUsuarioActualiza: this.lstbPro[0].usu_idusuario
 				};
 
 				this.coalService.putService(`reporte/updatePrice`, data).subscribe((res: any) => {
-					console.log('res', res);
 					if (res.err) {
 						this.Excepciones(res.err, 4);
 					} else if (res.excepcion) {
@@ -911,10 +905,10 @@ export class SelGeneralComponent implements OnInit {
 		let xml = `<ventas>$data</ventas>`;
 		let dataXml = '';
 		const dialogRef = this.dialog.open(DialogClient, {
-			width: '50%',
+			width: '80%',
 			disableClose: true,
 			data: {
-				title: 'Seleccion clientes',
+				title: 'Venta de unidades',
 				//select: this.sucAceptanSeminuevos,//this.companias,
 				elementos: 'Cantidad de unidades a vender: ' + this.datosevent.length,
 				unidades: this.datosevent
@@ -926,12 +920,26 @@ export class SelGeneralComponent implements OnInit {
 				this.spinner = false;
 			} else {
 				this.spinner = true;
-				console.log('result', result);
+
+				if (isNaN(result.valorSelect[1].PER_IDPERSONA)) {
+					this.spinner = false;
+					return this.snackBar.open('Elija un cliente de los que estan en el combo', 'Ok', { duration: 10000 });
+				};
+
+				if (result.valorSelect[0].datosExtras && (result.valorSelect[0].descriptionAditional.length === 0 || result.valorSelect[0].cfdi.length === 0)) {
+					this.spinner = false;
+					return this.snackBar.open('Si selecciona datos extras debe escribir la descrpcion o el tipo de CFDI', 'Ok', { duration: 10000 });
+				};
+
 				this.datosevent.forEach(value => {
 					dataXml += `<venta><idUnidad>${value.idUnidad}</idUnidad><client>${result.valorSelect[1].PER_IDPERSONA}</client><userId>${this.lstbPro[0].usu_idusuario}</userId><sellPrice>${value.precioVentaIva}</sellPrice><buyPrice>${value.precioCompraIva}</buyPrice></venta>`;
 				});
+
 				const data = {
-					xmlVenta: xml.replace('$data', dataXml)
+					xmlVenta: xml.replace('$data', dataXml),
+					datosExtras: result.valorSelect[0].datosExtras ? 1 : 0,
+					cfdi: isNaN(result.valorSelect[0].cfdi.idCfdi) ? 0 : result.valorSelect[0].cfdi.idCfdi,
+					descriptionAditional: result.valorSelect[0].descriptionAditional
 				};
 
 				this.coalService.postService(`reporte/sellUnit`, data).subscribe((res: any) => {
@@ -950,7 +958,7 @@ export class SelGeneralComponent implements OnInit {
 						this.BotonesToolbar();
 						this.GenerateReport();
 					};
-					this.spinner = false
+					this.spinner = false;
 				}, (error: any) => {
 					this.Excepciones(error, 2);
 					this.spinner = false
@@ -1021,155 +1029,155 @@ export class SelGeneralComponent implements OnInit {
 		};
 	};
 
-	subeFactura() {
-		// this.spinner = true;
-		this.lstMapeoDocumentos = [];
-		let unidadesSeleccionadas = {
-			unidadesSeleccionadas: this.datosevent
-		};
-		console.log(unidadesSeleccionadas);
-		this.coalService.postService(`reporte/InsDocumentosExpedienteFactura`, unidadesSeleccionadas).subscribe((res: any) => {
-			if (res.err) {
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				this.spinner = false;
-				this.snackBar.open('Sincronizando Documentación', 'Ok', { duration: 5000 });
-			};
-			this.spinner = false
-		}, (error: any) => {
-			this.Excepciones(error, 2);
-			this.spinner = false
-		});
-	};
+	// subeFactura() {
+	// 	// this.spinner = true;
+	// 	this.lstMapeoDocumentos = [];
+	// 	let unidadesSeleccionadas = {
+	// 		unidadesSeleccionadas: this.datosevent
+	// 	};
+	// 	console.log(unidadesSeleccionadas);
+	// 	this.coalService.postService(`reporte/InsDocumentosExpedienteFactura`, unidadesSeleccionadas).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			this.spinner = false;
+	// 			this.snackBar.open('Sincronizando Documentación', 'Ok', { duration: 5000 });
+	// 		};
+	// 		this.spinner = false
+	// 	}, (error: any) => {
+	// 		this.Excepciones(error, 2);
+	// 		this.spinner = false
+	// 	});
+	// };
 
-	GuardaUnidadesDesflote(datosEmpresa,) {
-		let xmlUnidades = `<unidades>`
-		for (const e of this.datosevent) {
-			xmlUnidades += `<unidad><unidadId>${e.unidadId}</unidadId><numeroSerie>${e.numeroSerie}</numeroSerie></unidad>`
-		}
-		xmlUnidades += `</unidades>`
-		const datos = {
-			xmlUnidades
-		}
-	};
+	// GuardaUnidadesDesflote(datosEmpresa,) {
+	// 	let xmlUnidades = `<unidades>`
+	// 	for (const e of this.datosevent) {
+	// 		xmlUnidades += `<unidad><unidadId>${e.unidadId}</unidadId><numeroSerie>${e.numeroSerie}</numeroSerie></unidad>`
+	// 	}
+	// 	xmlUnidades += `</unidades>`
+	// 	const datos = {
+	// 		xmlUnidades
+	// 	}
+	// };
 
-	EnviarIntellimotors() {
-		const i = this.reporte.findIndex(x => x.vin === this.datosevent[0].vin)
-		if (this.reporte.length > 1) {
-			this.snackBar.open('Se enviaron las unidades a intellimotors', 'Ok', { duration: 10000 });
-		} else {
-			this.snackBar.open('Se envio la unidad a intellimotors', 'Ok', { duration: 10000 });
-		}
-		if (this.reporte[i].precioCompra === 0) {
-			this.spinner = true;
-			this.verGrid = false;
-			setTimeout(() => {
-				this.reporte[i].precioCompra = 350000
-				this.reporte[i].precioVenta = 440000
-				this.spinner = false;
-				this.verGrid = true;
-				this.snackBar.open('Las unidades se han registrado en intellimotors', 'Ok', { duration: 10000 });
-			}, 3000);
-		} else {
-			this.snackBar.open('Esta unidad ya esta registrada en intellimotors', 'Ok', { duration: 10000 });
-		}
-	}
+	// EnviarIntellimotors() {
+	// 	const i = this.reporte.findIndex(x => x.vin === this.datosevent[0].vin)
+	// 	if (this.reporte.length > 1) {
+	// 		this.snackBar.open('Se enviaron las unidades a intellimotors', 'Ok', { duration: 10000 });
+	// 	} else {
+	// 		this.snackBar.open('Se envio la unidad a intellimotors', 'Ok', { duration: 10000 });
+	// 	}
+	// 	if (this.reporte[i].precioCompra === 0) {
+	// 		this.spinner = true;
+	// 		this.verGrid = false;
+	// 		setTimeout(() => {
+	// 			this.reporte[i].precioCompra = 350000
+	// 			this.reporte[i].precioVenta = 440000
+	// 			this.spinner = false;
+	// 			this.verGrid = true;
+	// 			this.snackBar.open('Las unidades se han registrado en intellimotors', 'Ok', { duration: 10000 });
+	// 		}, 3000);
+	// 	} else {
+	// 		this.snackBar.open('Esta unidad ya esta registrada en intellimotors', 'Ok', { duration: 10000 });
+	// 	}
+	// }
 
-	Expediente(vin) {
-		let idCompania;
-		let idSucursal;
-		let numeroSerie = vin.key.numeroSerie;
-		if (vin.columnIndex === 6) {
-			idCompania = vin.key.idCompania1;
-			idSucursal = vin.key.idSucursal1;
-		}
-		else if (vin.columnIndex === 17) {
-			idCompania = vin.key.idCompania2;
-			idSucursal = vin.key.idSucursal2;
-		}
+	// Expediente(vin) {
+	// 	let idCompania;
+	// 	let idSucursal;
+	// 	let numeroSerie = vin.key.numeroSerie;
+	// 	if (vin.columnIndex === 6) {
+	// 		idCompania = vin.key.idCompania1;
+	// 		idSucursal = vin.key.idSucursal1;
+	// 	}
+	// 	else if (vin.columnIndex === 17) {
+	// 		idCompania = vin.key.idCompania2;
+	// 		idSucursal = vin.key.idSucursal2;
+	// 	}
 
-		var url = 'http://192.168.20.123:4080';
-		var titulo = 'Login by User Id';
-		var form = document.createElement("form");
-		form.setAttribute("method", "post");
-		form.setAttribute("action", url);
-		form.setAttribute("target", titulo);
-		var hiddenField = document.createElement("input");
-		hiddenField.setAttribute("type", "hidden");
-		hiddenField.setAttribute("name", "idUsuario");
-		hiddenField.setAttribute("value", '71');
-		form.appendChild(hiddenField);
+	// 	var url = 'http://192.168.20.123:4080';
+	// 	var titulo = 'Login by User Id';
+	// 	var form = document.createElement("form");
+	// 	form.setAttribute("method", "post");
+	// 	form.setAttribute("action", url);
+	// 	form.setAttribute("target", titulo);
+	// 	var hiddenField = document.createElement("input");
+	// 	hiddenField.setAttribute("type", "hidden");
+	// 	hiddenField.setAttribute("name", "idUsuario");
+	// 	hiddenField.setAttribute("value", '71');
+	// 	form.appendChild(hiddenField);
 
-		var hiddenField1 = document.createElement("input");
-		hiddenField1.setAttribute("type", "hidden");
-		hiddenField1.setAttribute("name", "idProceso");
-		hiddenField1.setAttribute("value", '1');
-		form.appendChild(hiddenField1);
+	// 	var hiddenField1 = document.createElement("input");
+	// 	hiddenField1.setAttribute("type", "hidden");
+	// 	hiddenField1.setAttribute("name", "idProceso");
+	// 	hiddenField1.setAttribute("value", '1');
+	// 	form.appendChild(hiddenField1);
 
-		var hiddenField2 = document.createElement("input");
-		hiddenField2.setAttribute("type", "hidden");
-		hiddenField2.setAttribute("name", "idEmpresa");
-		hiddenField2.setAttribute("value", idCompania);
-		form.appendChild(hiddenField2);
+	// 	var hiddenField2 = document.createElement("input");
+	// 	hiddenField2.setAttribute("type", "hidden");
+	// 	hiddenField2.setAttribute("name", "idEmpresa");
+	// 	hiddenField2.setAttribute("value", idCompania);
+	// 	form.appendChild(hiddenField2);
 
-		var hiddenField3 = document.createElement("input");
-		hiddenField3.setAttribute("type", "hidden");
-		hiddenField3.setAttribute("name", "idSucursal");
-		hiddenField3.setAttribute("value", idSucursal);
-		form.appendChild(hiddenField3);
+	// 	var hiddenField3 = document.createElement("input");
+	// 	hiddenField3.setAttribute("type", "hidden");
+	// 	hiddenField3.setAttribute("name", "idSucursal");
+	// 	hiddenField3.setAttribute("value", idSucursal);
+	// 	form.appendChild(hiddenField3);
 
-		var hiddenField4 = document.createElement("input");
-		hiddenField4.setAttribute("type", "hidden");
-		hiddenField4.setAttribute("name", "vin");
-		hiddenField4.setAttribute("value", numeroSerie);
-		form.appendChild(hiddenField4);
+	// 	var hiddenField4 = document.createElement("input");
+	// 	hiddenField4.setAttribute("type", "hidden");
+	// 	hiddenField4.setAttribute("name", "vin");
+	// 	hiddenField4.setAttribute("value", numeroSerie);
+	// 	form.appendChild(hiddenField4);
 
-		document.body.appendChild(form);
-		window.open('', titulo);
-		form.submit();
-	};
+	// 	document.body.appendChild(form);
+	// 	window.open('', titulo);
+	// 	form.submit();
+	// };
 
-	SegundaAsignacion(valor) {
-		const i = this.data.findIndex(x => x.vin === this.datosevent[0].vin)
-		const nombreCompania = this.companias.find(x => x.idCompania === valor.idCompania).descripcion;
-		this.data[i].agenciaAsignada = nombreCompania;
-		this.data[i].PrecioFinFacturar2 = "$234,212.00";
-		this.data[i].factura2 = "SDF4232FD2S";
-		this.data[i].utilidad = "$22,233.00";
-		this.data[i].vendido = 'Santiago Juárez Salazar';
-		this.data[i].precioFinal = "$237,342.00";
-		this.data[i].ordenCompra2 = 'AU-AA-AAZ-ACS-PE-1135';
-		this.data[i].aprobada2 = 'Si';
-		this.data[i].vendida2 = 'Si';
-		this.data[i].traslados = 'Con traslado'
+	// SegundaAsignacion(valor) {
+	// 	const i = this.data.findIndex(x => x.vin === this.datosevent[0].vin)
+	// 	const nombreCompania = this.companias.find(x => x.idCompania === valor.idCompania).descripcion;
+	// 	this.data[i].agenciaAsignada = nombreCompania;
+	// 	this.data[i].PrecioFinFacturar2 = "$234,212.00";
+	// 	this.data[i].factura2 = "SDF4232FD2S";
+	// 	this.data[i].utilidad = "$22,233.00";
+	// 	this.data[i].vendido = 'Santiago Juárez Salazar';
+	// 	this.data[i].precioFinal = "$237,342.00";
+	// 	this.data[i].ordenCompra2 = 'AU-AA-AAZ-ACS-PE-1135';
+	// 	this.data[i].aprobada2 = 'Si';
+	// 	this.data[i].vendida2 = 'Si';
+	// 	this.data[i].traslados = 'Con traslado'
 
-		this.spinner = false;
-	};
+	// 	this.spinner = false;
+	// };
 
-	datosUpd(e) {
-		const datos = {
-			idUnidad: e.editdata.key.idUnidad,
-			numeroSerie: e.editdata.key.numeroSerie,
-			key: Object.keys(e.editdata.newData)[0],
-			precio: e.editdata.newData[`${Object.keys(e.editdata.newData)}`]
-		};
-		this.coalService.postService(`reporte/UpdPrecio`, datos).subscribe((res: any) => {
-			if (res.err) {
-				this.Excepciones(res.err, 4);
-			} else if (res.excepcion) {
-				this.Excepciones(res.excepcion, 3);
-			} else {
-				this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 10000 });
-				this.spinner = false;
-			}
-			this.spinner = false
-		}, (error: any) => {
-			this.Excepciones(error, 2);
-			this.spinner = false
-		});
-	};
+	// datosUpd(e) {
+	// 	const datos = {
+	// 		idUnidad: e.editdata.key.idUnidad,
+	// 		numeroSerie: e.editdata.key.numeroSerie,
+	// 		key: Object.keys(e.editdata.newData)[0],
+	// 		precio: e.editdata.newData[`${Object.keys(e.editdata.newData)}`]
+	// 	};
+	// 	this.coalService.postService(`reporte/UpdPrecio`, datos).subscribe((res: any) => {
+	// 		if (res.err) {
+	// 			this.Excepciones(res.err, 4);
+	// 		} else if (res.excepcion) {
+	// 			this.Excepciones(res.excepcion, 3);
+	// 		} else {
+	// 			this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 10000 });
+	// 			this.spinner = false;
+	// 		}
+	// 		this.spinner = false
+	// 	}, (error: any) => {
+	// 		this.Excepciones(error, 2);
+	// 		this.spinner = false
+	// 	});
+	// };
 
 
 	/**
