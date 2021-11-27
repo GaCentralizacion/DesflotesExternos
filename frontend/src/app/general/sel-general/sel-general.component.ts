@@ -128,7 +128,13 @@ export class SelGeneralComponent implements OnInit {
 			dataField: 'facturaVenta',
 			allowEditing: false,
 			cssClass: 'cliente',
-			cellTemplate: 'pdfFacturaCliente'
+			cellTemplate: 'pdfFactura'
+		},
+		{
+			caption: 'Estatus de la unidad',
+			dataField: 'textStatus',
+			allowEditing: false,
+			cssClass: 'cliente'
 		}
 	];
 
@@ -255,47 +261,11 @@ export class SelGeneralComponent implements OnInit {
 			} else if (res.excepcion) {
 				this.Excepciones(res.excepcion, 3);
 			} else {
-				// for (const e of res.recordsets[0]) {
-				// 	e.fechaFin = this.FechaDiaCorrecto(e.fechaFin)
-				// 	e.fechaInicio = this.FechaDiaCorrecto(e.fechaInicio)
-				// };
-
 				if (this.tipoBusqueda === 0)
 					this.reporte = res.recordsets[0];
 				else
 					this.data = res.recordsets[0];
-				// const datos = [];
-				// this.reporte.forEach(val => datos.push(Object.assign({}, val)));
-				// this.data = datos.filter(x => x.llaveEstado !== 'SIA')
-				// const arregloDoc = ['./assets/images/iconos-coal/doc/comprobantes.pdf', './assets/images/iconos-coal/doc/comprobante2.pdf', './assets/images/iconos-coal/doc/comprobante3df.pdf']
 
-				// this.data.forEach(x => {
-				// 	if (x.datosIntelimotors === 0) {
-				// 		x.opacity = 0.2
-				// 	}
-				// })
-				// for (const e of this.reporte) {
-				// 	if (e.llaveEstado !== 'SIA') {
-				// 		e.backgroundcolor = '#a4b3f5'
-				// 	} else {
-				// 		if (e.estatusOrden === 'PEN1') {
-				// 			e.backgroundcolor = '#ffea4d'
-				// 			e.estado = 'PENDIENTE'
-				// 		} else if (e.estatusOrden === 'PEN2') {
-				// 			e.backgroundcolor = '#ffea4d'
-				// 			e.factura2 = 'PENDIENTE'
-				// 			e.ordenCompra2 = 'PENDIENTE'
-				// 		}
-				// 	}
-				// }
-
-				// for (const e of this.data) {
-				// 	if (e.estatusOrden === 'PEN2') {
-				// 		e.backgroundcolor = '#ffea4d'
-				// 		e.factura2 = 'PENDIENTE'
-				// 		e.ordenCompra2 = 'PENDIENTE'
-				// 	}
-				// }
 				this.verGrid = true;
 			}
 			this.spinner = false;
@@ -777,7 +747,7 @@ export class SelGeneralComponent implements OnInit {
 						onClick: this.receiveMessage.bind(this, 'openModalLiberaUnidad')
 					},
 					visible: false,
-					name: 'simple',
+					name: 'simple'
 				}
 			];
 		};
@@ -1023,7 +993,7 @@ export class SelGeneralComponent implements OnInit {
 	datosMessage($event) {
 		try {
 			this.datosevent = $event.data;
-			// console.log('DATOS EVENTE=============', this.datosevent)
+			console.log('DATOS EVENTE=============', this.datosevent)
 		} catch (error) {
 			this.Excepciones(error, 1);
 		};

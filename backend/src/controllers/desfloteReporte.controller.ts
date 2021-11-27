@@ -181,10 +181,10 @@ export class DesfloteReporteController {
   * Wiki:
   */
 
-	@Post("/ObtenerFactura")
-	ObtenerFactura(@Body({ options: { limit: '50mb', extended: true, parameterLimit: 500000 } }) body: Request) {
-		return this.repository.ObtenerFactura(body);
-	}
+	// @Post("/ObtenerFactura")
+	// ObtenerFactura(@Body({ options: { limit: '50mb', extended: true, parameterLimit: 500000 } }) body: Request) {
+	// 	return this.repository.ObtenerFactura(body);
+	// }
 
 
 	/**
@@ -463,6 +463,11 @@ export class DesfloteReporteController {
 	@Post('/deleteVenta')
 	deleteVenta(@Body() body: Request) {
 		return this.repository.deleteVenta(body);
+	};
+
+	@Post('/ObtenerFactura')
+	ObtenerFactura(@Body() body: Request) {
+		return this.repository.ObtenerFactura(body);
 	};
 
 	// ************ END Servicios POST ************

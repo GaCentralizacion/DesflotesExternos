@@ -15,6 +15,7 @@ const jsonxml = require('jsontoxml');
 const ftp = require("basic-ftp")
 const ncp = require('ncp').ncp;
 const cron = require('node-cron')
+const soap = require('soap');
 
 @Service()
 export class DesfloteReporteRepository {
@@ -157,28 +158,26 @@ export class DesfloteReporteRepository {
 
     ObtenerFactura(body: any): any {
         return new Promise((resolve, reject) => {
-            const soap = require('soap');
-            const url = 'http://192.168.20.123:8080/Service1.asmx?WSDL';
-            const args = { RFCEMISOR: 'AAN910409I35', RFCRECEPTOR: '', SERIE: 'GA', FOLIO: '0019077' };
-            soap.createClient(url, function (err: any, client: any) {
-                if (err) console.error(err);
-                else {
-                    client.MuestraFactura(args, function (err: any, response: any) {
-                        if (err) reject(err);
-                        else {
-                            let hola = 'GA0019077'
-                            let arrayDeCadenas = hola.split('0');
-                            console.log(arrayDeCadenas)
-                            base64.base64Decode(response.MuestraFacturaResult.pdf, `factura.pdf`);
-                            resolve(response)
-                            // res.send(response);
-                        }
-                    })
-                }
-            });
-
+            try {
+                const args = { RFCEMISOR: body.rfcEmisor, RFCRECEPTOR: body.rfcReceptor, SERIE: body.serie, FOLIO: body.folio };
+                soap.createClient(config.development.WSInvoce, function (err: any, client: any) {
+                    if (err) {
+                        console.error('ErorrSOAP', err);
+                        reject({ success: 0, data: [] });
+                    } else {
+                        client.MuestraFactura(args, function (err: any, response: any) {
+                            if (err) reject({ success: 0, data: [] });
+                            else {
+                                resolve({ success: 1, data: response });
+                            };
+                        });
+                    };
+                });
+            } catch (error) {
+                reject({ success: 0, data: [] });
+            };
         });
-    }
+    };
 
     PostComprobantePago(body: any): any {
         let folioOrden = body.folioOrden;

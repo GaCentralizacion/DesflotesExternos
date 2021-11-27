@@ -40,7 +40,8 @@ export default {
             "apiKey": 'XBT3XfffHM',
             "apiSecret": 'F46DBB5693BFCCFCEF43638D2125861A348F8BBDD97D5EE6EB9BACBF7A'
 
-        }
+        },
+        "WSInvoce": "http://192.168.20.89:8095/Service1.asmx?WSDL"
 
     },
     "production": {
