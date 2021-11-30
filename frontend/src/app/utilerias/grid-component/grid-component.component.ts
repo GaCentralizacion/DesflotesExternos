@@ -15,6 +15,8 @@ import { DialogMapa } from './alert-mapa/alert-mapa.component'
 import { CoalService } from '../../services/coal.service';
 import { ExcepcionesComponent } from '../../../app/utilerias/excepciones/excepciones.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogDescripcion } from '../../general/sel-general/modal-descripcion/modal-descripcion.component';
+
 // import { google } from '@agm/core/services/google-maps-types';
 @Component({
 	selector: 'app-grid-component',
@@ -615,10 +617,72 @@ export class GridComponentComponent implements OnInit, AfterViewInit {
 				this.Excepciones(error, 2);
 			}
 		);
-
-
 	}
 
+	public verDescripcion = dataUnit => {
+		this.spinner = true;
+		const body = {
+			idUnidad: dataUnit.data.idUnidad
+		};
+		this.coalService.postService(`reporte/sellUnitDescription`, body).subscribe((res: any) => {
+			if (res.err) {
+				this.Excepciones(res.err, 4);
+			} else if (res.excepcion) {
+				this.Excepciones(res.excepcion, 3);
+			} else {
+				if (res.recordsets[0][0].success === 1) {
+
+					this.spinner = false;
+					let descripcionUnidad = res.recordsets[0][0].descripcionUnidad;
+					const dialogRef = this.dialog.open(DialogDescripcion, {
+						width: '70%',
+						disableClose: true,
+						data: {
+							title: 'Descripcion de la unidad',
+							unitData: dataUnit.data,
+							unitDescription: descripcionUnidad
+						}
+					});
+
+					dialogRef.afterClosed().subscribe(result => {
+						if (!result) {
+							this.snackBar.open('Descripcion no guardada', 'Ok', { duration: 10000 });
+						} else {
+							this.spinner = true;
+							const body = {
+								idUnidad: result.idUnidad,
+								description: result.description,
+								usuarioBpro: this.usuarioBpro
+							};
+
+							this.coalService.putService(`reporte/updUnitDescription`, body).subscribe((res: any) => {
+								if (res.err) {
+									this.spinner = false;
+									this.Excepciones(res.err, 4);
+								} else if (res.excepcion) {
+									this.spinner = false;
+									this.Excepciones(res.excepcion, 3);
+								} else {
+									this.spinner = false;
+									this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+								};
+							}, (error: any) => {
+								this.spinner = false;
+								this.Excepciones(error, 2);
+							});
+						};
+					});
+				} else {
+					this.spinner = false;
+					this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+				};
+			};
+		}, (error: any) => {
+
+			this.spinner = false;
+			this.Excepciones(error, 2);
+		});
+	};
 
 	TransformaBase64(base64) {
 		// tslint:disable-next-line:variable-name

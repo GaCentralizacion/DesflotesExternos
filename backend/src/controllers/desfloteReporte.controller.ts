@@ -470,12 +470,22 @@ export class DesfloteReporteController {
 		return this.repository.ObtenerFactura(body);
 	};
 
+	@Post('/sellUnitDescription')
+	sellUnitDescription(@Body() body: Request) {
+		return this.repository.sellUnitDescription(body);
+	};
+
 	// ************ END Servicios POST ************
 
 	// ************ Servicios PUT ************
 	@Put('/updatePrice')
 	updatePrice(@Body() body: Request) {
 		return this.repository.updatePrice(body);
+	};
+
+	@Put('/updUnitDescription')
+	updUnitDescription(@Body() body: Request) {
+		return this.repository.updUnitDescription(body);
 	};
 	// ************ END Servicios POST ************
 

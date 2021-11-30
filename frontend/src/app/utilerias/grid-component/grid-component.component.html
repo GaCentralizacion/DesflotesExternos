@@ -207,6 +207,10 @@
 			</ng-template>
 		</div>
 
+		<div *dxTemplate="let data of 'verDescripcion'" class="foto">
+			<button class="btn btn-primary" (click)="verDescripcion(data)"> <i class="material-icons" style="color: white">remove_red_eye</i> </button>
+		</div>
+
 		<div *dxTemplate="let data of 'pdfFacturaSegunda'" class="foto">
 			<a title="Mostrar factura" (click)="GetFacturaPdfSegundaAsignacion(data)">{{data.value}}</a>
 			<ng-template #Gridlightbox>

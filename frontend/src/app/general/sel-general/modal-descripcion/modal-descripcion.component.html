@@ -1,0 +1,32 @@
+<div mat-dialog-title>
+    <div class="row text-center">
+        <div class="col-md-12">
+            <label> {{title}} </label>
+        </div>
+    </div>
+</div>
+<mat-dialog-content class="mat-typography">
+    <mat-card>
+        <form [formGroup]="formDescription" class="example-form">
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="textLabel pull-left"> {{descriptionAditional.value?.length}} /
+                        {{maxLengthTextArea}}</label>
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>Descripcion</mat-label>
+                        <textarea matInput required rows="10" [maxlength]="maxLengthTextArea" placeholder="Description"
+                            [formControl]="descriptionAditional" [disabled]="true"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="0">Cancelar</button>
+    <button mat-button (click)="saveDescription()" [mat-dialog-close]="retornarValores"
+        [disabled]="!formDescription.valid" cdkFocusInitial>
+        <label *ngIf="descriptionAditional.value.length > 0">Actualizar Descripción</label>
+        <label *ngIf="descriptionAditional.value.length === 0">Guardar Descripción</label>
+    </button>
+</mat-dialog-actions>

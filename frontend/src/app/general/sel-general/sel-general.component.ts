@@ -786,6 +786,12 @@ export class SelGeneralComponent implements OnInit {
 				format: TiposdeFormato.moneda,
 				allowEditing: false,
 				cssClass: 'general'
+			},
+			{
+				caption: 'Ver Descripcion',
+				allowEditing: false,
+				cssClass: 'general',
+				cellTemplate: 'verDescripcion'
 			}
 			// {
 			// 	caption: 'Situación',

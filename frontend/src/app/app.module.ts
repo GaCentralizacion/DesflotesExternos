@@ -124,6 +124,7 @@ import { DialogMapa } from './utilerias/grid-component/alert-mapa/alert-mapa.com
 import { DialogClient } from './general/sel-general/modal-client/modal-client.component';
 import { DialogLiberar } from './general/sel-general/modal-liberar/modal-liberar.component';
 import { DialogPrecio } from './general/sel-general/modal-precio/modal-precio.component';
+import { DialogDescripcion } from './general/sel-general/modal-descripcion/modal-descripcion.component';
 
 export function sessionInitializerProviderFactory(
     provider: SessionInitializer
@@ -159,7 +160,8 @@ export function sessionInitializerProviderFactory(
         DialogMapa,
         DialogClient,
         DialogLiberar,
-        DialogPrecio
+        DialogPrecio,
+        DialogDescripcion
     ],
     entryComponents: [
         ExcepcionesComponent,
@@ -168,7 +170,8 @@ export function sessionInitializerProviderFactory(
         DialogMapa,
         DialogClient,
         DialogLiberar,
-        DialogPrecio
+        DialogPrecio,
+        DialogDescripcion
     ],
     imports: [
         BrowserModule,

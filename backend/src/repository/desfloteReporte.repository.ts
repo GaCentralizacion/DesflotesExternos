@@ -1680,11 +1680,19 @@ export class DesfloteReporteRepository {
         return this.query.spExecute(body, "[desfloteExterno].[DEL_VENTA_UNIT_SP]")
     };
 
+    sellUnitDescription(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[SEL_DESCRIPTION_UNIT_SP]")
+    };
+
     // ************* TERMINA POST *************
 
     // ************ SERVICIOS PUT ************
     updatePrice(body: any): PromiseLike<{}> {
         return this.query.spExecute(body, "[desfloteExterno].[UPD_PRICE_UNIT_SP]")
+    };
+
+    updUnitDescription(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[UPD_DESCRIPTION_UNIT_SP]")
     };
     // ************* TERMINA PUT *************
 
