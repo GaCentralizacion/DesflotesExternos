@@ -152,6 +152,10 @@ export class DesfloteReporteRepository {
         return this.query.spExecute(query, "[Reporte].[SEL_GPS_SP]")
     }
 
+    updAndRefreshUnitDescription(query: any): PromiseLike<{}> {
+        return this.query.spExecute(query, "[desfloteExterno].[UPD_AND_REFRESH_DESCRIPTION_UNIT_SP]")
+    };
+
     // ************* TERMINA GET *************
 
     // ************ SERVICIOS POST ************

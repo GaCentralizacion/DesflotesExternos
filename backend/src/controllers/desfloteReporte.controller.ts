@@ -115,6 +115,11 @@ export class DesfloteReporteController {
 		return this.repository.GetPosicionVehiculo(req.query);
 	}
 
+	@Get('/updAndRefreshUnitDescription')
+	updAndRefreshUnitDescription(@Req() req: Request) {
+		return this.repository.updAndRefreshUnitDescription(req.query);
+	};
+
 	// ************ END Servicios GET ************
 
 	// ************ Servicios POST ************
@@ -487,6 +492,7 @@ export class DesfloteReporteController {
 	updUnitDescription(@Body() body: Request) {
 		return this.repository.updUnitDescription(body);
 	};
+
 	// ************ END Servicios POST ************
 
 	// ************ Servicios DELETE ************
