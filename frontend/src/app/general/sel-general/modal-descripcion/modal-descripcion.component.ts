@@ -28,6 +28,9 @@ export class DialogDescripcion implements OnInit {
     public retornarValores = { idUnidad: 0, description: '' };
     public disabled: boolean = false;
     public spinner: boolean = false;
+    public existeBPRO: boolean = false;
+    public tieneDescripcion: boolean = false;
+    public miniumClass: boolean = false;
 
     constructor(private fb: FormBuilder,
         public dialogRef: MatDialogRef<DialogDescripcion>,
@@ -39,13 +42,19 @@ export class DialogDescripcion implements OnInit {
         this.idUnidad = data.unitData.idUnidad;
         this.unitDescription = data.unitDescription;
         this.descriptionAditional.setValue(this.unitDescription);
+        this.existeBPRO = data.unitData.existeBPRO === 1 ? true : false;
+        this.tieneDescripcion = data.unitData.tieneDescripcion === 1 ? true : false;
+        this.miniumClass = this.unitDescription.length >= 200 ? false : true;
     };
 
-    ngOnInit() {
-    };
+    ngOnInit() { };
 
     public editDescription = disable => {
         this.disabled = disable;
+    };
+
+    public editDescriptionBpro = disableBpro => {
+        this.tieneDescripcion = disableBpro;
     };
 
     public refreshInitialDescription = () => {

@@ -146,7 +146,7 @@
 
 		<!-- -------------------- TEMPLATE PDF ------------------------------------------>
 
-		<div *dxTemplate="let data of 'pdf'" class="foto">
+		<!-- <div *dxTemplate="let data of 'pdf'" class="foto">
 			<img id="myImg" class="preview-docs" src="../../../assets/images/iconos-utilerias/docpdf.png"
 				(click)="dialog.open(Gridlightbox)" />
 			<ng-template #Gridlightbox>
@@ -173,7 +173,7 @@
 					</pdf-viewer>
 				</div>
 			</ng-template>
-		</div>
+		</div> -->
 
 		<div *dxTemplate="let data of 'pdfFactura'" class="foto">
 			<a class='selecciona' title="Mostrar factura" (click)="GetFacturaPdf(data)">{{data.value}}</a>
@@ -211,7 +211,17 @@
 			<button class="btn btn-primary btn-circle" style="background-color: #039BE5 !important" (click)="verDescripcion(data)"> <i class="material-icons" style="color: white">remove_red_eye</i> </button>
 		</div>
 
-		<div *dxTemplate="let data of 'pdfFacturaSegunda'" class="foto">
+		<div *dxTemplate="let data of 'showVin'">
+			<label>
+				{{data.value}}
+				<span ngbPopover="Esta unidad no existe en BPRO y no tiene una descripcion" *ngIf="data.data.existeBPRO === 0 && data.data.tieneDescripcion === 0" class="notify-badge">
+					<i style="color:white; font-size: 17px;" class="material-icons">warning_amber</i>
+				</span>
+			</label>
+		</div>
+
+
+		<!-- <div *dxTemplate="let data of 'pdfFacturaSegunda'" class="foto">
 			<a title="Mostrar factura" (click)="GetFacturaPdfSegundaAsignacion(data)">{{data.value}}</a>
 			<ng-template #Gridlightbox>
 				<div>
@@ -224,8 +234,8 @@
 					</pdf-viewer>
 				</div>
 			</ng-template>
-		</div>
-
+		</div> -->
+<!-- 
 		<div *dxTemplate="let data of 'pdfFacturaCliente'" class="foto">
 			<a title="Mostrar factura" (click)="GetFacturaCliente(data)">{{data.value}}</a>
 			<ng-template #Gridlightbox>
@@ -239,7 +249,7 @@
 					</pdf-viewer>
 				</div>
 			</ng-template>
-		</div>
+		</div> -->
 
 		<!-- -------------------- TEMPLATE EXCEL ------------------------------------------>
 		<div *dxTemplate="let data of 'excel'" class="foto">

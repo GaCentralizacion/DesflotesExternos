@@ -49,7 +49,7 @@ export class DialogClient implements OnInit {
 	public tipoBusqueda: number = 0;
 	public textBusqueda: string = '';
 
-	descriptionAditional = new FormControl('');
+	// descriptionAditional = new FormControl('');
 	cfdi = new FormControl({});
 	datosExtras = new FormControl();
 	dataCfdi: any = [
@@ -64,7 +64,7 @@ export class DialogClient implements OnInit {
 		}
 	]
 
-	formInoviceAdiotional = new FormGroup({ datosExtras: this.datosExtras, cfdi: this.cfdi, descriptionAditional: this.descriptionAditional })
+	formInoviceAdiotional = new FormGroup({ datosExtras: this.datosExtras, cfdi: this.cfdi })
 
 	constructor(
 		private fb: FormBuilder,
@@ -94,7 +94,6 @@ export class DialogClient implements OnInit {
 
 	slideChange = e => {
 		this.datosExtras.setValue(e.checked);
-		this.descriptionAditional.setValue('');
 		this.cfdi.setValue({});
 	};
 
@@ -104,7 +103,6 @@ export class DialogClient implements OnInit {
 		this.cliente.setValue('');
 		this.options = [];
 		this.eraseCfdi();
-		this.descriptionAditional.setValue('');
 		this.checked = false;
 	};
 

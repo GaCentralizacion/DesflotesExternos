@@ -213,25 +213,6 @@ export class SelGeneralComponent implements OnInit {
 		});
 	};
 
-	// porcentajeAvances() {
-	// 	this.coalService.getService(`reporte/porcentajeAvances?idCompaniaUnidad=${this.idCompania}&idDesflote=${this.idDesflote}`).subscribe((res: any) => {
-	// 		if (res.err) {
-	// 			this.Excepciones(res.err, 4);
-	// 		} else if (res.excepcion) {
-	// 			this.Excepciones(res.excepcion, 3);
-	// 		} else {
-	// 			this.porcentajePrimera = res.recordsets[0][0].porcentajePrimera;
-	// 			this.porcentajeSegunda = res.recordsets[1][0].porcentajeSegunda;
-	// 			this.facturasPendientesPrimera = res.recordsets[2][0].facturasPendientesPrimera;
-	// 			this.ordenesPendientesPrimera = res.recordsets[3][0].ordenesPendientesPrimera;
-	// 			this.facturasPendientesSegunda = res.recordsets[4][0].facturasPendientesSegunda;
-	// 			this.ordenesPendientesSegunda = res.recordsets[5][0].ordenesPendientesSegunda;
-	// 		}
-	// 	}, (error: any) => {
-	// 		this.Excepciones(error, 2);
-	// 	});
-	// };
-
 	ChangeTab($event) {
 		this.tipoBusqueda = $event.index;
 		this.toolbarGeneral = [];
@@ -274,44 +255,6 @@ export class SelGeneralComponent implements OnInit {
 			this.spinner = false
 		});
 	};
-
-	// FechaDiaCorrecto(fecha) {
-	// 	return new Date(new Date(fecha).getTime() + new Date(fecha).getTimezoneOffset() * 60000)
-	// };
-
-	// sincronizarDocumentos() {
-	// 	const dialogRef = this.dialog.open(AlertDialogComponent,
-	// 		{
-	// 			width: '350px',
-	// 			data: '¿Desea Sincronizar documentos?'
-	// 		}
-	// 	);
-	// 	dialogRef.afterClosed().subscribe(resultado => {
-	// 		if (resultado) {
-	// 			this.spinner = true;
-	// 			this.lstMapeoDocumentos = [];
-	// 			let unidadesSeleccionadas = {
-	// 				unidadesSeleccionadas: this.datosevent
-	// 			};
-	// 			this.coalService.postService(`reporte/InsDocumentosExpediente`, unidadesSeleccionadas).subscribe((res: any) => {
-	// 				if (res.err) {
-	// 					this.Excepciones(res.err, 4);
-	// 				} else if (res.excepcion) {
-	// 					this.Excepciones(res.excepcion, 3);
-	// 				} else {
-	// 					console.log(res.recordsets[0]);
-	// 					this.spinner = false;
-	// 				};
-	// 				this.spinner = false
-	// 			}, (error: any) => {
-	// 				this.Excepciones(error, 2);
-	// 				this.spinner = false
-	// 			});
-	// 		} else {
-	// 			this.snackBar.open('Sincronización cancelada', 'Ok', { duration: 5000 });
-	// 		};
-	// 	});
-	// };
 
 	getCompaniaUnidad() {
 		this.coalService.getService(`common/getCompaniaUnidad`).subscribe((res: any) => {
@@ -491,7 +434,8 @@ export class SelGeneralComponent implements OnInit {
 				caption: 'VIN',
 				dataField: 'numeroSerie',
 				allowEditing: false,
-				cssClass: 'general'
+				cssClass: 'general',
+				cellTemplate: 'showVin'
 			},
 			{
 				caption: 'Marca',
@@ -525,22 +469,14 @@ export class SelGeneralComponent implements OnInit {
 				cssClass: 'general',
 				cellTemplate: 'verDescripcion'
 			}
-			// {
-			// 	caption: 'Situación',
-			// 	dataField: 'situacion',
-			// 	allowEditing: false,
-			// 	cssClass: 'general',
-			// }
 		];
 	}
 
-	// FillGrid() {
-	// 	this.columnsGeneral = this.lstDataReport.find(x => x.idTipoReporte === 1).columnas;
-	// 	this.reporte = this.lstDataReport.find(x => x.idTipoReporte === 1).dataReport;
-	// 	console.clear();
-	// 	this.verGrid = true;
-	// 	this.spinner = false;
-	// };
+	public saveDescriptionGrid = e => {
+		if (e === 1) {
+			this.GenerateReport();
+		};
+	};
 
 	receiveMessage($event) {
 		try {
@@ -576,7 +512,8 @@ export class SelGeneralComponent implements OnInit {
 			} else {
 				this.spinner = true;
 				this.datosevent.forEach(value => {
-					dataXml += `<unidad><idUnidad>${value.idUnidad}</idUnidad><newPrice>${result.valorSelect}</newPrice></unidad>`;
+					console.log('value', value);
+					dataXml += `<unidad><idUnidad>${value.idUnidad}</idUnidad><newPrice>${result.valorSelect}</newPrice><existeBpro>${value.existeBPRO}</existeBpro></unidad>`;
 				});
 				const data = {
 					xmlUnits: xml.replace('$data', dataXml),
@@ -617,7 +554,6 @@ export class SelGeneralComponent implements OnInit {
 			disableClose: true,
 			data: {
 				title: 'Venta de unidades',
-				//select: this.sucAceptanSeminuevos,//this.companias,
 				elementos: 'Cantidad de unidades a vender: ' + this.datosevent.length,
 				unidades: this.datosevent
 			}
@@ -634,20 +570,28 @@ export class SelGeneralComponent implements OnInit {
 					return this.snackBar.open('Elija un cliente de los que estan en el combo', 'Ok', { duration: 10000 });
 				};
 
-				if (result.valorSelect[0].datosExtras && (result.valorSelect[0].descriptionAditional.length === 0 || result.valorSelect[0].cfdi.length === 0)) {
+				if (result.valorSelect[0].datosExtras && (result.valorSelect[0].cfdi.length === 0)) {
 					this.spinner = false;
-					return this.snackBar.open('Si selecciona datos extras debe escribir la descrpcion o el tipo de CFDI', 'Ok', { duration: 10000 });
+					return this.snackBar.open('Si selecciona datos extras debe seleccionar el tipo de CFDI', 'Ok', { duration: 10000 });
 				};
 
 				this.datosevent.forEach(value => {
-					dataXml += `<venta><idUnidad>${value.idUnidad}</idUnidad><client>${result.valorSelect[1].PER_IDPERSONA}</client><userId>${this.lstbPro[0].usu_idusuario}</userId><sellPrice>${value.precioVentaIva}</sellPrice><buyPrice>${value.precioCompraIva}</buyPrice></venta>`;
+					if (isNaN(value.idUnidad)) {
+						this.spinner = false;
+						return this.snackBar.open('Error al procesar las ventas, favor de contactar al administrador [idUnidad]', 'Ok', { duration: 10000 });
+					};
+					if (this.lstbPro[0].usu_idusuario === '' || this.lstbPro[0].usu_idusuario === null || this.lstbPro[0].usu_idusuario === undefined) {
+						this.spinner = false;
+						return this.snackBar.open('Error al procesar las ventas, favor de contactar al administrador [idUsuario]', 'Ok', { duration: 10000 });
+					};
+
+					dataXml += `<venta><idUnidad>${value.idUnidad}</idUnidad><client>${result.valorSelect[1].PER_IDPERSONA}</client><userId>${this.lstbPro[0].usu_idusuario}</userId><sellPrice>${value.precioVentaIva}</sellPrice><buyPrice>${value.precioCompraIva}</buyPrice><existeBpro>${value.existeBPRO}</existeBpro></venta>`;
 				});
 
 				const data = {
 					xmlVenta: xml.replace('$data', dataXml),
 					datosExtras: result.valorSelect[0].datosExtras ? 1 : 0,
-					cfdi: isNaN(result.valorSelect[0].cfdi.idCfdi) ? 0 : result.valorSelect[0].cfdi.idCfdi,
-					descriptionAditional: result.valorSelect[0].descriptionAditional
+					cfdi: isNaN(result.valorSelect[0].cfdi.idCfdi) ? 0 : result.valorSelect[0].cfdi.idCfdi
 				};
 
 				this.coalService.postService(`reporte/sellUnit`, data).subscribe((res: any) => {
@@ -731,162 +675,10 @@ export class SelGeneralComponent implements OnInit {
 	datosMessage($event) {
 		try {
 			this.datosevent = $event.data;
-			console.log('DATOS EVENTE=============', this.datosevent)
 		} catch (error) {
 			this.Excepciones(error, 1);
 		};
 	};
-
-	// subeFactura() {
-	// 	// this.spinner = true;
-	// 	this.lstMapeoDocumentos = [];
-	// 	let unidadesSeleccionadas = {
-	// 		unidadesSeleccionadas: this.datosevent
-	// 	};
-	// 	console.log(unidadesSeleccionadas);
-	// 	this.coalService.postService(`reporte/InsDocumentosExpedienteFactura`, unidadesSeleccionadas).subscribe((res: any) => {
-	// 		if (res.err) {
-	// 			this.Excepciones(res.err, 4);
-	// 		} else if (res.excepcion) {
-	// 			this.Excepciones(res.excepcion, 3);
-	// 		} else {
-	// 			this.spinner = false;
-	// 			this.snackBar.open('Sincronizando Documentación', 'Ok', { duration: 5000 });
-	// 		};
-	// 		this.spinner = false
-	// 	}, (error: any) => {
-	// 		this.Excepciones(error, 2);
-	// 		this.spinner = false
-	// 	});
-	// };
-
-	// GuardaUnidadesDesflote(datosEmpresa,) {
-	// 	let xmlUnidades = `<unidades>`
-	// 	for (const e of this.datosevent) {
-	// 		xmlUnidades += `<unidad><unidadId>${e.unidadId}</unidadId><numeroSerie>${e.numeroSerie}</numeroSerie></unidad>`
-	// 	}
-	// 	xmlUnidades += `</unidades>`
-	// 	const datos = {
-	// 		xmlUnidades
-	// 	}
-	// };
-
-	// EnviarIntellimotors() {
-	// 	const i = this.reporte.findIndex(x => x.vin === this.datosevent[0].vin)
-	// 	if (this.reporte.length > 1) {
-	// 		this.snackBar.open('Se enviaron las unidades a intellimotors', 'Ok', { duration: 10000 });
-	// 	} else {
-	// 		this.snackBar.open('Se envio la unidad a intellimotors', 'Ok', { duration: 10000 });
-	// 	}
-	// 	if (this.reporte[i].precioCompra === 0) {
-	// 		this.spinner = true;
-	// 		this.verGrid = false;
-	// 		setTimeout(() => {
-	// 			this.reporte[i].precioCompra = 350000
-	// 			this.reporte[i].precioVenta = 440000
-	// 			this.spinner = false;
-	// 			this.verGrid = true;
-	// 			this.snackBar.open('Las unidades se han registrado en intellimotors', 'Ok', { duration: 10000 });
-	// 		}, 3000);
-	// 	} else {
-	// 		this.snackBar.open('Esta unidad ya esta registrada en intellimotors', 'Ok', { duration: 10000 });
-	// 	}
-	// }
-
-	// Expediente(vin) {
-	// 	let idCompania;
-	// 	let idSucursal;
-	// 	let numeroSerie = vin.key.numeroSerie;
-	// 	if (vin.columnIndex === 6) {
-	// 		idCompania = vin.key.idCompania1;
-	// 		idSucursal = vin.key.idSucursal1;
-	// 	}
-	// 	else if (vin.columnIndex === 17) {
-	// 		idCompania = vin.key.idCompania2;
-	// 		idSucursal = vin.key.idSucursal2;
-	// 	}
-
-	// 	var url = 'http://192.168.20.123:4080';
-	// 	var titulo = 'Login by User Id';
-	// 	var form = document.createElement("form");
-	// 	form.setAttribute("method", "post");
-	// 	form.setAttribute("action", url);
-	// 	form.setAttribute("target", titulo);
-	// 	var hiddenField = document.createElement("input");
-	// 	hiddenField.setAttribute("type", "hidden");
-	// 	hiddenField.setAttribute("name", "idUsuario");
-	// 	hiddenField.setAttribute("value", '71');
-	// 	form.appendChild(hiddenField);
-
-	// 	var hiddenField1 = document.createElement("input");
-	// 	hiddenField1.setAttribute("type", "hidden");
-	// 	hiddenField1.setAttribute("name", "idProceso");
-	// 	hiddenField1.setAttribute("value", '1');
-	// 	form.appendChild(hiddenField1);
-
-	// 	var hiddenField2 = document.createElement("input");
-	// 	hiddenField2.setAttribute("type", "hidden");
-	// 	hiddenField2.setAttribute("name", "idEmpresa");
-	// 	hiddenField2.setAttribute("value", idCompania);
-	// 	form.appendChild(hiddenField2);
-
-	// 	var hiddenField3 = document.createElement("input");
-	// 	hiddenField3.setAttribute("type", "hidden");
-	// 	hiddenField3.setAttribute("name", "idSucursal");
-	// 	hiddenField3.setAttribute("value", idSucursal);
-	// 	form.appendChild(hiddenField3);
-
-	// 	var hiddenField4 = document.createElement("input");
-	// 	hiddenField4.setAttribute("type", "hidden");
-	// 	hiddenField4.setAttribute("name", "vin");
-	// 	hiddenField4.setAttribute("value", numeroSerie);
-	// 	form.appendChild(hiddenField4);
-
-	// 	document.body.appendChild(form);
-	// 	window.open('', titulo);
-	// 	form.submit();
-	// };
-
-	// SegundaAsignacion(valor) {
-	// 	const i = this.data.findIndex(x => x.vin === this.datosevent[0].vin)
-	// 	const nombreCompania = this.companias.find(x => x.idCompania === valor.idCompania).descripcion;
-	// 	this.data[i].agenciaAsignada = nombreCompania;
-	// 	this.data[i].PrecioFinFacturar2 = "$234,212.00";
-	// 	this.data[i].factura2 = "SDF4232FD2S";
-	// 	this.data[i].utilidad = "$22,233.00";
-	// 	this.data[i].vendido = 'Santiago Juárez Salazar';
-	// 	this.data[i].precioFinal = "$237,342.00";
-	// 	this.data[i].ordenCompra2 = 'AU-AA-AAZ-ACS-PE-1135';
-	// 	this.data[i].aprobada2 = 'Si';
-	// 	this.data[i].vendida2 = 'Si';
-	// 	this.data[i].traslados = 'Con traslado'
-
-	// 	this.spinner = false;
-	// };
-
-	// datosUpd(e) {
-	// 	const datos = {
-	// 		idUnidad: e.editdata.key.idUnidad,
-	// 		numeroSerie: e.editdata.key.numeroSerie,
-	// 		key: Object.keys(e.editdata.newData)[0],
-	// 		precio: e.editdata.newData[`${Object.keys(e.editdata.newData)}`]
-	// 	};
-	// 	this.coalService.postService(`reporte/UpdPrecio`, datos).subscribe((res: any) => {
-	// 		if (res.err) {
-	// 			this.Excepciones(res.err, 4);
-	// 		} else if (res.excepcion) {
-	// 			this.Excepciones(res.excepcion, 3);
-	// 		} else {
-	// 			this.snackBar.open(res.recordsets[0][0].mensaje, 'Ok', { duration: 10000 });
-	// 			this.spinner = false;
-	// 		}
-	// 		this.spinner = false
-	// 	}, (error: any) => {
-	// 		this.Excepciones(error, 2);
-	// 		this.spinner = false
-	// 	});
-	// };
-
 
 	/**
 	 * En caso de que algun metodo, consulta a la base de datos o conexión con el servidor falle, se abrira el dialog de excepciones

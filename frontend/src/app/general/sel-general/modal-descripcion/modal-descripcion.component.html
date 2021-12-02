@@ -7,7 +7,7 @@
     </div>
 </div>
 <mat-dialog-content class="mat-typography">
-    <mat-card>
+    <mat-card *ngIf="existeBPRO">
         <form [formGroup]="formDescription" class="example-form">
             <div class="row" *ngIf="disabled">
                 <div class="col-md-12">
@@ -36,6 +36,36 @@
                 </button>
                 <button class="btn btn-danger refreshBtn pull-right" (click)="refreshInitialDescription()">
                     Descripcion Inicial <br> <i class="material-icons icons">refresh</i>
+                </button>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card *ngIf="!existeBPRO">
+        <form [formGroup]="formDescription" class="example-form">
+            <div class="row" *ngIf="!tieneDescripcion">
+                <div class="col-md-12">
+                    <label class="textLabel pull-left"> {{descriptionAditional.value?.length}} /
+                        {{maxLengthTextArea}}</label>
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>Descripcion</mat-label>
+                        <textarea matInput required rows="6" [maxlength]="maxLengthTextArea" placeholder="Description"
+                            [formControl]="descriptionAditional" [disabled]="true"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+        <div class="row" *ngIf="tieneDescripcion">
+            <div class="col-md-12">
+                <label [ngClass]="{'labelText': !miniumClass, 'labelTextMin': miniumClass}" >{{unitDescription}}</label>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <button *ngIf="tieneDescripcion" class="btn btn-info editBtn pull-right" (click)="editDescriptionBpro(!tieneDescripcion)">
+                    Editar <br> <i class="material-icons icons">edit</i>
                 </button>
             </div>
         </div>

@@ -76,6 +76,7 @@ export class GridComponentComponent implements OnInit, AfterViewInit {
 	@Output() onRowRemoved = new EventEmitter<any>();
 	@Output() onInitNewRow = new EventEmitter<any>();
 	@Output() onCellClickEvent = new EventEmitter<any>();
+	@Output() saveDescription = new EventEmitter<number>();
 	public contador = 0;
 	public contadordetail = 0;
 	public toole;
@@ -664,6 +665,7 @@ export class GridComponentComponent implements OnInit, AfterViewInit {
 									this.Excepciones(res.excepcion, 3);
 								} else {
 									this.spinner = false;
+									this.saveDescription.emit(1);
 									this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
 								};
 							}, (error: any) => {

@@ -39,7 +39,7 @@
 }
 
 .countcolor {
-    color: #B2BFD1;
+    color: #b2bfd1;
 }
 
 .totalcolor {
@@ -82,7 +82,10 @@
     color: gray;
 }
 
-::ng-deep #gridContainer .dx-datagrid-filter-panel .dx-datagrid-filter-panel-text {
+::ng-deep
+    #gridContainer
+    .dx-datagrid-filter-panel
+    .dx-datagrid-filter-panel-text {
     color: gray;
 }
 
@@ -100,7 +103,11 @@
     height: 70px;
 }
 
-::ng-deep #gridContainer .dx-datagrid-header-panel .dx-toolbar-before .dx-toolbar-item:last-child {
+::ng-deep
+    #gridContainer
+    .dx-datagrid-header-panel
+    .dx-toolbar-before
+    .dx-toolbar-item:last-child {
     padding-right: 10px;
 }
 
@@ -143,11 +150,17 @@
     border-radius: 0;
 }
 
-::ng-deep #gridContainer .dx-datagrid-export-button .dx-icon-export-excel-button {
+::ng-deep
+    #gridContainer
+    .dx-datagrid-export-button
+    .dx-icon-export-excel-button {
     width: 35px;
     height: 35px;
 }
-::ng-deep #gridContainer .dx-datagrid-export-button .dx-icon-export-excel-button:before {
+::ng-deep
+    #gridContainer
+    .dx-datagrid-export-button
+    .dx-icon-export-excel-button:before {
     background-image: url("../../../assets/images/iconos-utilerias/xcel.png");
     background-repeat: no-repeat;
     background-position: center center;
@@ -169,7 +182,10 @@
     content: "";
 }
 
-::ng-deep #gridContainer .dx-datagrid-cancel-button .dx-icon-edit-button-cancel:before {
+::ng-deep
+    #gridContainer
+    .dx-datagrid-cancel-button
+    .dx-icon-edit-button-cancel:before {
     background-image: url("../../../assets/images/iconos-utilerias/regresar.png");
     background-repeat: no-repeat;
     background-position: center center;
@@ -180,7 +196,10 @@
     content: "";
 }
 
-::ng-deep #gridContainer .dx-datagrid-save-button .dx-icon-edit-button-save:before {
+::ng-deep
+    #gridContainer
+    .dx-datagrid-save-button
+    .dx-icon-edit-button-save:before {
     background-image: url("../../../assets/images/iconos-utilerias/guardar.png");
     background-repeat: no-repeat;
     background-position: center center;
@@ -207,15 +226,15 @@
 agm-map {
     height: 100px;
     width: 100px;
-  }
+}
 // clase para cambiar de color los cabeceros de columnas
 ::ng-deep #gridContainer .dx-header-row {
-    background: #A69F87 !important;
+    background: #a69f87 !important;
     color: #fff;
 }
 
 ::ng-deep #gridContainerDetail .dx-header-row {
-    background: #D3DBE7;
+    background: #d3dbe7;
     color: black;
 }
 
@@ -225,17 +244,28 @@ agm-map {
     .dx-datagrid-rowsview
     .dx-selection.dx-row
     > td:not(.dx-focused).dx-datagrid-group-space,
-.dx-rtl .dx-datagrid-rowsview .dx-selection.dx-row:hover > td:not(.dx-focused).dx-datagrid-group-space {
+.dx-rtl
+    .dx-datagrid-rowsview
+    .dx-selection.dx-row:hover
+    > td:not(.dx-focused).dx-datagrid-group-space {
     border-left-color: #e1e1e1;
 }
 
-::ng-deep #gridContainer .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-lines) > td,
+::ng-deep
+    #gridContainer
+    .dx-datagrid-rowsview
+    .dx-selection.dx-row:not(.dx-row-lines)
+    > td,
 .dx-datagrid-rowsview .dx-selection.dx-row:hover:not(.dx-row-lines) > td {
     border-bottom: 1px solid #e1e1e1;
     border-top: 1px solid #e1e1e1;
 }
 
-::ng-deep #gridContainer .dx-datagrid-rowsview .dx-selection.dx-row > td.dx-datagrid-group-space,
+::ng-deep
+    #gridContainer
+    .dx-datagrid-rowsview
+    .dx-selection.dx-row
+    > td.dx-datagrid-group-space,
 .dx-datagrid-rowsview .dx-selection.dx-row:hover > td.dx-datagrid-group-space {
     border-right-color: #e1e1e1;
 }
@@ -259,7 +289,14 @@ agm-map {
     border: 1px solid black;
 }
 
-::ng-deep #gridContainer .dx-datagrid-rowsview .dx-select-checkboxes-hidden > tbody > tr > td > .dx-select-checkbox {
+::ng-deep
+    #gridContainer
+    .dx-datagrid-rowsview
+    .dx-select-checkboxes-hidden
+    > tbody
+    > tr
+    > td
+    > .dx-select-checkbox {
     display: inline-block;
 }
 
@@ -304,20 +341,28 @@ agm-map {
         overflow: hidden;
     }
 }
-.template{
+.template {
     overflow: auto;
     display: flex;
     flex-direction: column;
 }
 
-.dx-revert-button{  
-    display: none !important;  
-}  
+.dx-revert-button {
+    display: none !important;
+}
 
 ::ng-deep .dx-datagrid-revert-tooltip {
     display: none !important;
-  }
+}
 
-.dx-datagrid-revert-tooltip {  
-    display: none !important;  
-} 
+.dx-datagrid-revert-tooltip {
+    display: none !important;
+}
+
+.notify-badge {
+    background: red;
+    text-align: center;
+    border-radius: 105px 105px 105px 105px;
+    color: white;
+    font-size: 16px;
+}
