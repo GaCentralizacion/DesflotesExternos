@@ -2,16 +2,25 @@ export default {
     "development":
     {
         "port": 4070,
-        "seguridad": {
-            "host": "192.168.20.137",
-            "port": 4000,
+        // "seguridad": {
+        //     "host": "192.168.20.137",
+        //     "port": 4000,
+        //     "method": "POST",
+        //     "headers": {
+        //         "Content-Type": "multipart/form-data"
+        //     },
+        //     "protocolo": "http"
+        // },
+        "seguridad": { // SEGURIDAD PRODUCCION
+            "host": "apiseguridad.grupoandrade.com",
+            "port": 443,
             "method": "POST",
             "headers": {
                 "Content-Type": "multipart/form-data"
             },
-            "protocolo": "http"
+            "protocolo": "https"
         },
-        "aplicacionId": 21,
+        "aplicacionId": 18,
         "bpro": {
             "dealerId": 1001,
             "apiKey": "08a0faf0-ae65-4034-b693-ffd1ef39eff6",
