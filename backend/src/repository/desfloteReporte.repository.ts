@@ -29,18 +29,9 @@ export class DesfloteReporteRepository {
         // if (process.env.RUN_TASKS === "true" || process.env.RUN_TASKS === "1") {
         // console.log("cron")
 
-        // cron.schedule('*/2 * * * *', () => {
-        //     this.getUnidadesSubirIntelimotor({})
-        //         .then((res: any) => {
-        //             if (res.recordsets[0]?.length > 0) {
-        //                 resolve(
-        //                     this.procesaInsertIntelimotor(res.recordsets[0])
-        //                 );
-        //             } else {
-        //                 // console.log('no crea nada')
-        //             }
-        //         })
-        // })
+        cron.schedule('*/3 * * * *', () => {
+            this.query.spExecute([], "[desfloteExterno].[SEL_RECUPERA_FACTURAS_DESFLOTES_SP]")
+        });
 
         // cron.schedule('*/2 * * * *', () => {
         //     this.GetUnidadesOrdenCompra({ tipo: 'PRIMERA' })
