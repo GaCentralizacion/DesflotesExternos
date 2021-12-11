@@ -120,6 +120,11 @@ export class DesfloteReporteController {
 		return this.repository.updAndRefreshUnitDescription(req.query);
 	};
 
+	@Get('/selUsoCfdi')
+	selUsoCfdi(@Req() req: Request) {
+		return this.repository.selUsoCfdi(req.query);
+	};
+
 	// ************ END Servicios GET ************
 
 	// ************ Servicios POST ************

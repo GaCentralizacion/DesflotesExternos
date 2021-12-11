@@ -26,83 +26,11 @@ export class DesfloteReporteRepository {
         const env: string = process.env.NODE_ENV || 'development';
         this.conf = (config as any)[env]; // ejemplo de llamada al confg.js
         this.query = new Query();
-        // if (process.env.RUN_TASKS === "true" || process.env.RUN_TASKS === "1") {
-        // console.log("cron")
 
         cron.schedule('*/3 * * * *', () => {
             this.query.spExecute([], "[desfloteExterno].[SEL_RECUPERA_FACTURAS_DESFLOTES_SP]")
         });
-
-        // cron.schedule('*/2 * * * *', () => {
-        //     this.GetUnidadesOrdenCompra({ tipo: 'PRIMERA' })
-        //         .then((res: any) => {
-        //             // this.GeneraDatosOrden(1, 'PRIMERA')
-        //             if (res.recordsets[0].length > 0) {
-        //                 this.GeneraDatosOrden(res.recordsets[0], 'PRIMERA')
-        //             } else {
-        //                 // console.log('no crea nada')
-        //             }
-        //         })
-
-
-        //     this.GetUnidadesOrdenCompra({ tipo: 'SEGUNDA' })
-        //         .then((res: any) => {
-        //             // this.GeneraDatosOrden(1, 'PRIMERA')
-        //             if (res.recordsets[0].length > 0) {
-        //                 this.GeneraDatosOrden(res.recordsets[0], 'SEGUNDA')
-        //             } else {
-        //                 // console.log('no crea nada')
-        //             }
-        //         })
-        // })
-
-        // cron.schedule('*/3 * * * *', () => {
-        //     this.GetFacturasSubir({ tipo: 'PRIMERA' })
-        //         .then((res: any) => {
-        //             const resultado = res.recordsets[0]
-        //             this.PostSubeDocumentosFactura(resultado)
-        //                 .then((result: any) => {
-        //                     console.log('resultadooooooo =================     ', result)
-        //                     const unidadesCorrectas = result.filter((x: any) => x.validacion === true);
-        //                     if (unidadesCorrectas.length > 0) {
-        //                         let xmlUnidades = `<unidades>`;
-        //                         for (const e of unidadesCorrectas) {
-        //                             xmlUnidades += `<unidad><idUnidad>${e.idUnidad}</idUnidad></unidad>`
-        //                         }
-        //                         xmlUnidades += `</unidades>`
-        //                         const datos = {
-        //                             xmlUnidades,
-        //                             tipo: 'PRIMERA'
-        //                         }
-        //                         this.PostActualizaBanderaFactura(datos);
-        //                     }
-        //                 });
-        //         })
-
-        //     this.GetFacturasSubir({ tipo: 'SEGUNDA' })
-        //         .then((res: any) => {
-        //             const resultado = res.recordsets[0]
-        //             this.PostSubeDocumentosFactura(resultado)
-        //                 .then((result: any) => {
-        //                     console.log('resultadooooooo =================     ', result)
-        //                     const unidadesCorrectas = result.filter((x: any) => x.validacion === true);
-        //                     if (unidadesCorrectas.length > 0) {
-        //                         let xmlUnidades = `<unidades>`;
-        //                         for (const e of unidadesCorrectas) {
-        //                             xmlUnidades += `<unidad><idUnidad>${e.idUnidad}</idUnidad></unidad>`
-        //                         }
-        //                         xmlUnidades += `</unidades>`
-        //                         const datos = {
-        //                             xmlUnidades,
-        //                             tipo: 'SEGUNDA'
-        //                         }
-        //                         this.PostActualizaBanderaFactura(datos);
-        //                     }
-        //                 });
-        //         })
-        // })
-        // }
-    }
+    };
 
     // ************ SERVICIOS GET ************
     GetDataReport(query: any): PromiseLike<{}> {
@@ -145,6 +73,10 @@ export class DesfloteReporteRepository {
 
     updAndRefreshUnitDescription(query: any): PromiseLike<{}> {
         return this.query.spExecute(query, "[desfloteExterno].[UPD_AND_REFRESH_DESCRIPTION_UNIT_SP]")
+    };
+
+    selUsoCfdi(query: any): PromiseLike<{}> {
+        return this.query.spExecute(query, "[desfloteExterno].[SEL_USO_CDFI_INTEGRA_SP]")
     };
 
     // ************* TERMINA GET *************
@@ -1224,39 +1156,6 @@ export class DesfloteReporteRepository {
 
                             });
                         })
-                        // ncp(`${rutaCompleta}${factura}${arregloRutas[x].extension}`, `C:\\APLICACIONES\\Proveedores\\GIT\\proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`,
-                        //     async (err: any) => {
-                        //         let arr: any = [];
-                        //         if (err) {
-                        //             console.log(err);
-                        //             arr.push(2);
-                        //             if (x + 1 === arregloRutas.length) {
-                        //                 console.log('entra')
-                        //                 const validacion = arr.filter((y: any) => y === 2)
-                        //                 console.log(validacion, arr)
-                        //                 if (validacion) {
-                        //                     body[e].validacion = false
-                        //                 } else {
-                        //                     body[e].validacion = true
-                        //                 }
-                        //                 if (x + 1 === arregloRutas.length && e + 1 === body.length) {
-                        //                     resolve(body);
-                        //                 }
-                        //             }
-                        //         } else {
-                        //             if (x + 1 === arregloRutas.length) {
-                        //                 const validacion = arr.filter((y: any) => y === 2)
-                        //                 if (validacion.length > 0) {
-                        //                     body[e].validacion = false
-                        //                 } else {
-                        //                     body[e].validacion = true
-                        //                 }
-                        //                 if (x + 1 === arregloRutas.length && e + 1 === body.length) {
-                        //                     resolve(body);
-                        //                 }
-                        //             }
-                        //         }
-                        //     });
                     }
                     else {
                         //aqui vamos a acceder al servicio web de las facturas

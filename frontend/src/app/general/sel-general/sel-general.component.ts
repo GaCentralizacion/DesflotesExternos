@@ -564,15 +564,14 @@ export class SelGeneralComponent implements OnInit {
 				this.spinner = false;
 			} else {
 				this.spinner = true;
-
 				if (isNaN(result.valorSelect[1].PER_IDPERSONA)) {
 					this.spinner = false;
 					return this.snackBar.open('Elija un cliente de los que estan en el combo', 'Ok', { duration: 10000 });
 				};
 
-				if (result.valorSelect[0].datosExtras && (result.valorSelect[0].cfdi.length === 0)) {
+				if (result.valorSelect[0].datosExtras && this.isEmptyObject(result.valorSelect[0].cfdi)) {
 					this.spinner = false;
-					return this.snackBar.open('Si selecciona datos extras debe seleccionar el tipo de CFDI', 'Ok', { duration: 10000 });
+					return this.snackBar.open('Debe seleccionar el tipo de CFDI', 'Ok', { duration: 10000 });
 				};
 
 				this.datosevent.forEach(value => {
@@ -591,7 +590,12 @@ export class SelGeneralComponent implements OnInit {
 				const data = {
 					xmlVenta: xml.replace('$data', dataXml),
 					datosExtras: result.valorSelect[0].datosExtras ? 1 : 0,
-					cfdi: isNaN(result.valorSelect[0].cfdi.idCfdi) ? 0 : result.valorSelect[0].cfdi.idCfdi
+					cfdi: result.valorSelect[0].cfdi.idCfdi
+				};
+
+				if (data.cfdi === null || data.cfdi === undefined || data.cfdi === 'null') {
+					this.spinner = false;
+					return this.snackBar.open('Debe seleccionar el tipo de CFDI', 'Ok', { duration: 10000 });
 				};
 
 				this.coalService.postService(`reporte/sellUnit`, data).subscribe((res: any) => {
@@ -618,6 +622,10 @@ export class SelGeneralComponent implements OnInit {
 			};
 		});
 	};
+
+	public isEmptyObject = obj => {
+		return Object.entries(obj).length === 0;
+	}
 
 	public liberarUnidad = () => {
 		this.spinner = true;
