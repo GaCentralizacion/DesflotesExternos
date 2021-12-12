@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, Observable, BehaviorSubject, Subscription  } from 'rxjs';
+import { Subject, Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
@@ -153,7 +153,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private validateLogin() {
         const queryP = window.location.search.substring(1);
         // const parsed_qs = this.parse_query_string(queryP);
-        console.log('dkjhfkashdlsan', queryP)
+        // console.log('dkjhfkashdlsan', queryP)
         const arrayData = window.location.href.split('/');
         if (this.sessionInitializer.state) {
             this.getDataRedux();
@@ -183,23 +183,23 @@ export class AppComponent implements OnInit, OnDestroy {
         // tslint:disable-next-line:variable-name
         const query_string = {};
         for (const i of vars) {
-          const pair = i.split('=');
-          const key = decodeURIComponent(pair[0]);
-          const value = decodeURIComponent(pair[1]);
-          // If first entry with this name
-          if (typeof query_string[key] === 'undefined') {
-            query_string[key] = decodeURIComponent(value);
-            // If second entry with this name
-          } else if (typeof query_string[key] === 'string') {
-            const arr = [query_string[key], decodeURIComponent(value)];
-            query_string[key] = arr;
-            // If third or later entry with this name
-          } else {
-            query_string[key].push(decodeURIComponent(value));
-          }
+            const pair = i.split('=');
+            const key = decodeURIComponent(pair[0]);
+            const value = decodeURIComponent(pair[1]);
+            // If first entry with this name
+            if (typeof query_string[key] === 'undefined') {
+                query_string[key] = decodeURIComponent(value);
+                // If second entry with this name
+            } else if (typeof query_string[key] === 'string') {
+                const arr = [query_string[key], decodeURIComponent(value)];
+                query_string[key] = arr;
+                // If third or later entry with this name
+            } else {
+                query_string[key].push(decodeURIComponent(value));
+            }
         }
         return query_string;
-      }
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -213,7 +213,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.getStateAutenticacion = this.store.select(selectAuthState);
         this.getStateAutenticacion.subscribe((stateAutenticacion) => {
             if (stateAutenticacion.autenticado) {
-                
+
                 this.initEventListener();
                 this.initInterval();
             } else if (this.globalInterval !== undefined) {

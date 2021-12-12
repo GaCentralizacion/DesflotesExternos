@@ -1,0 +1,50 @@
+form {
+    width: 100%;
+    text-align: center;
+}
+
+.mat-form-field {
+    display: inherit !important;
+    position: relative;
+    text-align: left;
+}
+
+.labelText {
+    background-color: #a7a7a7d4;
+    padding: 6px;
+    margin: 0 15px;
+    text-align: justify;
+    height: auto !important;
+    color: black;
+    opacity: 0.6;
+    font-size: 18px;
+}
+
+.labelTextMin {
+    background-color: #a7a7a7d4;
+    padding: 6px;
+    margin: 0 15px;
+    text-align: justify;
+    height: 189px !important;
+    width: 97% !important;
+    color: black;
+    opacity: 0.6;
+    font-size: 18px;
+}
+
+.editBtn {
+    font-size: 15px;
+    color: white;
+    margin-right: 15px;
+}
+
+.refreshBtn {
+    font-size: 15px;
+    color: white;
+    margin-right: 5px;
+}
+
+.icons {
+    color: white !important;
+    font-size: 21px !important;
+}

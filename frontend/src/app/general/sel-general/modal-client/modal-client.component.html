@@ -1,0 +1,110 @@
+<app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
+<div mat-dialog-title>
+	<div class="row text-center">
+		<div class="col-md-12">
+			<label> {{titulo}} </label>
+		</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-md-12">
+			<h4> {{elementos}} </h4>
+		</div>
+	</div>
+</div>
+<mat-dialog-content class="mat-typography">
+	<br>
+	<mat-card>
+		<div classs='row'>
+			<div class='col-md-12'>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="textLabel"> Buscar Clientes </label>
+					</div>
+					<div class="col-md-8">
+						<mat-radio-group class="pull-right" aria-label="Selecciona como quieres buscar">
+							<label class="textLabel">Selecciona como quieres buscar</label>&nbsp;
+							<mat-radio-button class="textLabel" value="1" (change)="radioChange($event)">ID Cliente</mat-radio-button>
+							&nbsp;
+							<mat-radio-button class="textLabel" value="2" (change)="radioChange($event)">Nombre Cliente</mat-radio-button>
+						  </mat-radio-group>
+					</div>
+				</div>
+				<div class='row' [hidden]="tipoBusqueda === 0">
+					<div class='col-md-12'>
+						<form [formGroup]="formSearchClient">
+							<mat-form-field appearance="fill" floatLabel="always">
+								<mat-label>{{textBusqueda}}</mat-label>
+								<input style="width:100%" matInput type="text" formControlName="cliente"
+									class="example-right-align" placeholder="Dato Cliente">
+							</mat-form-field>
+							<mat-error *ngIf="formSearchClient.invalid">
+								<label>El campo es <strong>requerido</strong></label>
+							</mat-error>
+						</form>
+					</div>
+				</div>
+				<div class="row" [hidden]="tipoBusqueda === 0">
+					<div class="col-md-12">
+						<button class="btnSerchUser btn btn-info" (click)="getClientes()"
+							[disabled]="!formSearchClient.valid">
+							<label *ngIf="options.length === 0">Buscar</label>
+							<label *ngIf="options.length > 0">Buscar Nuevamente</label>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</mat-card>
+	<br />
+	<mat-card *ngIf="options.length > 0">
+		<!-- <mat-slide-toggle *ngIf="options.length > 0" class="example-margin" [color]="color" [(ngModel)]="checked"
+			(change)="slideChange($event)">
+			<label class="textLabel"> Agregar datos adicionales </label>
+		</mat-slide-toggle>
+		<br /><br /> -->
+		<div class="row" *ngIf="options.length > 0">
+			<div class="col-md-12">
+				<form [formGroup]="formInoviceAdiotional" class="example-form">
+					<div class="row">
+						<div class="col-md-11">
+							<mat-select class="cfdi" placeholder="Seleccionar el uso del CFDI" formControlName="cfdi">
+								<mat-option id="bluemat" *ngFor='let cfdi of dataCfdi' [value]="cfdi">
+									{{cfdi.desCfdi}}
+								</mat-option>
+							</mat-select>
+						</div>
+						<div class="col-md-1">
+							<button class="btn btn-primary eraseButton" (click)="eraseCfdi();">
+								<mat-icon>clear</mat-icon>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</mat-card>
+	<br>
+	<mat-card *ngIf="options.length > 0">
+		<div class="row" *ngIf="options.length > 0">
+			<div class="col-md-12">
+				<label class="textLabel">Selecciona un cliente</label>
+				<form [formGroup]="FformSelectClient" class="example-form">
+					<mat-form-field class="example-full-width" appearance="fill">
+						<mat-label>Selecciona un Cliente</mat-label>
+						<input type="text" matInput [formControl]="formSelectClient" [matAutocomplete]="auto">
+						<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+							<mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+								{{option.PER_IDPERSONA}} - {{option.PER_NOMRAZON}}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+				</form>
+			</div>
+		</div>
+	</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<button mat-button [mat-dialog-close]="0">Cancelar</button>
+	<button mat-button (click)="saveData()" [mat-dialog-close]="retornarValores" [disabled]="!FformSelectClient.valid"
+		cdkFocusInitial>Venta de unidad</button>
+</mat-dialog-actions>

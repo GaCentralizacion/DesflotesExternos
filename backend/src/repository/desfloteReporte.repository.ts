@@ -15,6 +15,7 @@ const jsonxml = require('jsontoxml');
 const ftp = require("basic-ftp")
 const ncp = require('ncp').ncp;
 const cron = require('node-cron')
+const soap = require('soap');
 
 @Service()
 export class DesfloteReporteRepository {
@@ -25,98 +26,18 @@ export class DesfloteReporteRepository {
         const env: string = process.env.NODE_ENV || 'development';
         this.conf = (config as any)[env]; // ejemplo de llamada al confg.js
         this.query = new Query();
-        // if (process.env.RUN_TASKS === "true" || process.env.RUN_TASKS === "1") {
-        // console.log("cron")
-
-        cron.schedule('*/2 * * * *', () => {
-            this.getUnidadesSubirIntelimotor({})
-                .then((res: any) => {
-                    if (res.recordsets[0]?.length > 0) {
-                        resolve(
-                            this.procesaInsertIntelimotor(res.recordsets[0])
-                            );
-                    } else {
-                        // console.log('no crea nada')
-                    }
-                })
-        })
-
-        cron.schedule('*/2 * * * *', () => {
-            this.GetUnidadesOrdenCompra({ tipo: 'PRIMERA' })
-                .then((res: any) => {
-                    // this.GeneraDatosOrden(1, 'PRIMERA')
-                    if (res.recordsets[0].length > 0) {
-                        this.GeneraDatosOrden(res.recordsets[0], 'PRIMERA')
-                    } else {
-                        // console.log('no crea nada')
-                    }
-                })
-
-
-            this.GetUnidadesOrdenCompra({ tipo: 'SEGUNDA' })
-                .then((res: any) => {
-                    // this.GeneraDatosOrden(1, 'PRIMERA')
-                    if (res.recordsets[0].length > 0) {
-                        this.GeneraDatosOrden(res.recordsets[0], 'SEGUNDA')
-                    } else {
-                        // console.log('no crea nada')
-                    }
-                })
-        })
 
         cron.schedule('*/3 * * * *', () => {
-            this.GetFacturasSubir({ tipo: 'PRIMERA' })
-                .then((res: any) => {
-                    const resultado = res.recordsets[0]
-                    this.PostSubeDocumentosFactura(resultado)
-                        .then((result: any) => {
-                            console.log('resultadooooooo =================     ', result)
-                            const unidadesCorrectas = result.filter((x: any) => x.validacion === true);
-                            if (unidadesCorrectas.length > 0) {
-                                let xmlUnidades = `<unidades>`;
-                                for (const e of unidadesCorrectas) {
-                                    xmlUnidades += `<unidad><idUnidad>${e.idUnidad}</idUnidad></unidad>`
-                                }
-                                xmlUnidades += `</unidades>`
-                                const datos = {
-                                    xmlUnidades,
-                                    tipo: 'PRIMERA'
-                                }
-                                this.PostActualizaBanderaFactura(datos);
-                            }
-                        });
-                })
-
-            this.GetFacturasSubir({ tipo: 'SEGUNDA' })
-                .then((res: any) => {
-                    const resultado = res.recordsets[0]
-                    this.PostSubeDocumentosFactura(resultado)
-                        .then((result: any) => {
-                            console.log('resultadooooooo =================     ', result)
-                            const unidadesCorrectas = result.filter((x: any) => x.validacion === true);
-                            if (unidadesCorrectas.length > 0) {
-                                let xmlUnidades = `<unidades>`;
-                                for (const e of unidadesCorrectas) {
-                                    xmlUnidades += `<unidad><idUnidad>${e.idUnidad}</idUnidad></unidad>`
-                                }
-                                xmlUnidades += `</unidades>`
-                                const datos = {
-                                    xmlUnidades,
-                                    tipo: 'SEGUNDA'
-                                }
-                                this.PostActualizaBanderaFactura(datos);
-                            }
-                        });
-                })
-        })
-        // }
-    }
+            this.query.spExecute([], "[desfloteExterno].[SEL_RECUPERA_FACTURAS_DESFLOTES_SP]")
+        });
+    };
 
     // ************ SERVICIOS GET ************
     GetDataReport(query: any): PromiseLike<{}> {
-        let sp = "[Reporte].[SEL_GENERAL_SP]";
+        let sp = "[desfloteExterno].[SEL_DATA_DESFLOTES_SP]";
         return this.query.spExecute(query, sp);
     }
+
 
     porcentajeAvances(query: any): PromiseLike<{}> {
         let sp = "[Reporte].[SEL_PORCENTAJE_AVANCE_SP]";
@@ -150,34 +71,40 @@ export class DesfloteReporteRepository {
         return this.query.spExecute(query, "[Reporte].[SEL_GPS_SP]")
     }
 
+    updAndRefreshUnitDescription(query: any): PromiseLike<{}> {
+        return this.query.spExecute(query, "[desfloteExterno].[UPD_AND_REFRESH_DESCRIPTION_UNIT_SP]")
+    };
+
+    selUsoCfdi(query: any): PromiseLike<{}> {
+        return this.query.spExecute(query, "[desfloteExterno].[SEL_USO_CDFI_INTEGRA_SP]")
+    };
+
     // ************* TERMINA GET *************
 
     // ************ SERVICIOS POST ************
 
     ObtenerFactura(body: any): any {
         return new Promise((resolve, reject) => {
-            const soap = require('soap');
-            const url = 'http://192.168.20.123:8080/Service1.asmx?WSDL';
-            const args = { RFCEMISOR: 'AAN910409I35', RFCRECEPTOR: '', SERIE: 'GA', FOLIO: '0019077' };
-            soap.createClient(url, function (err: any, client: any) {
-                if (err) console.error(err);
-                else {
-                    client.MuestraFactura(args, function (err: any, response: any) {
-                        if (err) reject(err);
-                        else {
-                            let hola = 'GA0019077'
-                            let arrayDeCadenas = hola.split('0');
-                            console.log(arrayDeCadenas)
-                            base64.base64Decode(response.MuestraFacturaResult.pdf, `factura.pdf`);
-                            resolve(response)
-                            // res.send(response);
-                        }
-                    })
-                }
-            });
-
+            try {
+                const args = { RFCEMISOR: body.rfcEmisor, RFCRECEPTOR: body.rfcReceptor, SERIE: body.serie, FOLIO: body.folio };
+                soap.createClient(config.development.WSInvoce, function (err: any, client: any) {
+                    if (err) {
+                        console.error('ErorrSOAP', err);
+                        reject({ success: 0, data: [] });
+                    } else {
+                        client.MuestraFactura(args, function (err: any, response: any) {
+                            if (err) reject({ success: 0, data: [] });
+                            else {
+                                resolve({ success: 1, data: response });
+                            };
+                        });
+                    };
+                });
+            } catch (error) {
+                reject({ success: 0, data: [] });
+            };
         });
-    }
+    };
 
     PostComprobantePago(body: any): any {
         let folioOrden = body.folioOrden;
@@ -700,7 +627,6 @@ export class DesfloteReporteRepository {
                     precioVenta = (arr[e].precioVentaIva + (arr[e].precioVentaIva * arr[e].porcentajeAplica))
 
                 }
-				
                 // tslint:disable-next-line:max-line-length
                 // const marca = catalogoMarcas.filter((x: any) => x.Marca == arr[e].marca.toUpperCase() && x.idCompania == arr[e].idCompaniaOrden && x.idSucursal == arr[e].idSucursalOrden)
                 const marca = catalogoMarcas.filter((x: any) => x.Marca == arr[e].marca.toUpperCase() && x.idCompania == arr[e].idCompaniaOrden)
@@ -1156,7 +1082,7 @@ export class DesfloteReporteRepository {
 
     PostCopiaDocumentosPdf(body: any, tipo: string): any {
         return new Promise((resolve, reject) => {
-            let arregloRutas
+            let arregloRutas: any = []
             if (tipo === 'PRIMERA') {
                 arregloRutas = [
                     {
@@ -1200,11 +1126,20 @@ export class DesfloteReporteRepository {
                     let factura = body[e].facturacion;
                     if (tipo === 'PRIMERA') {
                         const https = require("http");
-                        let file = fs.createWriteStream(`E:\\Aplicaciones\\Portal_Proveedores_Produccion\\portal-proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`);
+                        let file = fs.createWriteStream(`C:\\APLICACIONES\\Proveedores\\GIT\\proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`);
                         https.get(`${rutaCompleta}${factura}${arregloRutas[x].extension}`, (response: any) => {
                             var stream = response.pipe(file);
                             stream.on("finish", () => {
                                 console.log('done')
+                                if (arregloRutas[x].extension === '.pdf') {
+                                    if (response.statusCode === 200) {
+                                        body[e].existeFactura = true;
+                                    }
+                                    else {
+                                        body[e].existeFactura = false;
+                                    }
+                                }
+
                                 let arr: any = [];
                                 if (x + 1 === arregloRutas.length) {
                                     const validacion = arr.filter((y: any) => y === 2)
@@ -1214,54 +1149,30 @@ export class DesfloteReporteRepository {
                                         body[e].validacion = true
                                     }
                                     if (x + 1 === arregloRutas.length && e + 1 === body.length) {
+                                        this.PostExisteFactura(body, tipo)
                                         resolve(body);
                                     }
                                 }
 
                             });
                         })
-                        // ncp(`${rutaCompleta}${factura}${arregloRutas[x].extension}`, `C:\\APLICACIONES\\Proveedores\\GIT\\proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`,
-                        //     async (err: any) => {
-                        //         let arr: any = [];
-                        //         if (err) {
-                        //             console.log(err);
-                        //             arr.push(2);
-                        //             if (x + 1 === arregloRutas.length) {
-                        //                 console.log('entra')
-                        //                 const validacion = arr.filter((y: any) => y === 2)
-                        //                 console.log(validacion, arr)
-                        //                 if (validacion) {
-                        //                     body[e].validacion = false
-                        //                 } else {
-                        //                     body[e].validacion = true
-                        //                 }
-                        //                 if (x + 1 === arregloRutas.length && e + 1 === body.length) {
-                        //                     resolve(body);
-                        //                 }
-                        //             }
-                        //         } else {
-                        //             if (x + 1 === arregloRutas.length) {
-                        //                 const validacion = arr.filter((y: any) => y === 2)
-                        //                 if (validacion.length > 0) {
-                        //                     body[e].validacion = false
-                        //                 } else {
-                        //                     body[e].validacion = true
-                        //                 }
-                        //                 if (x + 1 === arregloRutas.length && e + 1 === body.length) {
-                        //                     resolve(body);
-                        //                 }
-                        //             }
-                        //         }
-                        //     });
                     }
                     else {
                         //aqui vamos a acceder al servicio web de las facturas
                         const https = require("http");
-                        let file = fs.createWriteStream(`E:\\Aplicaciones\\Portal_Proveedores_Produccion\\portal-proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`);
+                        let file = fs.createWriteStream(`C:\\APLICACIONES\\Proveedores\\GIT\\proveedores\\app\\static\\files\\${factura}${arregloRutas[x].extension}`);
                         https.get(`${rutaCompleta}${factura}${arregloRutas[x].extension}`, (response: any) => {
                             var stream = response.pipe(file);
                             stream.on("finish", () => {
                                 console.log('done')
+                                if (arregloRutas[x].extension === '.pdf') {
+                                    if (response.statusCode === 200) {
+                                        body[e].existeFactura = true;
+                                    }
+                                    else {
+                                        body[e].existeFactura = false;
+                                    }
+                                }
                                 let arr: any = [];
                                 if (x + 1 === arregloRutas.length) {
                                     const validacion = arr.filter((y: any) => y === 2)
@@ -1271,6 +1182,7 @@ export class DesfloteReporteRepository {
                                         body[e].validacion = true
                                     }
                                     if (x + 1 === arregloRutas.length && e + 1 === body.length) {
+                                        this.PostExisteFactura(body, tipo)
                                         resolve(body);
                                     }
                                 }
@@ -1413,7 +1325,7 @@ export class DesfloteReporteRepository {
         let auxSerie = 'inicial';
         ArregloDocumentos = body;
         const https = require("https");
-        let contador = 1;
+        let contador = 0;
         return new Promise((resolve, reject) => {
             ArregloDocumentos.forEach((x: any) => {
                 if (!fs.existsSync(`${x.rutaExpediente}`)) {
@@ -1426,32 +1338,59 @@ export class DesfloteReporteRepository {
                         let ruta = x.ruta.replace('\\', '/');
                         x.ruta = ruta;
                     }
-                    https.get(x.ruta, (response: any) => {
+                    const request = https.get(x.ruta, (response: any) => {
                         var stream = response.pipe(file);
                         stream.on("finish", () => {
                             console.log("done");
                             contador++;
-                            if (contador = ArregloDocumentos.length) {
+                            if (contador === ArregloDocumentos.length) {
+                                resolve("Se estan sincronizando los documentos");
+                            }
+                        }).on('error', function (err: any) { // Handle errors
+                            console.log("error");
+                            contador++;
+                            if (contador === ArregloDocumentos.length) {
                                 resolve("Se estan sincronizando los documentos");
                             }
                         });
                     })
+                    request.on('error', (err: any) => {
+                        contador++;
+                        if (contador === ArregloDocumentos.length) {
+                            resolve("Se estan sincronizando los documentos");
+                        }
+                        console.log(err.message);
+                    });
                 } else {
                     let file = fs.createWriteStream(`${x.rutaExpediente}${x.nombreExpediente}`);
                     if (x.ruta != null) {
                         let ruta = x.ruta.replace('\\', '/');
                         x.ruta = ruta;
                     }
-                    https.get(x.ruta, (response: any) => {
+                    const request = https.get(x.ruta, (response: any) => {
                         var stream = response.pipe(file);
                         stream.on("finish", () => {
                             console.log("done");
                             contador++;
-                            if (contador = ArregloDocumentos.length) {
+                            if (contador === ArregloDocumentos.length) {
+                                resolve("Se estan sincronizando los documentos");
+                            }
+                        }).on('error', function (err: any) { // Handle errors
+                            console.log("error");
+                            contador++;
+                            if (contador === ArregloDocumentos.length) {
                                 resolve("Se estan sincronizando los documentos");
                             }
                         });
                     })
+
+                    request.on('error', (err: any) => {
+                        contador++;
+                        if (contador === ArregloDocumentos.length) {
+                            resolve("Se estan sincronizando los documentos");
+                        }
+                        console.log(err.message);
+                    });
 
                 }
             })
@@ -1542,6 +1481,26 @@ export class DesfloteReporteRepository {
         });
     }
 
+    PostExisteFactura(query: any, tipo: any): PromiseLike<{}> {
+        let propiedades: any = [];
+        query.forEach((prop: any) => {
+            propiedades.push({
+                propiedad: {
+                    idUnidad: prop.idUnidad,
+                    asignacion: tipo,
+                    factura: prop.facturacion,
+                    existeFactura: prop.existeFactura
+                }
+            })
+        });
+        var xml = jsonxml({ propiedades: propiedades });
+        return new Promise((resolve, reject) => {
+            const data = {
+                xmlVIN: xml,
+            }
+            resolve(this.query.spExecuteParam(data, "[Reporte].[UPD_EXISTEFACTURA_SP]"));
+        });
+    }
 
     PostUpdFactura(query: any): PromiseLike<{}> {
         return this.query.spExecute(query, "[Reporte].[UPD_FACTURA_SP]")
@@ -1607,9 +1566,28 @@ export class DesfloteReporteRepository {
         })
     }
 
+    sellUnit(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[INS_VENTA_UNIT_SP]")
+    };
+
+    deleteVenta(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[DEL_VENTA_UNIT_SP]")
+    };
+
+    sellUnitDescription(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[SEL_DESCRIPTION_UNIT_SP]")
+    };
+
     // ************* TERMINA POST *************
 
     // ************ SERVICIOS PUT ************
+    updatePrice(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[UPD_PRICE_UNIT_SP]")
+    };
+
+    updUnitDescription(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[UPD_DESCRIPTION_UNIT_SP]")
+    };
     // ************* TERMINA PUT *************
 
     // ************ SERVICIOS DELETE ************

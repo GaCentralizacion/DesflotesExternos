@@ -32,7 +32,7 @@ export class CommonRepository {
     getCondicion(query: any): PromiseLike<{}> {
         return this.query.spExecute(query, "[Catalogo].[SEL_CONDICION_SP]")
     }
-    
+
     getCompaniaUnidad(query: any): PromiseLike<{}> {
         return this.query.spExecute(query, "[catalogo].[SEL_COMPANIAUNIDAD_SP]")
     }
@@ -56,11 +56,15 @@ export class CommonRepository {
     getusuarioCentralizacion(query: any): PromiseLike<{}> {
         return this.query.spExecute(query, "[Catalogo].[SEL_DATOSUSUARIO_BPRO_SP]")
     }
+
+    getClientes(query: any): PromiseLike<{}> {
+        return this.query.spExecute(query, "[desfloteExterno].[SEL_ALL_CLIENTES_SP]")
+    }
     // ************* TERMINA GET *************
 
     // ************ SERVICIOS POST ************
 
-    
+
 
     // ************* TERMINA POST *************
 
