@@ -37,3 +37,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# config files
+backend/src/config.ts
+backend/src/data/config.ts
+frontend/src/environments/environment.ts

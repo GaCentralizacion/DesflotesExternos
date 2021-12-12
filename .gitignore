@@ -1,0 +1,4 @@
+
+backend/src/config.ts
+backend/src/data/config.ts
+frontend/src/environments/environment.ts

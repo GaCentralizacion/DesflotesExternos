@@ -1,6 +1,6 @@
 export default {
     "development": {
-        "server": "192.168.20.123",
+        "server": "192.168.20.29",
         "user": "sa",
         "password": "S0p0rt3",
         "port": 1433,
