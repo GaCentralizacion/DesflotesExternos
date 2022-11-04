@@ -79,6 +79,10 @@ export class DesfloteReporteRepository {
         return this.query.spExecute(query, "[desfloteExterno].[SEL_USO_CDFI_INTEGRA_SP]")
     };
 
+    selConceptosContables(query: any): PromiseLike<{}> {
+        return this.query.spExecute(query, "[Reporte].[SEL_CONCEPTOS_CONTABLES_SP]")
+    };
+
     // ************* TERMINA GET *************
 
     // ************ SERVICIOS POST ************

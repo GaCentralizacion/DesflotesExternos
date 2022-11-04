@@ -125,6 +125,11 @@ export class DesfloteReporteController {
 		return this.repository.selUsoCfdi(req.query);
 	};
 
+	@Get('/selConceptosContables')
+	selConceptosContables(@Req() req: Request) {
+		return this.repository.selConceptosContables(req.query);
+	};
+
 	// ************ END Servicios GET ************
 
 	// ************ Servicios POST ************
