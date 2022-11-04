@@ -39,9 +39,11 @@ export class DialogClient implements OnInit {
 	dataSelect: any = [];
 
 	formSelectClient = new FormControl([], [Validators.required]);
-	FformSelectClient = new FormGroup({ selectClient: this.formSelectClient })
+	formConceptoContable = new FormControl([], [Validators.required]);
+	FformSelectClient = new FormGroup({ selectClient: this.formSelectClient, conceptoContable: this.formConceptoContable })
 	options: Cliente[] = [];
 	filteredOptions: Observable<Cliente[]>;
+	allConceptos: any
 
 	color: ThemePalette = 'accent';
 	public checked: boolean = true;
@@ -71,6 +73,7 @@ export class DialogClient implements OnInit {
 
 	ngOnInit() {
 		this.getselUsoCfdi();
+		this.getselConceptosContables();
 		this.filteredOptions = this.formSelectClient.valueChanges.pipe(
 			startWith(''),
 			map(value => (typeof value === 'string' ? value : value.PER_NOMRAZON)),
@@ -95,9 +98,27 @@ export class DialogClient implements OnInit {
 		});
 	};
 
+	getselConceptosContables = () => {
+		this.coalService.getService('reporte/selConceptosContables').subscribe((res: any) => {
+			if (res.err) {
+				this.spinner = false;
+				this.Excepciones(res.err, 4);
+			} else if (res.excepcion) {
+				this.spinner = false;
+				this.Excepciones(res.excepcion, 3);
+			} else {
+				this.spinner = false;
+				this.allConceptos = res.recordsets[0];
+			};
+		}, (error: any) => {
+			this.Excepciones(error, 2);
+		});
+	};
+
 	saveData() {
 		this.retornarValores.valorSelect.push(this.formInoviceAdiotional.value);
 		this.retornarValores.valorSelect.push(this.formSelectClient.value);
+		this.retornarValores.valorSelect.push(this.formConceptoContable.value)
 	};
 
 	slideChange = e => {

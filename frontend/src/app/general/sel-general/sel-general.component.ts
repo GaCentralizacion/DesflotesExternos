@@ -574,6 +574,15 @@ export class SelGeneralComponent implements OnInit {
 					return this.snackBar.open('Debe seleccionar el tipo de CFDI', 'Ok', { duration: 10000 });
 				};
 
+				if (result.valorSelect[2] === '') {
+					this.spinner = false;
+					return this.snackBar.open('Debe seleccionar el concepto contable', 'Ok', { duration: 10000 });
+				};
+				if (result.valorSelect[2] === '0' || result.valorSelect[2] === 0) {
+					this.spinner = false;
+					return this.snackBar.open('Debe seleccionar el concepto contable', 'Ok', { duration: 10000 });
+				};
+
 				this.datosevent.forEach(value => {
 					if (isNaN(value.idUnidad)) {
 						this.spinner = false;
@@ -590,7 +599,8 @@ export class SelGeneralComponent implements OnInit {
 				const data = {
 					xmlVenta: xml.replace('$data', dataXml),
 					datosExtras: result.valorSelect[0].datosExtras ? 1 : 0,
-					cfdi: result.valorSelect[0].cfdi.idCfdi
+					cfdi: result.valorSelect[0].cfdi.idCfdi,
+					conceptoContable: result.valorSelect[2]
 				};
 
 				if (data.cfdi === null || data.cfdi === undefined || data.cfdi === 'null') {

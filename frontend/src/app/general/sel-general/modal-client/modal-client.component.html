@@ -98,6 +98,21 @@
 							</mat-option>
 						</mat-autocomplete>
 					</mat-form-field>
+
+					<mat-form-field class="inputFullWide">
+						<mat-select placeholder="Seleccione el concepto contable" [formControl]="formConceptoContable">
+							<mat-option id="bluemat" [value]="0">
+								Seleccione un concepto
+							</mat-option>
+							<mat-option id="bluemat" *ngFor='let concepto of allConceptos' [value]="concepto.PAR_IDENPARA">
+								{{concepto.PAR_DESCRIP1}}
+							</mat-option>
+						</mat-select>
+						<mat-error>
+							El campo es
+							<strong>requerido</strong>
+						</mat-error>
+					</mat-form-field>
 				</form>
 			</div>
 		</div>
