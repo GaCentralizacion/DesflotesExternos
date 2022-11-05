@@ -4,14 +4,14 @@
 
 export const environment = {
   production: false,
-  // serviceUrl: 'http://192.168.20.89:4071/',
-  serviceUrl: 'http://localhost:4071/',
+  serviceUrl: 'http://192.168.20.89:4071/',
+  //serviceUrl: 'http://localhost:4071/',
   seguridadUrl: 'https://apiseguridad.grupoandrade.com/',
   //seguridadUrl: 'http://192.168.20.137:4000/',
   aplicacionesId: 18,
   nombreAplicacion: 'Desflotes Externos',
-  excepcionUrl: 'http://192.168.20.137:4001/',
-  fileServerUrl: 'http://192.168.20.137:4002/',
+  excepcionUrl: 'http://192.168.20.89:3656/',
+  fileServerUrl: 'https://apifileServer.grupoandrade.com/',
   googleAPIkey: 'AIzaSyBOV5YhUsM0c3dKkiXTFVNN0JZhZ4qB7v0',
   firebase: {
     apiKey: 'AIzaSyDajrY7AZrgmno4EiqlWG_dd5xts6xNeHI',
