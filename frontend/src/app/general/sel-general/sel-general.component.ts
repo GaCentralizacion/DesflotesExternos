@@ -456,6 +456,12 @@ export class SelGeneralComponent implements OnInit {
 				cssClass: 'general'
 			},
 			{
+				caption: 'Concepto contable',
+				dataField: 'DescBpro',
+				allowEditing: false,
+				cssClass: 'general'
+			},
+			{
 				caption: 'Precio Venta',
 				dataField: 'precioVentaIva',
 				dataType: TiposdeDato.number,
