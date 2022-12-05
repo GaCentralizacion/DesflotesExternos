@@ -456,6 +456,12 @@ export class SelGeneralComponent implements OnInit {
 				cssClass: 'general'
 			},
 			{
+				caption: 'Concepto contable',
+				dataField: 'DescBpro',
+				allowEditing: false,
+				cssClass: 'general'
+			},
+			{
 				caption: 'Precio Venta',
 				dataField: 'precioVentaIva',
 				dataType: TiposdeDato.number,
@@ -546,6 +552,12 @@ export class SelGeneralComponent implements OnInit {
 	};
 
 	public getClientBuy = () => {
+		const verificaclaveProducto = this.datosevent.filter(x => x.cveContratoBpro === null);
+		if (verificaclaveProducto.length > 0) {
+			let vin = verificaclaveProducto[0]?.numeroSerie;
+			return this.snackBar.open('La unidad con vin ' + vin + ' no tiene el concepto contable, favor de validar.', 'Ok', { duration: 15000 });
+		};
+
 		this.spinner = true;
 		let xml = `<ventas>$data</ventas>`;
 		let dataXml = '';
@@ -574,14 +586,14 @@ export class SelGeneralComponent implements OnInit {
 					return this.snackBar.open('Debe seleccionar el tipo de CFDI', 'Ok', { duration: 10000 });
 				};
 
-				if (result.valorSelect[2] === '') {
-					this.spinner = false;
-					return this.snackBar.open('Debe seleccionar el concepto contable', 'Ok', { duration: 10000 });
-				};
-				if (result.valorSelect[2] === '0' || result.valorSelect[2] === 0) {
-					this.spinner = false;
-					return this.snackBar.open('Debe seleccionar el concepto contable', 'Ok', { duration: 10000 });
-				};
+				// if (result.valorSelect[2] === '') {
+				// 	this.spinner = false;
+				// 	return this.snackBar.open('Debe seleccionar el concepto contable', 'Ok', { duration: 10000 });
+				// };
+				// if (result.valorSelect[2] === '0' || result.valorSelect[2] === 0) {
+				// 	this.spinner = false;
+				// 	return this.snackBar.open('Debe seleccionar el concepto contable', 'Ok', { duration: 10000 });
+				// };
 
 				this.datosevent.forEach(value => {
 					if (isNaN(value.idUnidad)) {
@@ -599,8 +611,7 @@ export class SelGeneralComponent implements OnInit {
 				const data = {
 					xmlVenta: xml.replace('$data', dataXml),
 					datosExtras: result.valorSelect[0].datosExtras ? 1 : 0,
-					cfdi: result.valorSelect[0].cfdi.idCfdi,
-					conceptoContable: result.valorSelect[2]
+					cfdi: result.valorSelect[0].cfdi.idCfdi
 				};
 
 				if (data.cfdi === null || data.cfdi === undefined || data.cfdi === 'null') {
