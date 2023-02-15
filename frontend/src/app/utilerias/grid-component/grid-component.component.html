@@ -220,6 +220,10 @@
 			</label>
 		</div>
 
+		<div *dxTemplate="let data of 'errorFactura'" class="foto">
+			<a *ngIf="data.value !== 'Facturada'" class='selecciona' (click)="GetErrorBpro(data.row.data)">{{data.value}}</a>
+			<label *ngIf="data.value === 'Facturada'">{{data.value}}</label>
+		</div>
 
 		<!-- <div *dxTemplate="let data of 'pdfFacturaSegunda'" class="foto">
 			<a title="Mostrar factura" (click)="GetFacturaPdfSegundaAsignacion(data)">{{data.value}}</a>

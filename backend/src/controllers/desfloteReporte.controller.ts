@@ -490,6 +490,11 @@ export class DesfloteReporteController {
 		return this.repository.sellUnitDescription(body);
 	};
 
+	@Post('/selErrorFacturacionBpro')
+	selErrorFacturacionBpro(@Body() body: Request) {
+		return this.repository.selErrorFacturacionBpro(body);
+	};
+
 	// ************ END Servicios POST ************
 
 	// ************ Servicios PUT ************

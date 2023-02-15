@@ -50,6 +50,7 @@ export class DialogClient implements OnInit {
 	public maxLengthTextArea: number = 5000;
 	public tipoBusqueda: number = 0;
 	public textBusqueda: string = '';
+	public disabledUsoCfdi: boolean = true;
 
 	// descriptionAditional = new FormControl('');
 	cfdi = new FormControl({});
@@ -72,17 +73,26 @@ export class DialogClient implements OnInit {
 	};
 
 	ngOnInit() {
-		this.getselUsoCfdi();
 		// this.getselConceptosContables();
 		this.filteredOptions = this.formSelectClient.valueChanges.pipe(
 			startWith(''),
 			map(value => (typeof value === 'string' ? value : value.PER_NOMRAZON)),
 			map(PER_NOMRAZON => (PER_NOMRAZON ? this._filter(PER_NOMRAZON) : this.options.slice())),
 		);
+
+		this.formSelectClient.valueChanges.subscribe(dataChange => {
+			this.eraseCfdi();
+			this.dataCfdi = [];
+			this.disabledUsoCfdi = true;
+			if( (dataChange?.PER_IDPERSONA !== undefined || dataChange?.PER_IDPERSONA !== null) && (dataChange?.PER_IDPERSONA > 0) ){
+				this.getselUsoCfdi(dataChange?.PER_IDPERSONA);
+			};
+		});
 	};
 
-	getselUsoCfdi = () => {
-		this.coalService.getService('reporte/selUsoCfdi').subscribe((res: any) => {
+	getselUsoCfdi = idCliente => {
+		this.spinner = true;
+		this.coalService.getService(`reporte/selUsoCfdi?idCliente=${idCliente}`).subscribe((res: any) => {
 			if (res.err) {
 				this.spinner = false;
 				this.Excepciones(res.err, 4);
@@ -90,6 +100,7 @@ export class DialogClient implements OnInit {
 				this.spinner = false;
 				this.Excepciones(res.excepcion, 3);
 			} else {
+				this.disabledUsoCfdi = false;
 				this.spinner = false;
 				this.dataCfdi = res.recordsets[0];
 			};
@@ -133,6 +144,7 @@ export class DialogClient implements OnInit {
 		this.options = [];
 		this.eraseCfdi();
 		this.checked = false;
+		this.FformSelectClient.reset();
 	};
 
 	public getClientes = () => {

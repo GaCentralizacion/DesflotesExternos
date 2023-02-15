@@ -57,34 +57,6 @@
 	</mat-card>
 	<br />
 	<mat-card *ngIf="options.length > 0">
-		<!-- <mat-slide-toggle *ngIf="options.length > 0" class="example-margin" [color]="color" [(ngModel)]="checked"
-			(change)="slideChange($event)">
-			<label class="textLabel"> Agregar datos adicionales </label>
-		</mat-slide-toggle>
-		<br /><br /> -->
-		<div class="row" *ngIf="options.length > 0">
-			<div class="col-md-12">
-				<form [formGroup]="formInoviceAdiotional" class="example-form">
-					<div class="row">
-						<div class="col-md-11">
-							<mat-select class="cfdi" placeholder="Seleccionar el uso del CFDI" formControlName="cfdi">
-								<mat-option id="bluemat" *ngFor='let cfdi of dataCfdi' [value]="cfdi">
-									{{cfdi.desCfdi}}
-								</mat-option>
-							</mat-select>
-						</div>
-						<div class="col-md-1">
-							<button class="btn btn-primary eraseButton" (click)="eraseCfdi();">
-								<mat-icon>clear</mat-icon>
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</mat-card>
-	<br>
-	<mat-card *ngIf="options.length > 0">
 		<div class="row" *ngIf="options.length > 0">
 			<div class="col-md-12">
 				<label class="textLabel">Selecciona un cliente</label>
@@ -98,21 +70,29 @@
 							</mat-option>
 						</mat-autocomplete>
 					</mat-form-field>
-
-					<!-- <mat-form-field class="inputFullWide">
-						<mat-select placeholder="Seleccione el concepto contable" [formControl]="formConceptoContable">
-							<mat-option id="bluemat" [value]="0">
-								Seleccione un concepto
-							</mat-option>
-							<mat-option id="bluemat" *ngFor='let concepto of allConceptos' [value]="concepto.PAR_IDENPARA">
-								{{concepto.PAR_DESCRIP1}}
-							</mat-option>
-						</mat-select>
-						<mat-error>
-							El campo es
-							<strong>requerido</strong>
-						</mat-error>
-					</mat-form-field> -->
+				</form>
+			</div>
+		</div>
+	</mat-card>
+	<br/>
+	<mat-card *ngIf="options.length > 0">
+		<div class="row" *ngIf="options.length > 0">
+			<div class="col-md-12">
+				<form [formGroup]="formInoviceAdiotional" class="example-form">
+					<div class="row">
+						<div class="col-md-11">
+							<mat-select class="cfdi" placeholder="Seleccionar el uso del CFDI" formControlName="cfdi" [disabled]="disabledUsoCfdi">
+								<mat-option id="bluemat" *ngFor='let cfdi of dataCfdi' [value]="cfdi">
+									{{cfdi.desCfdi}}
+								</mat-option>
+							</mat-select>
+						</div>
+						<div class="col-md-1">
+							<button class="btn btn-primary eraseButton" (click)="eraseCfdi();">
+								<mat-icon>clear</mat-icon>
+							</button>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
