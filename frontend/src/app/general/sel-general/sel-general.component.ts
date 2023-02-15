@@ -576,12 +576,12 @@ export class SelGeneralComponent implements OnInit {
 				this.spinner = false;
 			} else {
 				this.spinner = true;
-				if (isNaN(result.valorSelect[1].PER_IDPERSONA)) {
+				if (isNaN(result.valorSelect[1]?.PER_IDPERSONA)) {
 					this.spinner = false;
 					return this.snackBar.open('Elija un cliente de los que estan en el combo', 'Ok', { duration: 10000 });
 				};
-
-				if (result.valorSelect[0].datosExtras && this.isEmptyObject(result.valorSelect[0].cfdi)) {
+				
+				if (result.valorSelect[0]?.datosExtras && this.isEmptyObject(result.valorSelect[0]?.cfdi)) {
 					this.spinner = false;
 					return this.snackBar.open('Debe seleccionar el tipo de CFDI', 'Ok', { duration: 10000 });
 				};
