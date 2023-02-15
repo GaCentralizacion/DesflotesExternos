@@ -16,6 +16,7 @@ import { CoalService } from '../../services/coal.service';
 import { ExcepcionesComponent } from '../../../app/utilerias/excepciones/excepciones.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogDescripcion } from '../../general/sel-general/modal-descripcion/modal-descripcion.component';
+import { DialogErrorFacturacion } from '../../general/sel-general/modal-errorFacturacion/modal-errorFacturacion.component';
 
 // import { google } from '@agm/core/services/google-maps-types';
 @Component({
@@ -780,8 +781,34 @@ export class GridComponentComponent implements OnInit, AfterViewInit {
 				this.Excepciones(error, 2);
 			}
 		);
+	};
 
-	}
+	public GetErrorBpro = dataUnit =>{
+		this.spinner = true;
+		const data ={
+			idUnidad: dataUnit.idUnidad
+		};
+		this.coalService.postService(`reporte/selErrorFacturacionBpro`, data).subscribe((res:any) =>{
+			this.spinner = false;
+			if (res.err) {
+				this.Excepciones(res.err, 4);
+			} else if (res.excepcion) {
+				this.Excepciones(res.excepcion, 3);
+			} else {
+				this.dialog.open(DialogErrorFacturacion, {
+					width: '70%',
+					disableClose: true,
+					data: {
+						title: 'Error al facturar la unidad',
+						errorFactura: res.recordsets[0][0].errorMsg
+					}
+				});
+			};
+		}, (error: any)=>{
+			this.spinner = false;
+			this.Excepciones(error, 2);
+		});
+	};
 
 	/**
 	 * En caso de que algun metodo, consulta a la base de datos o conexión con el servidor falle, se abrira el dialog de excepciones

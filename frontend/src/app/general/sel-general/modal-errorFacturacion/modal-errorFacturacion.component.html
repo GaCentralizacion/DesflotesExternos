@@ -1,0 +1,16 @@
+<app-spinner-utileria *ngIf='spinner'></app-spinner-utileria>
+<div mat-dialog-title>
+    <div class="row text-center">
+        <div class="col-md-12">
+            <label> {{title}} </label>
+        </div>
+    </div>
+</div>
+<mat-dialog-content class="mat-typography">
+    <mat-card>
+        <label class="errorAlFacturar">Error: {{errorFactura}}</label>
+    </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="0">Cerrar</button>
+</mat-dialog-actions>

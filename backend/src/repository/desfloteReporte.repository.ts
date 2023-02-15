@@ -1582,6 +1582,10 @@ export class DesfloteReporteRepository {
         return this.query.spExecute(body, "[desfloteExterno].[SEL_DESCRIPTION_UNIT_SP]")
     };
 
+    selErrorFacturacionBpro(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[SEL_Error_AL_FACTURAR_BPRO_SP]")
+    };
+
     // ************* TERMINA POST *************
 
     // ************ SERVICIOS PUT ************

@@ -134,7 +134,8 @@ export class SelGeneralComponent implements OnInit {
 			caption: 'Estatus de la unidad',
 			dataField: 'textStatus',
 			allowEditing: false,
-			cssClass: 'cliente'
+			cssClass: 'cliente',
+			cellTemplate: 'errorFactura'
 		}
 	];
 
