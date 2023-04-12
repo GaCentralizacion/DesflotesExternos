@@ -495,6 +495,11 @@ export class DesfloteReporteController {
 		return this.repository.selErrorFacturacionBpro(body);
 	};
 
+	@Post('/getFormasPago')
+	getFormasPago(@Body() body: Request) {
+		return this.repository.getFormasPago(body);
+	};
+
 	// ************ END Servicios POST ************
 
 	// ************ Servicios PUT ************
@@ -506,6 +511,11 @@ export class DesfloteReporteController {
 	@Put('/updUnitDescription')
 	updUnitDescription(@Body() body: Request) {
 		return this.repository.updUnitDescription(body);
+	};
+
+	@Put('/updUnitFormaPago')
+	updUnitFormaPago(@Body() body: Request) {
+		return this.repository.updUnitFormaPago(body);
 	};
 
 	// ************ END Servicios POST ************
