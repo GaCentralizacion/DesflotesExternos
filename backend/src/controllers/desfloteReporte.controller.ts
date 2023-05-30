@@ -518,6 +518,11 @@ export class DesfloteReporteController {
 		return this.repository.updUnitFormaPago(body);
 	};
 
+	@Put('/updActivosFijos')
+	updActivosFijos(@Body() body: Request) {
+		return this.repository.updActivosFijos(body);
+	};
+
 	// ************ END Servicios POST ************
 
 	// ************ Servicios DELETE ************

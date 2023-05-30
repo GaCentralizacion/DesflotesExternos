@@ -1604,6 +1604,10 @@ export class DesfloteReporteRepository {
     updUnitFormaPago(body: any): PromiseLike<{}> {
         return this.query.spExecute(body, "[desfloteExterno].[UPD_FORMA_PAGO_SP]")
     };
+
+    updActivosFijos(body: any): PromiseLike<{}> {
+        return this.query.spExecute(body, "[desfloteExterno].[UPD_UNIDADES_ACTIVOS_FIJOS_SP]")
+    };
     // ************* TERMINA PUT *************
 
     // ************ SERVICIOS DELETE ************

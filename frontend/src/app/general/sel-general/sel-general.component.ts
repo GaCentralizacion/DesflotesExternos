@@ -710,20 +710,50 @@ export class SelGeneralComponent implements OnInit {
 						this.Excepciones(res.excepcion, 3);
 					} else {
 						if (res.recordsets[0][0].success === 1) {
-							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+							this.liberaUnidadActivosFijos(this.datosevent, res.recordsets[0][0].msg)
+							// this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
 						} else {
 							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+							this.toolbarGeneral = [];
+							this.toolbar = [];
+							this.BotonesToolbar();
+							this.GenerateReport();
 						};
-						this.toolbarGeneral = [];
-						this.toolbar = [];
-						this.BotonesToolbar();
-						this.GenerateReport();
 					};
 				}, (error: any) => {
 					this.Excepciones(error, 2);
 					this.spinner = false
 				});
 			};
+		});
+	};
+
+	public liberaUnidadActivosFijos = (unidades, mensaje)=>{
+		let xml = `<liberaciones>$data</liberaciones>`;
+		let dataXml = '';
+		unidades.forEach(value => {
+			dataXml += `<liberacion><numeroSerie>${value.numeroSerie}</numeroSerie></liberacion>`;
+		});
+		const data = {
+			xmlLiberacion: xml.replace('$data', dataXml)
+		};
+
+		this.coalService.putService(`reporte/updActivosFijos`, data).subscribe((res: any) => {
+			if (res.err) {
+				this.Excepciones(res.err, 4);
+			} else if (res.excepcion) {
+				this.Excepciones(res.excepcion, 3);
+			} else {
+				this.snackBar.open(mensaje, 'Ok', { duration: 10000 });
+				this.toolbarGeneral = [];
+				this.toolbar = [];
+				this.BotonesToolbar();
+				this.GenerateReport();
+			};
+			this.spinner = false
+		}, (error: any) => {
+			this.Excepciones(error, 2);
+			this.spinner = false
 		});
 	};
 
