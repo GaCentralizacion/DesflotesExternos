@@ -1541,7 +1541,7 @@ export class DesfloteReporteRepository {
                         console.log(err)
                     });
                     let file = fs.createWriteStream(`E:\\app\\public\\Imagenes\\expedienteDigitalSeminuevos\\expediente_${x.id_expediente}\\CXP\\FacturaDistribuidora.pdf`);
-                    https.get(`http://192.168.20.105:8081/CHEV/CFD/pdf/AZC/${x.nombreFactura}.pdf`, (response: any) => {
+                    https.get(`http://192.168.20.19:8081/CHEV/CFD/pdf/AZC/${x.nombreFactura}.pdf`, (response: any) => {
                         var stream = response.pipe(file);
                         stream.on("finish", () => {
                             console.log("done");
@@ -1554,7 +1554,7 @@ export class DesfloteReporteRepository {
                     })
                 } else {
                     let file = fs.createWriteStream(`E:\\app\\public\\Imagenes\\expedienteDigitalSeminuevos\\expediente_${x.id_expediente}\\CXP\\FacturaDistribuidora.pdf`);
-                    https.get(`http://192.168.20.105:8081/CHEV/CFD/pdf/AZC/${x.nombreFactura}.pdf`, (response: any) => {
+                    https.get(`http://192.168.20.19:8081/CHEV/CFD/pdf/AZC/${x.nombreFactura}.pdf`, (response: any) => {
                         var stream = response.pipe(file);
                         stream.on("finish", () => {
                             console.log("done");
