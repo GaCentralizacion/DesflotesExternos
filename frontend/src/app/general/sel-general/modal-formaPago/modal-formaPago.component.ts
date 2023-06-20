@@ -13,6 +13,8 @@ export interface SendData {
     title: string;
     elementos: string;
     unidades: any;
+    idEmpresa: number;
+    idSucursal: number;
 };
 
 @Component({
@@ -26,9 +28,11 @@ export class DialogFormaPago implements OnInit {
     titulo: string;
     elementos: string;
     unidades: any;
+    idEmpresa: number;
+    idSucursal: number;
     formasPago:any;
     formFormasDePago: FormGroup;
-    retornarValores = { valorSelect: '' };
+    retornarValores = { valorSelect: {} };
 
     constructor(private fb: FormBuilder,
         public dialogRef: MatDialogRef<DialogFormaPago>,
@@ -39,6 +43,8 @@ export class DialogFormaPago implements OnInit {
         this.titulo = data.title;
         this.elementos = data.elementos;
         this.unidades = data.unidades;
+        this.idEmpresa = data.idEmpresa;
+        this.idSucursal = data.idSucursal;
     };
 
     ngOnInit() {
@@ -49,7 +55,11 @@ export class DialogFormaPago implements OnInit {
     };
 
     getFormasPago = () =>{
-        this.coalService.postService('reporte/getFormasPago', {}).subscribe((res : any)=>{
+        const data = {
+            idEmpresa: this.idEmpresa,
+            idSucursal: this.idSucursal
+        };
+        this.coalService.postService('reporte/getFormasPago', data).subscribe((res : any)=>{
             if (res.err) {
 				this.Excepciones(res.err, 4);
 			} else if (res.excepcion) {
@@ -68,7 +78,7 @@ export class DialogFormaPago implements OnInit {
     };
 
     updFormaPago() {
-        this.retornarValores.valorSelect = this.formFormasDePago.controls.valorFormaPago.value;
+        this.retornarValores.valorSelect = this.formasPago.filter(x => x.valorBpro == this.formFormasDePago.controls.valorFormaPago.value)[0];
     }
 
     Excepciones(stack, tipoExcepcion: number) {

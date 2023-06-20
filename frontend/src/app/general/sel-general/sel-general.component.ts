@@ -758,6 +758,30 @@ export class SelGeneralComponent implements OnInit {
 	};
 
 	public formPago = () => {
+		let empresasDiferentes = false;
+		let primeraEmpresa, primeraSucursal, empresa, sucursal;
+		this.datosevent.forEach((element, index) => {
+			if(index === 0){
+				primeraEmpresa = element.idCompania;
+				primeraSucursal = element.idSucursal;
+			}else{
+				empresa = element.idCompania;
+				sucursal = element.idSucursal;
+			};
+
+			if(index > 0){
+				if(primeraEmpresa !== empresa || primeraSucursal !== sucursal){
+					empresasDiferentes = true
+				};
+			};
+			
+		});
+
+		if( empresasDiferentes ){
+			this.snackBar.open('Las unidades seleccionadas deben pertenecer a la misma empresa sucursal, favor de revisar', 'Ok', { duration: 10000 });
+			return;
+		};
+
 		const dialogRef = this.dialog.open(DialogFormaPago, {
 			width: '70%',
 			disableClose: true,
@@ -765,7 +789,9 @@ export class SelGeneralComponent implements OnInit {
 				title: 'Actualizar forma pago',
 				subTitle: '¿Estas seguro de actualizar la forma de pago de las unidades?',
 				elementos: 'Cantidad de unidades a actualizar: ' + this.datosevent.length,
-				unidades: this.datosevent
+				unidades: this.datosevent,
+				idEmpresa: primeraEmpresa,
+				idSucursal: primeraSucursal
 			}
 		});
 
@@ -779,14 +805,14 @@ export class SelGeneralComponent implements OnInit {
 				let unidades = '';
 
 				for(let unidad of this.datosevent){
-					unidades += `<unidad><idUnidad>${unidad.idUnidad}</idUnidad><formaPago>${result.valorSelect}</formaPago></unidad>`;
+					unidades += `<unidad><idUnidad>${unidad.idUnidad}</idUnidad><formaPago>${result.valorSelect.valorBpro}</formaPago><descFormaPago>${result.valorSelect.descripcion}</descFormaPago></unidad>`;
 				};
 
 				const data ={
 					xmlUnits: xml.replace('$data', unidades),
 					idUsuarioActualiza: this.lstbPro[0].usu_idusuario
 				};
-				
+                
 				this.coalService.putService(`reporte/updUnitFormaPago`, data).subscribe((res: any) => {
 					if (res.err) {
 						this.Excepciones(res.err, 4);
