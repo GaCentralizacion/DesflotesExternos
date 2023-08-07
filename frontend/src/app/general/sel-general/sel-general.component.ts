@@ -20,6 +20,7 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { DialogClient } from './modal-client/modal-client.component';
 import { DialogLiberar } from './modal-liberar/modal-liberar.component';
 import { DialogPrecio } from './modal-precio/modal-precio.component';
+import { DialogFormaPago } from './modal-formaPago/modal-formaPago.component';
 
 @Component({
 	selector: 'app-sel-general',
@@ -395,6 +396,17 @@ export class SelGeneralComponent implements OnInit {
 					widget: 'dxButton',
 					locateInMenu: 'auto',
 					options: {
+						text: 'Forma Pago',
+						onClick: this.receiveMessage.bind(this, 'openModalFormPago')
+					},
+					visible: false,
+					name: 'simple',
+				},
+				{
+					location: 'after',
+					widget: 'dxButton',
+					locateInMenu: 'auto',
+					options: {
 						text: 'Precio',
 						onClick: this.receiveMessage.bind(this, 'openModalPrecio')
 					},
@@ -463,6 +475,12 @@ export class SelGeneralComponent implements OnInit {
 				cssClass: 'general'
 			},
 			{
+				caption: 'Forma de pago',
+				dataField: 'formaPago',
+				allowEditing: false,
+				cssClass: 'general'
+			},
+			{
 				caption: 'Precio Venta',
 				dataField: 'precioVentaIva',
 				dataType: TiposdeDato.number,
@@ -493,6 +511,8 @@ export class SelGeneralComponent implements OnInit {
 				this.getClientBuy();
 			} else if ($event === 'openModalLiberaUnidad') {
 				this.liberarUnidad();
+			}else if($event === 'openModalFormPago'){
+				this.formPago();
 			};
 		} catch (error) {
 			this.Excepciones(error, 1);
@@ -557,6 +577,11 @@ export class SelGeneralComponent implements OnInit {
 		if (verificaclaveProducto.length > 0) {
 			let vin = verificaclaveProducto[0]?.numeroSerie;
 			return this.snackBar.open('La unidad con vin ' + vin + ' no tiene el concepto contable, favor de validar.', 'Ok', { duration: 15000 });
+		};
+		const verificaformaPago = this.datosevent.filter(x => x.formaPago === null);
+		if (verificaformaPago.length > 0) {
+			let vin = verificaformaPago[0]?.numeroSerie;
+			return this.snackBar.open('La unidad con vin ' + vin + ' no tiene forma de pago, favor de validar.', 'Ok', { duration: 15000 });
 		};
 
 		this.spinner = true;
@@ -685,15 +710,122 @@ export class SelGeneralComponent implements OnInit {
 						this.Excepciones(res.excepcion, 3);
 					} else {
 						if (res.recordsets[0][0].success === 1) {
-							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+							this.liberaUnidadActivosFijos(this.datosevent, res.recordsets[0][0].msg)
+							// this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
 						} else {
 							this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
+							this.toolbarGeneral = [];
+							this.toolbar = [];
+							this.BotonesToolbar();
+							this.GenerateReport();
 						};
+					};
+				}, (error: any) => {
+					this.Excepciones(error, 2);
+					this.spinner = false
+				});
+			};
+		});
+	};
+
+	public liberaUnidadActivosFijos = (unidades, mensaje)=>{
+		let xml = `<liberaciones>$data</liberaciones>`;
+		let dataXml = '';
+		unidades.forEach(value => {
+			dataXml += `<liberacion><numeroSerie>${value.numeroSerie}</numeroSerie></liberacion>`;
+		});
+		const data = {
+			xmlLiberacion: xml.replace('$data', dataXml)
+		};
+
+		this.coalService.putService(`reporte/updActivosFijos`, data).subscribe((res: any) => {
+			if (res.err) {
+				this.Excepciones(res.err, 4);
+			} else if (res.excepcion) {
+				this.Excepciones(res.excepcion, 3);
+			} else {
+				this.snackBar.open(mensaje, 'Ok', { duration: 10000 });
+				this.toolbarGeneral = [];
+				this.toolbar = [];
+				this.BotonesToolbar();
+				this.GenerateReport();
+			};
+			this.spinner = false
+		}, (error: any) => {
+			this.Excepciones(error, 2);
+			this.spinner = false
+		});
+	};
+
+	public formPago = () => {
+		let empresasDiferentes = false;
+		let primeraEmpresa, primeraSucursal, empresa, sucursal;
+		this.datosevent.forEach((element, index) => {
+			if(index === 0){
+				primeraEmpresa = element.idCompania;
+				primeraSucursal = element.idSucursal;
+			}else{
+				empresa = element.idCompania;
+				sucursal = element.idSucursal;
+			};
+
+			if(index > 0){
+				if(primeraEmpresa !== empresa || primeraSucursal !== sucursal){
+					empresasDiferentes = true
+				};
+			};
+			
+		});
+
+		if( empresasDiferentes ){
+			this.snackBar.open('Las unidades seleccionadas deben pertenecer a la misma empresa sucursal, favor de revisar', 'Ok', { duration: 10000 });
+			return;
+		};
+
+		const dialogRef = this.dialog.open(DialogFormaPago, {
+			width: '70%',
+			disableClose: true,
+			data: {
+				title: 'Actualizar forma pago',
+				subTitle: '¿Estas seguro de actualizar la forma de pago de las unidades?',
+				elementos: 'Cantidad de unidades a actualizar: ' + this.datosevent.length,
+				unidades: this.datosevent,
+				idEmpresa: primeraEmpresa,
+				idSucursal: primeraSucursal
+			}
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			this.spinner = true;
+			if (!result) {
+				this.snackBar.open('Actualización de formas de pago cancelada', 'Ok', { duration: 10000 });
+				this.spinner = false;
+			} else {
+				let xml = '<unidades>$data</unidades>';
+				let unidades = '';
+
+				for(let unidad of this.datosevent){
+					unidades += `<unidad><idUnidad>${unidad.idUnidad}</idUnidad><formaPago>${result.valorSelect.valorBpro}</formaPago><descFormaPago>${result.valorSelect.descripcion}</descFormaPago></unidad>`;
+				};
+
+				const data ={
+					xmlUnits: xml.replace('$data', unidades),
+					idUsuarioActualiza: this.lstbPro[0].usu_idusuario
+				};
+                
+				this.coalService.putService(`reporte/updUnitFormaPago`, data).subscribe((res: any) => {
+					if (res.err) {
+						this.Excepciones(res.err, 4);
+					} else if (res.excepcion) {
+						this.Excepciones(res.excepcion, 3);
+					} else {
+						this.snackBar.open(res.recordsets[0][0].msg, 'Ok', { duration: 10000 });
 						this.toolbarGeneral = [];
 						this.toolbar = [];
 						this.BotonesToolbar();
 						this.GenerateReport();
 					};
+					this.spinner = false
 				}, (error: any) => {
 					this.Excepciones(error, 2);
 					this.spinner = false

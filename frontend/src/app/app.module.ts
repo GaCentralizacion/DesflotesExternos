@@ -125,7 +125,8 @@ import { DialogClient } from './general/sel-general/modal-client/modal-client.co
 import { DialogLiberar } from './general/sel-general/modal-liberar/modal-liberar.component';
 import { DialogPrecio } from './general/sel-general/modal-precio/modal-precio.component';
 import { DialogDescripcion } from './general/sel-general/modal-descripcion/modal-descripcion.component';
-import {DialogErrorFacturacion} from './general/sel-general/modal-errorFacturacion/modal-errorFacturacion.component';
+import { DialogErrorFacturacion } from './general/sel-general/modal-errorFacturacion/modal-errorFacturacion.component';
+import { DialogFormaPago } from './general/sel-general/modal-formaPago/modal-formaPago.component';
 
 export function sessionInitializerProviderFactory(
     provider: SessionInitializer
@@ -163,7 +164,8 @@ export function sessionInitializerProviderFactory(
         DialogLiberar,
         DialogPrecio,
         DialogDescripcion,
-        DialogErrorFacturacion
+        DialogErrorFacturacion,
+        DialogFormaPago
     ],
     entryComponents: [
         ExcepcionesComponent,
@@ -174,7 +176,8 @@ export function sessionInitializerProviderFactory(
         DialogLiberar,
         DialogPrecio,
         DialogDescripcion,
-        DialogErrorFacturacion
+        DialogErrorFacturacion,
+        DialogFormaPago
     ],
     imports: [
         BrowserModule,

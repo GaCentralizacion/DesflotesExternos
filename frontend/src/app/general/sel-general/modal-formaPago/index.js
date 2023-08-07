@@ -1,0 +1,1 @@
+export { default } from './modal-formaPago.component.ts';

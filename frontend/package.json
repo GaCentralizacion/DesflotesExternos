@@ -3,7 +3,7 @@
   "version": "10.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng serve --port 5070",
+    "start": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng serve --port 5071",
     "start:mem": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng serve --open",
     "dev": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build",
     "build:prod": "ng build --prod",
