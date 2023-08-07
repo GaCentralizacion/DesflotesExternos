@@ -25,10 +25,10 @@ export default {
             "protocolo": "http"
         },
         "proveedorFactura": {
-            "host": 'http://192.168.20.123/Proveedores/api/CargAapi/1',
-            'rutaArchivos': 'C:\\APLICACIONES\\Proveedores\\GIT\\proveedores\\app\\static\\files',
-            'rutaPdf': 'http://192.168.20.123:8081/INTEGRA/CFD/PDF/',
-            'rutaXml': 'http://192.168.20.123:8081/INTEGRA/CFD/XML/'
+            "host": 'http://192.168.20.89/Proveedores/api/CargAapi/1',
+            'rutaArchivos': 'E:\\Aplicaciones\\Portal_Proveedores_Produccion\\portal-proveedores\\app\\static\\files',
+            'rutaPdf': 'http://192.168.20.19:8081/INTEGRA/CFD/PDF/',
+            'rutaXml': 'http://192.168.20.19:8081/INTEGRA/CFD/XML/'
             // 'rutaPdf': 'C:\\BPRO\\BPRO_CFD\\INTEGRA\\CFD\\PDF\\',
             // 'rutaXml': 'C:\\BPRO\\BPRO_CFD\\INTEGRA\\CFD\\XML\\'
         },
