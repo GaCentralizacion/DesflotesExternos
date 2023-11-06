@@ -33,13 +33,17 @@ gulp.task('clean', function () {
 
 gulp.task('serverDev', ['build'], function () {
     process.env.NODE_ENV = "development";
+    process.title = "BackendDesfloteExterno";
     nodemon({
         // the script to run the app
         script: 'dist/index.js',
         watch: ["src/**/*.ts"],
         ext: 'ts',
         // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
-    }).on('restart', ['build']);
+    }).on('restart', ['build'], function () {
+        // Restablece el título de la consola cuando se reinicia
+        process.title = "BackendDesfloteExterno";
+    });
 });
 
 gulp.task('serverQA', ['build'], function () {

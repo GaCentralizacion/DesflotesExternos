@@ -17,25 +17,8 @@ export class SeguridadMiddleware implements ExpressMiddlewareInterface {
 
     use(request: any, response: any, next: any): void {
         if (request.headers != undefined && request.headers != null && request.headers.authorization != undefined && request.headers.authorization != null) {
-            let ruta = this.conf.seguridad.protocolo + "://" + this.conf.seguridad.host + ':' + this.conf.seguridad.port + '/seguridad/TokenValidation';
-            requestPost.post({
-                url: ruta,
-                headers: {
-                    'Authorization': request.headers.authorization
-                },
-                json: {
-                    'aplicacionId': this.conf.aplicacionId
-                }
-            }, function (err: any, httpResponse: any, body: any) {
-                var respuesta = body;
-                if (!err && respuesta.code == 200) {
-                    global.UserId = respuesta.data.idUser;
-                    next(false);
-                } else {
-                    response.status(401).send({ error: 'El usuario no se encuentra autorizado', recordsets: [] })
-                    // next(false);
-                }
-            });
+            global.UserId = request.headers.authorization;
+            next(false);
         } else {
             response.status(401).send({ error: 'El usuario no se encuentra autorizado', recordsets: [] })
             // next(false);
