@@ -584,6 +584,17 @@ export class SelGeneralComponent implements OnInit {
 			return this.snackBar.open('La unidad con vin ' + vin + ' no tiene forma de pago, favor de validar.', 'Ok', { duration: 15000 });
 		};
 
+        let esValido = true;
+        const { idCompania, idSucursal } = this.datosevent[0];
+        for( const row of  this.datosevent){
+            if(row.idCompania !== idCompania || row.idSucursal !== idSucursal){
+                esValido = false
+            };
+        };
+        if (!esValido) {
+            return this.snackBar.open('Todas las a desflotar unidades deben ser de la misma empresa y sucursal.', 'Ok', { duration: 15000 });
+        };
+
 		this.spinner = true;
 		let xml = `<ventas>$data</ventas>`;
 		let dataXml = '';

@@ -32,6 +32,7 @@ export class DialogClient implements OnInit {
 	//select: string;
 	titulo: string;
 	elementos: string;
+    unidades: any;
 
 	cliente = new FormControl('', [Validators.required])
 	formSearchClient = new FormGroup({ cliente: this.cliente });
@@ -70,10 +71,10 @@ export class DialogClient implements OnInit {
 		//this.select = data.select;
 		this.titulo = data.title;
 		this.elementos = data.elementos;
+        this.unidades = data.unidades;
 	};
 
 	ngOnInit() {
-		// this.getselConceptosContables();
 		this.filteredOptions = this.formSelectClient.valueChanges.pipe(
 			startWith(''),
 			map(value => (typeof value === 'string' ? value : value.PER_NOMRAZON)),
@@ -92,7 +93,8 @@ export class DialogClient implements OnInit {
 
 	getselUsoCfdi = idCliente => {
 		this.spinner = true;
-		this.coalService.getService(`reporte/selUsoCfdi?idCliente=${idCliente}`).subscribe((res: any) => {
+        const { idCompania, idSucursal } = this.unidades[0];
+		this.coalService.getService(`reporte/selUsoCfdi?idCliente=${idCliente}&idCompania=${idCompania}&idSucursal=${idSucursal}`).subscribe((res: any) => {
 			if (res.err) {
 				this.spinner = false;
 				this.Excepciones(res.err, 4);
